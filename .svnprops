@@ -1,5 +1,8 @@
 **/.DS_Store
+build/
 node_modules
+sample/node_modules/*
+documents/node_modules/*
 npm-debug.log
 .idea
 .git
