@@ -119,8 +119,6 @@ define([
 		 * @param {object} sybmol
 		 * @param {boolean} isNotClearLayer 是否不清空图层(默认 false - 清空)
 		 *
-		 * @example <caption>Usage of startDraw</caption>
-		 *  startDraw(type,sybmol,isNotClearLayer);
 		 */
 		startDraw: function(type,sybmol,isNotClearLayer){
             var deferred = new Deferred();

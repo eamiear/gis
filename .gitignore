@@ -6,10 +6,6 @@ npm-debug.log
 .svn
 dist
 package
-public/**
-server/public/**
-views/**
-**/public/
 
 .vscode/
 

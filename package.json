@@ -12,7 +12,7 @@
     "gulp-autoprefixer": "*",
     "gulp-concat": "*",
     "gulp-jsdoc3": "^1.0.1",
-    "gulp-less": "*",
+    "gulp-less": "^3.3.0",
     "gulp-livereload": "*",
     "gulp-minify-css": "*",
     "gulp-uglify": "*"
