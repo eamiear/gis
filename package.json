@@ -1,21 +1,20 @@
 {
-    "name": "gosuncn-arcgis",
-    "version": "0.0.0",
-    "description": "",
-    "author": "gosuncn",
-    "license": "",
-    "contributors": [
-
-    ],
-    "readmeFilename": "README.md",
-    "dependencies": {},
-    "devDependencies": {
-        "gulp": "3.9.1",
-        "gulp-less": "*",
-        "gulp-minify-css": "*",
-        "gulp-uglify": "*",
-        "gulp-concat": "*",
-        "gulp-livereload": "*",
-        "gulp-autoprefixer": "*"
-    }
+  "name": "gosuncn-arcgis",
+  "version": "0.0.0",
+  "description": "",
+  "author": "gosuncn",
+  "license": "",
+  "contributors": [],
+  "readmeFilename": "README.md",
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "3.9.1",
+    "gulp-autoprefixer": "*",
+    "gulp-concat": "*",
+    "gulp-jsdoc3": "^1.0.1",
+    "gulp-less": "*",
+    "gulp-livereload": "*",
+    "gulp-minify-css": "*",
+    "gulp-uglify": "*"
+  }
 }

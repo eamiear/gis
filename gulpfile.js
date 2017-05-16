@@ -5,7 +5,8 @@ var gulp = require('gulp'),
     uglify= require('gulp-uglify'),
     concat = require('gulp-concat'),
     livereload = require('gulp-livereload'),
-    autoprefixer = require('gulp-autoprefixer');
+    autoprefixer = require('gulp-autoprefixer'),
+    jsdoc = require('gulp-jsdoc3');
 
 //gulp.task(name[, deps], fn) 定义任务  name：任务名称 deps：依赖任务名称 fn：回调函数
 //gulp.src(globs[, options]) 执行任务处理的文件  globs：处理的文件路径(字符串或者字符串数组)
@@ -69,6 +70,14 @@ gulp.task('compact-js', function () {
         .pipe(gulp.dest('./build/'))
         .pipe(gulp.dest('./sample/static/js'));
     //.pipe(notify({ message: 'compact-js task complete' }));
+});
+
+gulp.task('doc', function (cb) {
+    var jsdoc = require('./index');
+
+    var config = require('./src/jsdocConfig');
+    gulp.src(['README.md'].concat(['./src/**/*.js']), {read: false})
+        .pipe(jsdoc(config, cb));
 });
 
 //watch for changes on ts files and compile and copy when saved
