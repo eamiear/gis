@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link rel="stylesheet" type="text/css" href="styles/stylesheet.css">
+		<title>Gois API Documentation</title>
+	</head>
+	<body id="overview">
+
+		<header>
+			<div class="header">
+				<script type="text/javascript" src="js/jQuery.172.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	var header = $('.header'),
+		content = $('.content')
+		footer = $('footer')
+	;
+
+	function mtn(str){
+		if(
+			'' === str
+			|| undefined === str
+			|| null === str
+		){
+			return 0;
+		}else{
+			var a = parseInt(str.replace(/px|ex|em/, ''), 10);
+			if(isNaN(a)){
+				a = 0;
+			}
+			return a;
+		}
+	}
+	
+	function resize(){
+		var availableHeight = $(window).height() - (header.outerHeight() + footer.outerHeight()),
+			availableWidth = $(window).width(),
+			contentOffsetH = mtn(content.css('borderTopWidth')) + 
+				mtn(content.css('marginTop')) +
+				mtn(content.css('paddingTop')) +
+				
+				mtn(content.css('paddingBottom')) +
+				mtn(content.css('marginBottom')) +
+				mtn(content.css('borderBottomWidth')),
+			contentOffsetW = mtn(content.css('borderLeftWidth')) + 
+				mtn(content.css('marginLeft')) +
+				mtn(content.css('paddingLeft')) +
+				
+				mtn(content.css('paddingRight')) +
+				mtn(content.css('marginRight')) +
+				mtn(content.css('borderRightWidth'))
+		;
+		content.height(availableHeight - contentOffsetH);
+		content.width(availableWidth - contentOffsetW);
+	}
+	resize();
+	$(window).resize(resize);
+});
+</script>
+
+<ul>
+	
+	<li><a href="class_index.html">Classes</a></li>
+	
+	
+	
+	
+	
+	<li><a href="module_index.html">Modules</a></li>
+	
+	
+	
+	
+	
+	<li><a href="function_index.html">Methods/Functions</a></li>
+	
+	
+	<li><a href="global.html">Globals</a></li>
+	
+	<li><a href="file_index.html">Files</a></li>
+	<li><a href="doc-index.html">Index</a></li>
+</ul>
+
+<div id="title">
+	
+	<a href="readme.html">
+		
+
+		Gois API API
+
+		
+	</a>
+	
+</div>
+
+				<div class="type">Index</div>
+
+				A&nbsp;B&nbsp;<a href="#letterC">C</a>&nbsp;<a href="#letterD">D</a>&nbsp;<a href="#letterE">E</a>&nbsp;F&nbsp;<a href="#letterG">G</a>&nbsp;H&nbsp;<a href="#letterI">I</a>&nbsp;J&nbsp;K&nbsp;<a href="#letterL">L</a>&nbsp;M&nbsp;N&nbsp;<a href="#letterO">O</a>&nbsp;<a href="#letterP">P</a>&nbsp;<a href="#letterQ">Q</a>&nbsp;<a href="#letterR">R</a>&nbsp;<a href="#letterS">S</a>&nbsp;T&nbsp;<a href="#letterU">U</a>&nbsp;<a href="#letterV">V</a>&nbsp;W&nbsp;X&nbsp;Y&nbsp;Z&nbsp;
+			</div>
+		</header>
+
+		<div class="content">
+			
+			 
+			
+
+			<h2 id="letterC">
+				C
+				<small><a href="#">Top</a></small>
+			</h2>
+			<dl>
+				
+				
+				<dt>
+				<a href="OCXComm.html#changeViewSplit" ><abbr title="OCXComm#changeViewSplit">changeViewSplit</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					切换实时图片显示分屏
+				</dd>
+				
+				
+				<dt>
+				<a href="PCSOCXComm.html#changeViewSplit" ><abbr title="PCSOCXComm#changeViewSplit">changeViewSplit</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					inherited public  method in class <a href="PCSOCXComm.html" ><abbr title="PCSOCXComm">PCSOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					切换实时图片显示分屏
+				</dd>
+				
+				
+				<dt>
+				<a href="SOCXComm.html#changeViewSplit" ><abbr title="SOCXComm#changeViewSplit">changeViewSplit</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					inherited public  method in class <a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					切换实时图片显示分屏
+				</dd>
+				
+				
+				<dt>
+				<a href="SPlayer.html#closeAllLivePic" ><abbr title="SPlayer#closeAllLivePic">closeAllLivePic</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="SPlayer.html" ><abbr title="SPlayer">SPlayer</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					关闭所有窗口
+				</dd>
+				
+				
+				<dt>
+				<a href="SOCXComm.html#closeLivePic" ><abbr title="SOCXComm#closeLivePic">closeLivePic</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					关闭实时图片显示
+				</dd>
+				
+				
+				<dt>
+				<a href="PlayerUtils.html#createObjParam" ><abbr title="PlayerUtils.createObjParam">createObjParam</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					static public  method in class <a href="PlayerUtils.html" ><abbr title="PlayerUtils">PlayerUtils</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					构建播放器Object DOM对象的Param参数
+				</dd>
+				
+				
+				<dt>
+				<a href="PlayerUtils.html#createPlayerDom" ><abbr title="PlayerUtils.createPlayerDom">createPlayerDom</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					static public  method in class <a href="PlayerUtils.html" ><abbr title="PlayerUtils">PlayerUtils</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					构建播放器DOM对象
+				</dd>
+				
+				
+				<dt>
+				<a href="OCXUtils.html#createProtoMiddleWare" ><abbr title="OCXUtils.createProtoMiddleWare">createProtoMiddleWare</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					static public  method in class <a href="OCXUtils.html" ><abbr title="OCXUtils">OCXUtils</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					构建原型中间件     构建中间件的目的是避免通过组合方式实现继承时，两次实例化父级对象(构造函数，prototype),浪费空间     构建一个空的中间件构造函数,分配的内存占据很少
+				</dd>
+				
+			</dl>
+
+			
+
+		</dl>
+
+		
+		 
+			
+
+			<h2 id="letterD">
+				D
+				<small><a href="#">Top</a></small>
+			</h2>
+			<dl>
+				
+				
+				<dt>
+				<a href="module_extras_controls__ayer_uery.html#domainSearch" ><abbr title="module:extras/controls/LayerQuery~domainSearch">domainSearch</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="module_extras_controls__ayer_uery.html" ><abbr title="module:extras/controls/LayerQuery">module:extras/controls/LayerQuery</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					
+				</dd>
+				
+			</dl>
+
+			
+
+		</dl>
+
+		
+		 
+			
+
+			<h2 id="letterE">
+				E
+				<small><a href="#">Top</a></small>
+			</h2>
+			<dl>
+				
+				
+				<dt>
+				<a href="SPlayer.html#EOCXTYPE" ><abbr title="SPlayer#EOCXTYPE">EOCXTYPE</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					 constant in <a href="SPlayer.html" ><abbr title="SPlayer">SPlayer</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					结构化OCX类型
+				</dd>
+				
+				
+				<dt>
+				<a href="OCXComm.html#exitFullScreen" ><abbr title="OCXComm#exitFullScreen">exitFullScreen</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					退出全屏
+				</dd>
+				
+				
+				<dt>
+				<a href="PCSOCXComm.html#exitFullScreen" ><abbr title="PCSOCXComm#exitFullScreen">exitFullScreen</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					inherited public  method in class <a href="PCSOCXComm.html" ><abbr title="PCSOCXComm">PCSOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					退出全屏
+				</dd>
+				
+				
+				<dt>
+				<a href="SOCXComm.html#exitFullScreen" ><abbr title="SOCXComm#exitFullScreen">exitFullScreen</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					inherited public  method in class <a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					退出全屏
+				</dd>
+				
+				
+				<dt>
+				<a href="OCXUtils.html#extends" ><abbr title="OCXUtils.extends">extends</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					static public  method in class <a href="OCXUtils.html" ><abbr title="OCXUtils">OCXUtils</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					继承方法
+				</dd>
+				
+				
+				<dt>
+				<a href="module_extras_controls__ayer_uery.html" ><abbr title="module:extras/controls/LayerQuery">extras/controls/LayerQuery</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					Module
+				</em>
+				</dt>
+				<dd>
+					
+				</dd>
+				
+			</dl>
+
+			
+
+		</dl>
+
+		
+		 
+			
+
+			<h2 id="letterG">
+				G
+				<small><a href="#">Top</a></small>
+			</h2>
+			<dl>
+				
+				
+				<dt>
+				<a href="OCXComm.html#generateOcxParamJson" ><abbr title="OCXComm#generateOcxParamJson">generateOcxParamJson</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					生成OCX参数
+				</dd>
+				
+				
+				<dt>
+				<a href="PCSOCXComm.html#generateOcxParamJson" ><abbr title="PCSOCXComm#generateOcxParamJson">generateOcxParamJson</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					inherited public  method in class <a href="PCSOCXComm.html" ><abbr title="PCSOCXComm">PCSOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					生成OCX参数
+				</dd>
+				
+				
+				<dt>
+				<a href="SOCXComm.html#generateOcxParamJson" ><abbr title="SOCXComm#generateOcxParamJson">generateOcxParamJson</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					inherited public  method in class <a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					生成OCX参数
+				</dd>
+				
+				
+				<dt>
+				<a href="OCXComm.html#getVersion" ><abbr title="OCXComm#getVersion">getVersion</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					获取控件版本
+				</dd>
+				
+				
+				<dt>
+				<a href="PCSOCXComm.html#getVersion" ><abbr title="PCSOCXComm#getVersion">getVersion</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					inherited public  method in class <a href="PCSOCXComm.html" ><abbr title="PCSOCXComm">PCSOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					获取控件版本
+				</dd>
+				
+				
+				<dt>
+				<a href="SOCXComm.html#getVersion" ><abbr title="SOCXComm#getVersion">getVersion</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					inherited public  method in class <a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					获取控件版本
+				</dd>
+				
+			</dl>
+
+			
+
+		</dl>
+
+		
+		 
+			
+
+			<h2 id="letterI">
+				I
+				<small><a href="#">Top</a></small>
+			</h2>
+			<dl>
+				
+				
+				<dt>
+				<a href="OCXComm.html#init" ><abbr title="OCXComm#init">init</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					初始化控件,全局初始化一次
+				</dd>
+				
+				
+				<dt>
+				<a href="PCSOCXComm.html#init" ><abbr title="PCSOCXComm#init">init</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					inherited public  method in class <a href="PCSOCXComm.html" ><abbr title="PCSOCXComm">PCSOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					初始化控件,全局初始化一次
+				</dd>
+				
+				
+				<dt>
+				<a href="SOCXComm.html#init" ><abbr title="SOCXComm#init">init</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					inherited public  method in class <a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					初始化控件,全局初始化一次
+				</dd>
+				
+				
+				<dt>
+				<a href="SOCXComm.html#initLivePicPlayWnd" ><abbr title="SOCXComm#initLivePicPlayWnd">initLivePicPlayWnd</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					实时图片显示窗口初始化
+				</dd>
+				
+				
+				<dt>
+				<a href="OCXComm.html#isIE" ><abbr title="OCXComm#isIE">isIE</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					判断是否为IE浏览器
+				</dd>
+				
+				
+				<dt>
+				<a href="PCSOCXComm.html#isIE" ><abbr title="PCSOCXComm#isIE">isIE</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					inherited public  method in class <a href="PCSOCXComm.html" ><abbr title="PCSOCXComm">PCSOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					判断是否为IE浏览器
+				</dd>
+				
+				
+				<dt>
+				<a href="SOCXComm.html#isIE" ><abbr title="SOCXComm#isIE">isIE</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					inherited public  method in class <a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					判断是否为IE浏览器
+				</dd>
+				
+				
+				<dt>
+				<a href="SOCXComm.html#isTrustSite" ><abbr title="SOCXComm#isTrustSite">isTrustSite</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					判断IP地址是否已为信任站点
+				</dd>
+				
+			</dl>
+
+			
+
+		</dl>
+
+		
+		 
+			
+
+			<h2 id="letterL">
+				L
+				<small><a href="#">Top</a></small>
+			</h2>
+			<dl>
+				
+				
+				<dt>
+				<a href="SPlayer.html#launch" ><abbr title="SPlayer#launch">launch</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="SPlayer.html" ><abbr title="SPlayer">SPlayer</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					启动，加载控件
+				</dd>
+				
+				
+				<dt>
+				<a href="LayerQuery.html" ><abbr title="LayerQuery">LayerQuery</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					 class in namespace null
+				</em>
+				</dt>
+				<dd>
+					
+				</dd>
+				
+				
+				<dt>
+				<a href="SOCXComm.html#loginCPG" ><abbr title="SOCXComm#loginCPG">loginCPG</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					登录卡口网关服务
+				</dd>
+				
+				
+				<dt>
+				<a href="SOCXComm.html#logoutCPG" ><abbr title="SOCXComm#logoutCPG">logoutCPG</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					登出卡口网关服务
+				</dd>
+				
+			</dl>
+
+			
+
+		</dl>
+
+		
+		 
+			
+
+			<h2 id="letterO">
+				O
+				<small><a href="#">Top</a></small>
+			</h2>
+			<dl>
+				
+				
+				<dt>
+				<a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					 class in namespace null
+				</em>
+				</dt>
+				<dd>
+					
+				</dd>
+				
+				
+				<dt>
+				<a href="OCXUtils.html" ><abbr title="OCXUtils">OCXUtils</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					 class in namespace null
+				</em>
+				</dt>
+				<dd>
+					OCX工具类
+				</dd>
+				
+				
+				<dt>
+				<a href="SOCXComm.html#openLivePic" ><abbr title="SOCXComm#openLivePic">openLivePic</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					打开实时图片显示
+				</dd>
+				
+			</dl>
+
+			
+
+		</dl>
+
+		
+		 
+			
+
+			<h2 id="letterP">
+				P
+				<small><a href="#">Top</a></small>
+			</h2>
+			<dl>
+				
+				
+				<dt>
+				<a href="PCSOCXComm.html" ><abbr title="PCSOCXComm">PCSOCXComm</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					 class in namespace null
+				</em>
+				</dt>
+				<dd>
+					
+				</dd>
+				
+				
+				<dt>
+				<a href="PlayerUtils.html" ><abbr title="PlayerUtils">PlayerUtils</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					 class in namespace null
+				</em>
+				</dt>
+				<dd>
+					播放器工具类
+				</dd>
+				
+			</dl>
+
+			
+
+		</dl>
+
+		
+		 
+			
+
+			<h2 id="letterQ">
+				Q
+				<small><a href="#">Top</a></small>
+			</h2>
+			<dl>
+				
+				
+				<dt>
+				<a href="module_extras_controls__ayer_uery.html#queryByAttrAndGeo" ><abbr title="module:extras/controls/LayerQuery~queryByAttrAndGeo">queryByAttrAndGeo</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="module_extras_controls__ayer_uery.html" ><abbr title="module:extras/controls/LayerQuery">module:extras/controls/LayerQuery</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					综合查询
+				</dd>
+				
+				
+				<dt>
+				<a href="module_extras_controls__ayer_uery.html#queryByAttribute" ><abbr title="module:extras/controls/LayerQuery~queryByAttribute">queryByAttribute</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="module_extras_controls__ayer_uery.html" ><abbr title="module:extras/controls/LayerQuery">module:extras/controls/LayerQuery</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					属性查询
+				</dd>
+				
+				
+				<dt>
+				<a href="module_extras_controls__ayer_uery.html#queryByGeometry" ><abbr title="module:extras/controls/LayerQuery~queryByGeometry">queryByGeometry</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="module_extras_controls__ayer_uery.html" ><abbr title="module:extras/controls/LayerQuery">module:extras/controls/LayerQuery</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					空间查询
+				</dd>
+				
+			</dl>
+
+			
+
+		</dl>
+
+		
+		 
+			
+
+			<h2 id="letterR">
+				R
+				<small><a href="#">Top</a></small>
+			</h2>
+			<dl>
+				
+				
+				<dt>
+				<a href="OCXComm.html#registerCallback" ><abbr title="OCXComm#registerCallback">registerCallback</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					注册控件消息回调函数，用于控件消息回调给web
+				</dd>
+				
+				
+				<dt>
+				<a href="PCSOCXComm.html#registerCallback" ><abbr title="PCSOCXComm#registerCallback">registerCallback</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="PCSOCXComm.html" ><abbr title="PCSOCXComm">PCSOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					注册控件消息回调函数，用于控件消息回调给web
+				</dd>
+				
+				
+				<dt>
+				<a href="SOCXComm.html#registerCallback" ><abbr title="SOCXComm#registerCallback">registerCallback</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					注册控件消息回调函数，用于控件消息回调给web
+				</dd>
+				
+			</dl>
+
+			
+
+		</dl>
+
+		
+		 
+			
+
+			<h2 id="letterS">
+				S
+				<small><a href="#">Top</a></small>
+			</h2>
+			<dl>
+				
+				
+				<dt>
+				<a href="OCXComm.html#setOcxObj" ><abbr title="OCXComm#setOcxObj">setOcxObj</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					设置ocxObj对象
+				</dd>
+				
+				
+				<dt>
+				<a href="PCSOCXComm.html#setOcxObj" ><abbr title="PCSOCXComm#setOcxObj">setOcxObj</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					inherited public  method in class <a href="PCSOCXComm.html" ><abbr title="PCSOCXComm">PCSOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					设置ocxObj对象
+				</dd>
+				
+				
+				<dt>
+				<a href="SOCXComm.html#setOcxObj" ><abbr title="SOCXComm#setOcxObj">setOcxObj</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					inherited public  method in class <a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					设置ocxObj对象
+				</dd>
+				
+				
+				<dt>
+				<a href="SOCXComm.html#setTrustSite" ><abbr title="SOCXComm#setTrustSite">setTrustSite</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					设置信任站点
+				</dd>
+				
+				
+				<dt>
+				<a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					 class in namespace null
+				</em>
+				</dt>
+				<dd>
+					
+				</dd>
+				
+				
+				<dt>
+				<a href="SPlayer.html" ><abbr title="SPlayer">SPlayer</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					 class in namespace null
+				</em>
+				</dt>
+				<dd>
+					
+				</dd>
+				
+				
+				<dt>
+				<a href="LayerQuery.html#startDraw" ><abbr title="LayerQuery.startDraw">startDraw</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					static public  method in class <a href="LayerQuery.html" ><abbr title="LayerQuery">LayerQuery</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					startDraw
+				</dd>
+				
+				
+				<dt>
+				<a href="OCXComm.html#sysFunc" ><abbr title="OCXComm#sysFunc">sysFunc</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					系统相关调度接口
+				</dd>
+				
+				
+				<dt>
+				<a href="PCSOCXComm.html#sysFunc" ><abbr title="PCSOCXComm#sysFunc">sysFunc</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="PCSOCXComm.html" ><abbr title="PCSOCXComm">PCSOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					系统相关调度接口，主要是控件初始化、反初始化、服务登录登出等
+				</dd>
+				
+				
+				<dt>
+				<a href="SOCXComm.html#sysFunc" ><abbr title="SOCXComm#sysFunc">sysFunc</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					系统相关调度接口，主要是控件初始化、反初始化、服务登录登出等
+				</dd>
+				
+				
+				<dt>
+				<a href="OCXComm.html#sysFuncVideo" ><abbr title="OCXComm#sysFuncVideo">sysFuncVideo</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					实时图片显示相关处理接口，包括实时图片窗口处理、打开和关闭实时图片浏览等
+				</dd>
+				
+				
+				<dt>
+				<a href="PCSOCXComm.html#sysFuncVideo" ><abbr title="PCSOCXComm#sysFuncVideo">sysFuncVideo</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="PCSOCXComm.html" ><abbr title="PCSOCXComm">PCSOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					实时图片显示相关处理接口，包括实时图片窗口处理、打开和关闭实时图片浏览等
+				</dd>
+				
+				
+				<dt>
+				<a href="SOCXComm.html#sysFuncVideo" ><abbr title="SOCXComm#sysFuncVideo">sysFuncVideo</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					实时图片显示相关处理接口，包括实时图片窗口处理、打开和关闭实时图片浏览等
+				</dd>
+				
+			</dl>
+
+			
+
+		</dl>
+
+		
+		 
+			
+
+			<h2 id="letterU">
+				U
+				<small><a href="#">Top</a></small>
+			</h2>
+			<dl>
+				
+				
+				<dt>
+				<a href="OCXComm.html#unInit" ><abbr title="OCXComm#unInit">unInit</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					反初始化控件
+				</dd>
+				
+				
+				<dt>
+				<a href="PCSOCXComm.html#unInit" ><abbr title="PCSOCXComm#unInit">unInit</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					inherited public  method in class <a href="PCSOCXComm.html" ><abbr title="PCSOCXComm">PCSOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					反初始化控件
+				</dd>
+				
+				
+				<dt>
+				<a href="SOCXComm.html#unInit" ><abbr title="SOCXComm#unInit">unInit</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					inherited public  method in class <a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					反初始化控件
+				</dd>
+				
+				
+				<dt>
+				<a href="SOCXComm.html#unInitLivePicPlayWnd" ><abbr title="SOCXComm#unInitLivePicPlayWnd">unInitLivePicPlayWnd</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					实时图片显示窗口初始化
+				</dd>
+				
+			</dl>
+
+			
+
+		</dl>
+
+		
+		 
+			
+
+			<h2 id="letterV">
+				V
+				<small><a href="#">Top</a></small>
+			</h2>
+			<dl>
+				
+				
+				<dt>
+				<a href="OCXComm.html#viewEightScreen" ><abbr title="OCXComm#viewEightScreen">viewEightScreen</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					八屏查看
+				</dd>
+				
+				
+				<dt>
+				<a href="PCSOCXComm.html#viewEightScreen" ><abbr title="PCSOCXComm#viewEightScreen">viewEightScreen</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					inherited public  method in class <a href="PCSOCXComm.html" ><abbr title="PCSOCXComm">PCSOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					八屏查看
+				</dd>
+				
+				
+				<dt>
+				<a href="SOCXComm.html#viewEightScreen" ><abbr title="SOCXComm#viewEightScreen">viewEightScreen</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					inherited public  method in class <a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					八屏查看
+				</dd>
+				
+				
+				<dt>
+				<a href="OCXComm.html#viewFourScreen" ><abbr title="OCXComm#viewFourScreen">viewFourScreen</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					四屏查看
+				</dd>
+				
+				
+				<dt>
+				<a href="PCSOCXComm.html#viewFourScreen" ><abbr title="PCSOCXComm#viewFourScreen">viewFourScreen</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					inherited public  method in class <a href="PCSOCXComm.html" ><abbr title="PCSOCXComm">PCSOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					四屏查看
+				</dd>
+				
+				
+				<dt>
+				<a href="SOCXComm.html#viewFourScreen" ><abbr title="SOCXComm#viewFourScreen">viewFourScreen</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					inherited public  method in class <a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					四屏查看
+				</dd>
+				
+				
+				<dt>
+				<a href="OCXComm.html#viewFullScreen" ><abbr title="OCXComm#viewFullScreen">viewFullScreen</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					全屏查看
+				</dd>
+				
+				
+				<dt>
+				<a href="PCSOCXComm.html#viewFullScreen" ><abbr title="PCSOCXComm#viewFullScreen">viewFullScreen</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					inherited public  method in class <a href="PCSOCXComm.html" ><abbr title="PCSOCXComm">PCSOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					全屏查看
+				</dd>
+				
+				
+				<dt>
+				<a href="SOCXComm.html#viewFullScreen" ><abbr title="SOCXComm#viewFullScreen">viewFullScreen</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					inherited public  method in class <a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					全屏查看
+				</dd>
+				
+				
+				<dt>
+				<a href="OCXComm.html#viewNightScreen" ><abbr title="OCXComm#viewNightScreen">viewNightScreen</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					九屏查看
+				</dd>
+				
+				
+				<dt>
+				<a href="PCSOCXComm.html#viewNightScreen" ><abbr title="PCSOCXComm#viewNightScreen">viewNightScreen</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					inherited public  method in class <a href="PCSOCXComm.html" ><abbr title="PCSOCXComm">PCSOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					九屏查看
+				</dd>
+				
+				
+				<dt>
+				<a href="SOCXComm.html#viewNightScreen" ><abbr title="SOCXComm#viewNightScreen">viewNightScreen</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					inherited public  method in class <a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					九屏查看
+				</dd>
+				
+				
+				<dt>
+				<a href="OCXComm.html#viewSingleScreen" ><abbr title="OCXComm#viewSingleScreen">viewSingleScreen</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					单屏查看
+				</dd>
+				
+				
+				<dt>
+				<a href="PCSOCXComm.html#viewSingleScreen" ><abbr title="PCSOCXComm#viewSingleScreen">viewSingleScreen</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					inherited public  method in class <a href="PCSOCXComm.html" ><abbr title="PCSOCXComm">PCSOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					单屏查看
+				</dd>
+				
+				
+				<dt>
+				<a href="SOCXComm.html#viewSingleScreen" ><abbr title="SOCXComm#viewSingleScreen">viewSingleScreen</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					inherited public  method in class <a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					单屏查看
+				</dd>
+				
+				
+				<dt>
+				<a href="OCXComm.html#viewSixScreen" ><abbr title="OCXComm#viewSixScreen">viewSixScreen</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					六屏查看
+				</dd>
+				
+				
+				<dt>
+				<a href="PCSOCXComm.html#viewSixScreen" ><abbr title="PCSOCXComm#viewSixScreen">viewSixScreen</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					inherited public  method in class <a href="PCSOCXComm.html" ><abbr title="PCSOCXComm">PCSOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					六屏查看
+				</dd>
+				
+				
+				<dt>
+				<a href="SOCXComm.html#viewSixScreen" ><abbr title="SOCXComm#viewSixScreen">viewSixScreen</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					inherited public  method in class <a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					六屏查看
+				</dd>
+				
+				
+				<dt>
+				<a href="OCXComm.html#viewSixteenScreen" ><abbr title="OCXComm#viewSixteenScreen">viewSixteenScreen</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					十六屏查看
+				</dd>
+				
+				
+				<dt>
+				<a href="PCSOCXComm.html#viewSixteenScreen" ><abbr title="PCSOCXComm#viewSixteenScreen">viewSixteenScreen</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					inherited public  method in class <a href="PCSOCXComm.html" ><abbr title="PCSOCXComm">PCSOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					十六屏查看
+				</dd>
+				
+				
+				<dt>
+				<a href="SOCXComm.html#viewSixteenScreen" ><abbr title="SOCXComm#viewSixteenScreen">viewSixteenScreen</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					inherited public  method in class <a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					十六屏查看
+				</dd>
+				
+				
+				<dt>
+				<a href="OCXComm.html#viewThirteenScreen" ><abbr title="OCXComm#viewThirteenScreen">viewThirteenScreen</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					十三屏查看
+				</dd>
+				
+				
+				<dt>
+				<a href="PCSOCXComm.html#viewThirteenScreen" ><abbr title="PCSOCXComm#viewThirteenScreen">viewThirteenScreen</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					inherited public  method in class <a href="PCSOCXComm.html" ><abbr title="PCSOCXComm">PCSOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					十三屏查看
+				</dd>
+				
+				
+				<dt>
+				<a href="SOCXComm.html#viewThirteenScreen" ><abbr title="SOCXComm#viewThirteenScreen">viewThirteenScreen</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					inherited public  method in class <a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					十三屏查看
+				</dd>
+				
+			</dl>
+
+			
+
+		</dl>
+
+		
+		 
+			
+
+			<h2 id="letter{">
+				{
+				<small><a href="#">Top</a></small>
+			</h2>
+			<dl>
+				
+				
+				<dt>
+				<a href="global.html#{Object}" ><abbr title="{Object}">{Object}</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					 global
+				</em>
+				</dt>
+				<dd>
+					
+				</dd>
+				
+				
+				<dt>
+				<a href="global.html#{String}" ><abbr title="{String}">{String}</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					 global
+				</em>
+				</dt>
+				<dd>
+					
+				</dd>
+				
+			</dl>
+
+			
+
+		</dl>
+
+		
+		
+	</div>
+
+	<footer>
+	Documentation generated by <a href="https://github.com/micmath/jsdoc">JSDoc 3</a> using <a href="https://github.com/danyg/jsdoc3Template">jsdoc3Template</a> by danyg & lechecacharro on Tue May 16 2017 00:28:36 GMT+0800 (CST)
+</footer>
+
+</body>
+</html>

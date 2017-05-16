@@ -1,0 +1,17 @@
+**/.DS_Store
+node_modules
+npm-debug.log
+.idea
+.git
+.svn
+dist
+package
+public/**
+server/public/**
+views/**
+**/public/
+
+.vscode/
+
+.typingsrc
+/.vs/config/applicationhost.config

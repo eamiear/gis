@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link rel="stylesheet" type="text/css" href="styles/stylesheet.css">
+		<title>Gois API Documentation</title>
+	</head>
+	<body id="overview">
+
+		<header>
+			<div class="header">
+				<script type="text/javascript" src="js/jQuery.172.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	var header = $('.header'),
+		content = $('.content')
+		footer = $('footer')
+	;
+
+	function mtn(str){
+		if(
+			'' === str
+			|| undefined === str
+			|| null === str
+		){
+			return 0;
+		}else{
+			var a = parseInt(str.replace(/px|ex|em/, ''), 10);
+			if(isNaN(a)){
+				a = 0;
+			}
+			return a;
+		}
+	}
+	
+	function resize(){
+		var availableHeight = $(window).height() - (header.outerHeight() + footer.outerHeight()),
+			availableWidth = $(window).width(),
+			contentOffsetH = mtn(content.css('borderTopWidth')) + 
+				mtn(content.css('marginTop')) +
+				mtn(content.css('paddingTop')) +
+				
+				mtn(content.css('paddingBottom')) +
+				mtn(content.css('marginBottom')) +
+				mtn(content.css('borderBottomWidth')),
+			contentOffsetW = mtn(content.css('borderLeftWidth')) + 
+				mtn(content.css('marginLeft')) +
+				mtn(content.css('paddingLeft')) +
+				
+				mtn(content.css('paddingRight')) +
+				mtn(content.css('marginRight')) +
+				mtn(content.css('borderRightWidth'))
+		;
+		content.height(availableHeight - contentOffsetH);
+		content.width(availableWidth - contentOffsetW);
+	}
+	resize();
+	$(window).resize(resize);
+});
+</script>
+
+<ul>
+	
+	<li><a href="class_index.html">Classes</a></li>
+	
+	
+	
+	
+	
+	<li><a href="module_index.html">Modules</a></li>
+	
+	
+	
+	
+	
+	<li><a href="function_index.html">Methods/Functions</a></li>
+	
+	
+	<li><a href="global.html">Globals</a></li>
+	
+	<li><a href="file_index.html">Files</a></li>
+	<li><a href="doc-index.html">Index</a></li>
+</ul>
+
+<div id="title">
+	
+	<a href="readme.html">
+		
+
+		Gois API API
+
+		
+	</a>
+	
+</div>
+
+				<h1>Function</h1>
+			</div>
+		</header>
+		<div class="content">
+			<table>
+				<tbody>
+					
+					<tr>
+						<td>
+							<abbr title="OCXComm#changeViewSplit">
+								<a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a>.
+								<strong><a href="OCXComm.html#changeViewSplit" ><abbr title="OCXComm#changeViewSplit">changeViewSplit</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>切换实时图片显示分屏</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno155">OCXComm.js</a> at line 155
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="PCSOCXComm#changeViewSplit">
+								<a href="PCSOCXComm.html" ><abbr title="PCSOCXComm">PCSOCXComm</abbr></a>.
+								<strong><a href="PCSOCXComm.html#changeViewSplit" ><abbr title="PCSOCXComm#changeViewSplit">changeViewSplit</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>切换实时图片显示分屏</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno155">OCXComm.js</a> at line 155
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="SOCXComm#changeViewSplit">
+								<a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>.
+								<strong><a href="SOCXComm.html#changeViewSplit" ><abbr title="SOCXComm#changeViewSplit">changeViewSplit</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>切换实时图片显示分屏</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno155">OCXComm.js</a> at line 155
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="SPlayer#closeAllLivePic">
+								<a href="SPlayer.html" ><abbr title="SPlayer">SPlayer</abbr></a>.
+								<strong><a href="SPlayer.html#closeAllLivePic" ><abbr title="SPlayer#closeAllLivePic">closeAllLivePic</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>关闭所有窗口</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno574">OCXComm.js</a> at line 574
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="SOCXComm#closeLivePic">
+								<a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>.
+								<strong><a href="SOCXComm.html#closeLivePic" ><abbr title="SOCXComm#closeLivePic">closeLivePic</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>关闭实时图片显示</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno466">OCXComm.js</a> at line 466
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="PlayerUtils.createObjParam">
+								<a href="PlayerUtils.html" ><abbr title="PlayerUtils">PlayerUtils</abbr></a>.
+								<strong><a href="PlayerUtils.html#createObjParam" ><abbr title="PlayerUtils.createObjParam">createObjParam</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>构建播放器Object DOM对象的Param参数</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno507">OCXComm.js</a> at line 507
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="PlayerUtils.createPlayerDom">
+								<a href="PlayerUtils.html" ><abbr title="PlayerUtils">PlayerUtils</abbr></a>.
+								<strong><a href="PlayerUtils.html#createPlayerDom" ><abbr title="PlayerUtils.createPlayerDom">createPlayerDom</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>构建播放器DOM对象</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno492">OCXComm.js</a> at line 492
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="OCXUtils.createProtoMiddleWare">
+								<a href="OCXUtils.html" ><abbr title="OCXUtils">OCXUtils</abbr></a>.
+								<strong><a href="OCXUtils.html#createProtoMiddleWare" ><abbr title="OCXUtils.createProtoMiddleWare">createProtoMiddleWare</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>构建原型中间件     构建中间件的目的是避免通过组合方式实现继承时，两次实例化父级对象(构造函数，prototype),浪费空间     构建一个空的中间件构造函数,分配的内存占据很少</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno22">OCXComm.js</a> at line 22
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="module:extras/controls/LayerQuery~domainSearch">
+								<a href="module_extras_controls__ayer_uery.html" ><abbr title="module:extras/controls/LayerQuery">module:extras/controls/LayerQuery</abbr></a>.
+								<strong><a href="module_extras_controls__ayer_uery.html#domainSearch" ><abbr title="module:extras/controls/LayerQuery~domainSearch">domainSearch</abbr></a></strong>
+							</abbr>
+						</td>
+						<td></td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_controls_LayerQuery_js.html#lineno169">LayerQuery.js</a> at line 169
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="OCXComm#exitFullScreen">
+								<a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a>.
+								<strong><a href="OCXComm.html#exitFullScreen" ><abbr title="OCXComm#exitFullScreen">exitFullScreen</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>退出全屏</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno170">OCXComm.js</a> at line 170
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="PCSOCXComm#exitFullScreen">
+								<a href="PCSOCXComm.html" ><abbr title="PCSOCXComm">PCSOCXComm</abbr></a>.
+								<strong><a href="PCSOCXComm.html#exitFullScreen" ><abbr title="PCSOCXComm#exitFullScreen">exitFullScreen</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>退出全屏</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno170">OCXComm.js</a> at line 170
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="SOCXComm#exitFullScreen">
+								<a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>.
+								<strong><a href="SOCXComm.html#exitFullScreen" ><abbr title="SOCXComm#exitFullScreen">exitFullScreen</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>退出全屏</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno170">OCXComm.js</a> at line 170
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="OCXUtils.extends">
+								<a href="OCXUtils.html" ><abbr title="OCXUtils">OCXUtils</abbr></a>.
+								<strong><a href="OCXUtils.html#extends" ><abbr title="OCXUtils.extends">extends</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>继承方法</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno34">OCXComm.js</a> at line 34
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="OCXComm#generateOcxParamJson">
+								<a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a>.
+								<strong><a href="OCXComm.html#generateOcxParamJson" ><abbr title="OCXComm#generateOcxParamJson">generateOcxParamJson</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>生成OCX参数</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno77">OCXComm.js</a> at line 77
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="PCSOCXComm#generateOcxParamJson">
+								<a href="PCSOCXComm.html" ><abbr title="PCSOCXComm">PCSOCXComm</abbr></a>.
+								<strong><a href="PCSOCXComm.html#generateOcxParamJson" ><abbr title="PCSOCXComm#generateOcxParamJson">generateOcxParamJson</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>生成OCX参数</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno77">OCXComm.js</a> at line 77
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="SOCXComm#generateOcxParamJson">
+								<a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>.
+								<strong><a href="SOCXComm.html#generateOcxParamJson" ><abbr title="SOCXComm#generateOcxParamJson">generateOcxParamJson</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>生成OCX参数</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno77">OCXComm.js</a> at line 77
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="OCXComm#getVersion">
+								<a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a>.
+								<strong><a href="OCXComm.html#getVersion" ><abbr title="OCXComm#getVersion">getVersion</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>获取控件版本</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno134">OCXComm.js</a> at line 134
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="PCSOCXComm#getVersion">
+								<a href="PCSOCXComm.html" ><abbr title="PCSOCXComm">PCSOCXComm</abbr></a>.
+								<strong><a href="PCSOCXComm.html#getVersion" ><abbr title="PCSOCXComm#getVersion">getVersion</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>获取控件版本</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno134">OCXComm.js</a> at line 134
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="SOCXComm#getVersion">
+								<a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>.
+								<strong><a href="SOCXComm.html#getVersion" ><abbr title="SOCXComm#getVersion">getVersion</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>获取控件版本</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno134">OCXComm.js</a> at line 134
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="OCXComm#init">
+								<a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a>.
+								<strong><a href="OCXComm.html#init" ><abbr title="OCXComm#init">init</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>初始化控件,全局初始化一次</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno103">OCXComm.js</a> at line 103
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="PCSOCXComm#init">
+								<a href="PCSOCXComm.html" ><abbr title="PCSOCXComm">PCSOCXComm</abbr></a>.
+								<strong><a href="PCSOCXComm.html#init" ><abbr title="PCSOCXComm#init">init</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>初始化控件,全局初始化一次</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno103">OCXComm.js</a> at line 103
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="SOCXComm#init">
+								<a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>.
+								<strong><a href="SOCXComm.html#init" ><abbr title="SOCXComm#init">init</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>初始化控件,全局初始化一次</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno103">OCXComm.js</a> at line 103
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="SOCXComm#initLivePicPlayWnd">
+								<a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>.
+								<strong><a href="SOCXComm.html#initLivePicPlayWnd" ><abbr title="SOCXComm#initLivePicPlayWnd">initLivePicPlayWnd</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>实时图片显示窗口初始化</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno407">OCXComm.js</a> at line 407
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="OCXComm#isIE">
+								<a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a>.
+								<strong><a href="OCXComm.html#isIE" ><abbr title="OCXComm#isIE">isIE</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>判断是否为IE浏览器</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno64">OCXComm.js</a> at line 64
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="PCSOCXComm#isIE">
+								<a href="PCSOCXComm.html" ><abbr title="PCSOCXComm">PCSOCXComm</abbr></a>.
+								<strong><a href="PCSOCXComm.html#isIE" ><abbr title="PCSOCXComm#isIE">isIE</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>判断是否为IE浏览器</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno64">OCXComm.js</a> at line 64
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="SOCXComm#isIE">
+								<a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>.
+								<strong><a href="SOCXComm.html#isIE" ><abbr title="SOCXComm#isIE">isIE</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>判断是否为IE浏览器</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno64">OCXComm.js</a> at line 64
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="SOCXComm#isTrustSite">
+								<a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>.
+								<strong><a href="SOCXComm.html#isTrustSite" ><abbr title="SOCXComm#isTrustSite">isTrustSite</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>判断IP地址是否已为信任站点</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno346">OCXComm.js</a> at line 346
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="SPlayer#launch">
+								<a href="SPlayer.html" ><abbr title="SPlayer">SPlayer</abbr></a>.
+								<strong><a href="SPlayer.html#launch" ><abbr title="SPlayer#launch">launch</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>启动，加载控件</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno556">OCXComm.js</a> at line 556
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="SOCXComm#loginCPG">
+								<a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>.
+								<strong><a href="SOCXComm.html#loginCPG" ><abbr title="SOCXComm#loginCPG">loginCPG</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>登录卡口网关服务</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno312">OCXComm.js</a> at line 312
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="SOCXComm#logoutCPG">
+								<a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>.
+								<strong><a href="SOCXComm.html#logoutCPG" ><abbr title="SOCXComm#logoutCPG">logoutCPG</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>登出卡口网关服务</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno327">OCXComm.js</a> at line 327
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="SOCXComm#openLivePic">
+								<a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>.
+								<strong><a href="SOCXComm.html#openLivePic" ><abbr title="SOCXComm#openLivePic">openLivePic</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>打开实时图片显示</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno445">OCXComm.js</a> at line 445
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="module:extras/controls/LayerQuery~queryByAttrAndGeo">
+								<a href="module_extras_controls__ayer_uery.html" ><abbr title="module:extras/controls/LayerQuery">module:extras/controls/LayerQuery</abbr></a>.
+								<strong><a href="module_extras_controls__ayer_uery.html#queryByAttrAndGeo" ><abbr title="module:extras/controls/LayerQuery~queryByAttrAndGeo">queryByAttrAndGeo</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>综合查询</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_controls_LayerQuery_js.html#lineno241">LayerQuery.js</a> at line 241
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="module:extras/controls/LayerQuery~queryByAttribute">
+								<a href="module_extras_controls__ayer_uery.html" ><abbr title="module:extras/controls/LayerQuery">module:extras/controls/LayerQuery</abbr></a>.
+								<strong><a href="module_extras_controls__ayer_uery.html#queryByAttribute" ><abbr title="module:extras/controls/LayerQuery~queryByAttribute">queryByAttribute</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>属性查询</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_controls_LayerQuery_js.html#lineno214">LayerQuery.js</a> at line 214
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="module:extras/controls/LayerQuery~queryByGeometry">
+								<a href="module_extras_controls__ayer_uery.html" ><abbr title="module:extras/controls/LayerQuery">module:extras/controls/LayerQuery</abbr></a>.
+								<strong><a href="module_extras_controls__ayer_uery.html#queryByGeometry" ><abbr title="module:extras/controls/LayerQuery~queryByGeometry">queryByGeometry</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>空间查询</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_controls_LayerQuery_js.html#lineno229">LayerQuery.js</a> at line 229
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="OCXComm#registerCallback">
+								<a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a>.
+								<strong><a href="OCXComm.html#registerCallback" ><abbr title="OCXComm#registerCallback">registerCallback</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>注册控件消息回调函数，用于控件消息回调给web</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno91">OCXComm.js</a> at line 91
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="PCSOCXComm#registerCallback">
+								<a href="PCSOCXComm.html" ><abbr title="PCSOCXComm">PCSOCXComm</abbr></a>.
+								<strong><a href="PCSOCXComm.html#registerCallback" ><abbr title="PCSOCXComm#registerCallback">registerCallback</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>注册控件消息回调函数，用于控件消息回调给web</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno610">OCXComm.js</a> at line 610
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="SOCXComm#registerCallback">
+								<a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>.
+								<strong><a href="SOCXComm.html#registerCallback" ><abbr title="SOCXComm#registerCallback">registerCallback</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>注册控件消息回调函数，用于控件消息回调给web</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno272">OCXComm.js</a> at line 272
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="OCXComm#setOcxObj">
+								<a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a>.
+								<strong><a href="OCXComm.html#setOcxObj" ><abbr title="OCXComm#setOcxObj">setOcxObj</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>设置ocxObj对象</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno57">OCXComm.js</a> at line 57
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="PCSOCXComm#setOcxObj">
+								<a href="PCSOCXComm.html" ><abbr title="PCSOCXComm">PCSOCXComm</abbr></a>.
+								<strong><a href="PCSOCXComm.html#setOcxObj" ><abbr title="PCSOCXComm#setOcxObj">setOcxObj</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>设置ocxObj对象</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno57">OCXComm.js</a> at line 57
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="SOCXComm#setOcxObj">
+								<a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>.
+								<strong><a href="SOCXComm.html#setOcxObj" ><abbr title="SOCXComm#setOcxObj">setOcxObj</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>设置ocxObj对象</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno57">OCXComm.js</a> at line 57
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="SOCXComm#setTrustSite">
+								<a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>.
+								<strong><a href="SOCXComm.html#setTrustSite" ><abbr title="SOCXComm#setTrustSite">setTrustSite</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>设置信任站点</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno366">OCXComm.js</a> at line 366
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="LayerQuery.startDraw">
+								<a href="LayerQuery.html" ><abbr title="LayerQuery">LayerQuery</abbr></a>.
+								<strong><a href="LayerQuery.html#startDraw" ><abbr title="LayerQuery.startDraw">startDraw</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>startDraw</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_controls_LayerQuery_js.html#lineno114">LayerQuery.js</a> at line 114
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="OCXComm#sysFunc">
+								<a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a>.
+								<strong><a href="OCXComm.html#sysFunc" ><abbr title="OCXComm#sysFunc">sysFunc</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>系统相关调度接口</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno96">OCXComm.js</a> at line 96
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="PCSOCXComm#sysFunc">
+								<a href="PCSOCXComm.html" ><abbr title="PCSOCXComm">PCSOCXComm</abbr></a>.
+								<strong><a href="PCSOCXComm.html#sysFunc" ><abbr title="PCSOCXComm#sysFunc">sysFunc</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>系统相关调度接口，主要是控件初始化、反初始化、服务登录登出等</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno619">OCXComm.js</a> at line 619
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="SOCXComm#sysFunc">
+								<a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>.
+								<strong><a href="SOCXComm.html#sysFunc" ><abbr title="SOCXComm#sysFunc">sysFunc</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>系统相关调度接口，主要是控件初始化、反初始化、服务登录登出等</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno281">OCXComm.js</a> at line 281
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="OCXComm#sysFuncVideo">
+								<a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a>.
+								<strong><a href="OCXComm.html#sysFuncVideo" ><abbr title="OCXComm#sysFuncVideo">sysFuncVideo</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>实时图片显示相关处理接口，包括实时图片窗口处理、打开和关闭实时图片浏览等</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno147">OCXComm.js</a> at line 147
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="PCSOCXComm#sysFuncVideo">
+								<a href="PCSOCXComm.html" ><abbr title="PCSOCXComm">PCSOCXComm</abbr></a>.
+								<strong><a href="PCSOCXComm.html#sysFuncVideo" ><abbr title="PCSOCXComm#sysFuncVideo">sysFuncVideo</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>实时图片显示相关处理接口，包括实时图片窗口处理、打开和关闭实时图片浏览等</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno635">OCXComm.js</a> at line 635
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="SOCXComm#sysFuncVideo">
+								<a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>.
+								<strong><a href="SOCXComm.html#sysFuncVideo" ><abbr title="SOCXComm#sysFuncVideo">sysFuncVideo</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>实时图片显示相关处理接口，包括实时图片窗口处理、打开和关闭实时图片浏览等</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno384">OCXComm.js</a> at line 384
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="OCXComm#unInit">
+								<a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a>.
+								<strong><a href="OCXComm.html#unInit" ><abbr title="OCXComm#unInit">unInit</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>反初始化控件</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno118">OCXComm.js</a> at line 118
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="PCSOCXComm#unInit">
+								<a href="PCSOCXComm.html" ><abbr title="PCSOCXComm">PCSOCXComm</abbr></a>.
+								<strong><a href="PCSOCXComm.html#unInit" ><abbr title="PCSOCXComm#unInit">unInit</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>反初始化控件</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno118">OCXComm.js</a> at line 118
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="SOCXComm#unInit">
+								<a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>.
+								<strong><a href="SOCXComm.html#unInit" ><abbr title="SOCXComm#unInit">unInit</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>反初始化控件</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno118">OCXComm.js</a> at line 118
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="SOCXComm#unInitLivePicPlayWnd">
+								<a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>.
+								<strong><a href="SOCXComm.html#unInitLivePicPlayWnd" ><abbr title="SOCXComm#unInitLivePicPlayWnd">unInitLivePicPlayWnd</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>实时图片显示窗口初始化</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno424">OCXComm.js</a> at line 424
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="OCXComm#viewEightScreen">
+								<a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a>.
+								<strong><a href="OCXComm.html#viewEightScreen" ><abbr title="OCXComm#viewEightScreen">viewEightScreen</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>八屏查看</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno213">OCXComm.js</a> at line 213
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="PCSOCXComm#viewEightScreen">
+								<a href="PCSOCXComm.html" ><abbr title="PCSOCXComm">PCSOCXComm</abbr></a>.
+								<strong><a href="PCSOCXComm.html#viewEightScreen" ><abbr title="PCSOCXComm#viewEightScreen">viewEightScreen</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>八屏查看</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno213">OCXComm.js</a> at line 213
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="SOCXComm#viewEightScreen">
+								<a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>.
+								<strong><a href="SOCXComm.html#viewEightScreen" ><abbr title="SOCXComm#viewEightScreen">viewEightScreen</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>八屏查看</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno213">OCXComm.js</a> at line 213
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="OCXComm#viewFourScreen">
+								<a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a>.
+								<strong><a href="OCXComm.html#viewFourScreen" ><abbr title="OCXComm#viewFourScreen">viewFourScreen</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>四屏查看</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno195">OCXComm.js</a> at line 195
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="PCSOCXComm#viewFourScreen">
+								<a href="PCSOCXComm.html" ><abbr title="PCSOCXComm">PCSOCXComm</abbr></a>.
+								<strong><a href="PCSOCXComm.html#viewFourScreen" ><abbr title="PCSOCXComm#viewFourScreen">viewFourScreen</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>四屏查看</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno195">OCXComm.js</a> at line 195
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="SOCXComm#viewFourScreen">
+								<a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>.
+								<strong><a href="SOCXComm.html#viewFourScreen" ><abbr title="SOCXComm#viewFourScreen">viewFourScreen</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>四屏查看</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno195">OCXComm.js</a> at line 195
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="OCXComm#viewFullScreen">
+								<a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a>.
+								<strong><a href="OCXComm.html#viewFullScreen" ><abbr title="OCXComm#viewFullScreen">viewFullScreen</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>全屏查看</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno178">OCXComm.js</a> at line 178
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="PCSOCXComm#viewFullScreen">
+								<a href="PCSOCXComm.html" ><abbr title="PCSOCXComm">PCSOCXComm</abbr></a>.
+								<strong><a href="PCSOCXComm.html#viewFullScreen" ><abbr title="PCSOCXComm#viewFullScreen">viewFullScreen</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>全屏查看</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno178">OCXComm.js</a> at line 178
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="SOCXComm#viewFullScreen">
+								<a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>.
+								<strong><a href="SOCXComm.html#viewFullScreen" ><abbr title="SOCXComm#viewFullScreen">viewFullScreen</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>全屏查看</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno178">OCXComm.js</a> at line 178
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="OCXComm#viewNightScreen">
+								<a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a>.
+								<strong><a href="OCXComm.html#viewNightScreen" ><abbr title="OCXComm#viewNightScreen">viewNightScreen</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>九屏查看</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno222">OCXComm.js</a> at line 222
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="PCSOCXComm#viewNightScreen">
+								<a href="PCSOCXComm.html" ><abbr title="PCSOCXComm">PCSOCXComm</abbr></a>.
+								<strong><a href="PCSOCXComm.html#viewNightScreen" ><abbr title="PCSOCXComm#viewNightScreen">viewNightScreen</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>九屏查看</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno222">OCXComm.js</a> at line 222
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="SOCXComm#viewNightScreen">
+								<a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>.
+								<strong><a href="SOCXComm.html#viewNightScreen" ><abbr title="SOCXComm#viewNightScreen">viewNightScreen</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>九屏查看</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno222">OCXComm.js</a> at line 222
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="OCXComm#viewSingleScreen">
+								<a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a>.
+								<strong><a href="OCXComm.html#viewSingleScreen" ><abbr title="OCXComm#viewSingleScreen">viewSingleScreen</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>单屏查看</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno186">OCXComm.js</a> at line 186
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="PCSOCXComm#viewSingleScreen">
+								<a href="PCSOCXComm.html" ><abbr title="PCSOCXComm">PCSOCXComm</abbr></a>.
+								<strong><a href="PCSOCXComm.html#viewSingleScreen" ><abbr title="PCSOCXComm#viewSingleScreen">viewSingleScreen</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>单屏查看</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno186">OCXComm.js</a> at line 186
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="SOCXComm#viewSingleScreen">
+								<a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>.
+								<strong><a href="SOCXComm.html#viewSingleScreen" ><abbr title="SOCXComm#viewSingleScreen">viewSingleScreen</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>单屏查看</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno186">OCXComm.js</a> at line 186
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="OCXComm#viewSixScreen">
+								<a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a>.
+								<strong><a href="OCXComm.html#viewSixScreen" ><abbr title="OCXComm#viewSixScreen">viewSixScreen</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>六屏查看</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno204">OCXComm.js</a> at line 204
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="PCSOCXComm#viewSixScreen">
+								<a href="PCSOCXComm.html" ><abbr title="PCSOCXComm">PCSOCXComm</abbr></a>.
+								<strong><a href="PCSOCXComm.html#viewSixScreen" ><abbr title="PCSOCXComm#viewSixScreen">viewSixScreen</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>六屏查看</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno204">OCXComm.js</a> at line 204
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="SOCXComm#viewSixScreen">
+								<a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>.
+								<strong><a href="SOCXComm.html#viewSixScreen" ><abbr title="SOCXComm#viewSixScreen">viewSixScreen</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>六屏查看</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno204">OCXComm.js</a> at line 204
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="OCXComm#viewSixteenScreen">
+								<a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a>.
+								<strong><a href="OCXComm.html#viewSixteenScreen" ><abbr title="OCXComm#viewSixteenScreen">viewSixteenScreen</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>十六屏查看</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno240">OCXComm.js</a> at line 240
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="PCSOCXComm#viewSixteenScreen">
+								<a href="PCSOCXComm.html" ><abbr title="PCSOCXComm">PCSOCXComm</abbr></a>.
+								<strong><a href="PCSOCXComm.html#viewSixteenScreen" ><abbr title="PCSOCXComm#viewSixteenScreen">viewSixteenScreen</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>十六屏查看</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno240">OCXComm.js</a> at line 240
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="SOCXComm#viewSixteenScreen">
+								<a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>.
+								<strong><a href="SOCXComm.html#viewSixteenScreen" ><abbr title="SOCXComm#viewSixteenScreen">viewSixteenScreen</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>十六屏查看</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno240">OCXComm.js</a> at line 240
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="OCXComm#viewThirteenScreen">
+								<a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a>.
+								<strong><a href="OCXComm.html#viewThirteenScreen" ><abbr title="OCXComm#viewThirteenScreen">viewThirteenScreen</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>十三屏查看</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno231">OCXComm.js</a> at line 231
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="PCSOCXComm#viewThirteenScreen">
+								<a href="PCSOCXComm.html" ><abbr title="PCSOCXComm">PCSOCXComm</abbr></a>.
+								<strong><a href="PCSOCXComm.html#viewThirteenScreen" ><abbr title="PCSOCXComm#viewThirteenScreen">viewThirteenScreen</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>十三屏查看</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno231">OCXComm.js</a> at line 231
+							
+							</div> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<abbr title="SOCXComm#viewThirteenScreen">
+								<a href="SOCXComm.html" ><abbr title="SOCXComm">SOCXComm</abbr></a>.
+								<strong><a href="SOCXComm.html#viewThirteenScreen" ><abbr title="SOCXComm#viewThirteenScreen">viewThirteenScreen</abbr></a></strong>
+							</abbr>
+						</td>
+						<td>十三屏查看</td>
+						<td width="15%">
+							<div class="location">
+							
+								<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno231">OCXComm.js</a> at line 231
+							
+							</div> 
+						</td>
+					</tr>
+					
+				</tbody>
+			</table>
+		</div>
+
+		<footer>
+	Documentation generated by <a href="https://github.com/micmath/jsdoc">JSDoc 3</a> using <a href="https://github.com/danyg/jsdoc3Template">jsdoc3Template</a> by danyg & lechecacharro on Tue May 16 2017 00:28:36 GMT+0800 (CST)
+</footer>
+
+	</body>
+</html>

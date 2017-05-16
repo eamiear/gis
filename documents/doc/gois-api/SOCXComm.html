@@ -1,0 +1,3673 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link rel="stylesheet" type="text/css" href="styles/stylesheet.css">
+		<title>Gois API Documentation</title>
+	</head>
+	<body id="class">
+
+		<header>
+			<div class="header">
+				<script type="text/javascript" src="js/jQuery.172.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	var header = $('.header'),
+		content = $('.content')
+		footer = $('footer')
+	;
+
+	function mtn(str){
+		if(
+			'' === str
+			|| undefined === str
+			|| null === str
+		){
+			return 0;
+		}else{
+			var a = parseInt(str.replace(/px|ex|em/, ''), 10);
+			if(isNaN(a)){
+				a = 0;
+			}
+			return a;
+		}
+	}
+	
+	function resize(){
+		var availableHeight = $(window).height() - (header.outerHeight() + footer.outerHeight()),
+			availableWidth = $(window).width(),
+			contentOffsetH = mtn(content.css('borderTopWidth')) + 
+				mtn(content.css('marginTop')) +
+				mtn(content.css('paddingTop')) +
+				
+				mtn(content.css('paddingBottom')) +
+				mtn(content.css('marginBottom')) +
+				mtn(content.css('borderBottomWidth')),
+			contentOffsetW = mtn(content.css('borderLeftWidth')) + 
+				mtn(content.css('marginLeft')) +
+				mtn(content.css('paddingLeft')) +
+				
+				mtn(content.css('paddingRight')) +
+				mtn(content.css('marginRight')) +
+				mtn(content.css('borderRightWidth'))
+		;
+		content.height(availableHeight - contentOffsetH);
+		content.width(availableWidth - contentOffsetW);
+	}
+	resize();
+	$(window).resize(resize);
+});
+</script>
+
+<ul>
+	
+	<li><a href="class_index.html">Classes</a></li>
+	
+	
+	
+	
+	
+	<li><a href="module_index.html">Modules</a></li>
+	
+	
+	
+	
+	
+	<li><a href="function_index.html">Methods/Functions</a></li>
+	
+	
+	<li><a href="global.html">Globals</a></li>
+	
+	<li><a href="file_index.html">Files</a></li>
+	<li><a href="doc-index.html">Index</a></li>
+</ul>
+
+<div id="title">
+	
+	<a href="readme.html">
+		
+
+		Gois API API
+
+		
+	</a>
+	
+</div>
+				<div class="type">Class</div>
+				<h1>
+					SOCXComm
+				</h1>
+			</div>
+		</header>
+
+		<div class="content">
+
+			<div class="anchor_list">
+	<h2>Contents</h2>
+	<ul>
+		
+		
+		
+		
+		
+
+		
+
+		
+
+		
+		<li><a href="#properties">Properties</a></li>
+		
+
+		
+
+		
+		<li><a href="#methods">Methods</a></li>
+		
+
+			
+	</ul>
+</div>
+			
+			<!-- CLASS SIGNATURE -->
+			<p class="PrincipalTitle">
+				<span> </span>
+				<span>class </span>
+				<strong>
+					SOCXComm
+				</strong>
+
+				
+				<span> extends <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a></span>
+				
+
+				
+
+				
+			</p>
+
+
+			<!-- CLASS DESCRIPTION -->
+			<div class="description "><p>结构化控件</p><p>See <a href="OCXComm.html">OCXComm</a></p></div>
+
+
+			<!-- CLASS CONSTRUCTOR SUMMARY -->
+			<h2>
+				<a name='constructor'></a>
+				Constructor
+				<small><a href="#">Top</a></small>
+			</h2>
+			<table>
+				<tbody>
+					<tr>
+						<td class="type">&nbsp;</td>
+						<td class="last">
+							<a href="#SOCXComm">SOCXComm</a>
+							<span>( ocxObj)</span>
+							
+						<td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+
+
+			<!-- CLASS REQUIRES -->
+
+			<!-- NAMESPACE SUB-NAMESPACES -->
+						
+
+			<!-- CLASS CONSTANTS SUMMARY -->
+			
+
+
+			<!-- CLASS STATIC PROPERTIES & ENUMERATIONS SUMMARY -->
+			
+
+			<!-- CLASS PROPERTIES SUMMARY -->
+			
+			<h2>
+				<a name='properties'></a>
+				Properties
+				<small><a href="#">Top</a></small>
+			</h2>
+			<table>
+  <tbody>
+  
+    
+
+    <tr class="public inherited">
+      <td class="type">
+      	<span>
+      	
+      	</span>
+        	
+      	<span>
+        number
+        </span>
+      </td>
+      
+      <td class="last">
+        <a href="#currentViews">
+        	<abbr title="SOCXComm#currentViews">
+        		currentViews
+        	</abbr>
+        </a>
+        
+        <span class="value">
+        
+        </span>
+        
+        
+		
+		
+		
+		
+      <td>
+      <td>
+      	<small>inherited from <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a></small>
+      </td>
+    </tr>
+    
+    
+    
+  </tbody>
+</table>
+			
+
+			<!-- CLASS STATIC METHODS SUMMARY -->
+			
+
+			<!-- CLASS METHODS SUMMARY -->
+			
+			<h2>
+				<a name='methods'></a>
+				Methods
+				<small><a href="#">Top</a></small>
+			</h2>
+			<table>
+  <tbody>
+  
+    
+
+    <tr  class="public inherited">
+      <td class="type">
+      	<span>
+      	Object
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#changeViewSplit">
+				<abbr title="SOCXComm#changeViewSplit">
+					changeViewSplit
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(Integer splitNum)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	<small>inherited from <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a></small>
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	Object
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#closeLivePic">
+				<abbr title="SOCXComm#closeLivePic">
+					closeLivePic
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(Integer nWndNo)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public inherited">
+      <td class="type">
+      	<span>
+      	Object
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#exitFullScreen">
+				<abbr title="SOCXComm#exitFullScreen">
+					exitFullScreen
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	<small>inherited from <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a></small>
+      </td>
+    </tr>
+    
+
+    <tr  class="public inherited">
+      <td class="type">
+      	<span>
+      	Object
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#generateOcxParamJson">
+				<abbr title="SOCXComm#generateOcxParamJson">
+					generateOcxParamJson
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(String action, Object params)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	<small>inherited from <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a></small>
+      </td>
+    </tr>
+    
+
+    <tr  class="public inherited">
+      <td class="type">
+      	<span>
+      	Object
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#getVersion">
+				<abbr title="SOCXComm#getVersion">
+					getVersion
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	<small>inherited from <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a></small>
+      </td>
+    </tr>
+    
+
+    <tr  class="public inherited">
+      <td class="type">
+      	<span>
+      	Object
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#init">
+				<abbr title="SOCXComm#init">
+					init
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	<small>inherited from <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a></small>
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	Object
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#initLivePicPlayWnd">
+				<abbr title="SOCXComm#initLivePicPlayWnd">
+					initLivePicPlayWnd
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(String strOcxID, Integer eOcxType)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public inherited">
+      <td class="type">
+      	<span>
+      	boolean
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#isIE">
+				<abbr title="SOCXComm#isIE">
+					isIE
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	<small>inherited from <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a></small>
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	Object
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#isTrustSite">
+				<abbr title="SOCXComm#isTrustSite">
+					isTrustSite
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(String szIP)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	Object
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#loginCPG">
+				<abbr title="SOCXComm#loginCPG">
+					loginCPG
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(Object params)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	Object
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#logoutCPG">
+				<abbr title="SOCXComm#logoutCPG">
+					logoutCPG
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	Object
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#openLivePic">
+				<abbr title="SOCXComm#openLivePic">
+					openLivePic
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(Integer nWndNo, Integer nChlID)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	void
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#registerCallback">
+				<abbr title="SOCXComm#registerCallback">
+					registerCallback
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public inherited">
+      <td class="type">
+      	<span>
+      	void
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#setOcxObj">
+				<abbr title="SOCXComm#setOcxObj">
+					setOcxObj
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(Object ocxObj)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	<small>inherited from <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a></small>
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	Object
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#setTrustSite">
+				<abbr title="SOCXComm#setTrustSite">
+					setTrustSite
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(String szIP)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	void
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#sysFunc">
+				<abbr title="SOCXComm#sysFunc">
+					sysFunc
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(object paramJson)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	void
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#sysFuncVideo">
+				<abbr title="SOCXComm#sysFuncVideo">
+					sysFuncVideo
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(String paramJson)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public inherited">
+      <td class="type">
+      	<span>
+      	Object
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#unInit">
+				<abbr title="SOCXComm#unInit">
+					unInit
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	<small>inherited from <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a></small>
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	Object
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#unInitLivePicPlayWnd">
+				<abbr title="SOCXComm#unInitLivePicPlayWnd">
+					unInitLivePicPlayWnd
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public inherited">
+      <td class="type">
+      	<span>
+      	Object
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#viewEightScreen">
+				<abbr title="SOCXComm#viewEightScreen">
+					viewEightScreen
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	<small>inherited from <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a></small>
+      </td>
+    </tr>
+    
+
+    <tr  class="public inherited">
+      <td class="type">
+      	<span>
+      	Object
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#viewFourScreen">
+				<abbr title="SOCXComm#viewFourScreen">
+					viewFourScreen
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	<small>inherited from <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a></small>
+      </td>
+    </tr>
+    
+
+    <tr  class="public inherited">
+      <td class="type">
+      	<span>
+      	Object
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#viewFullScreen">
+				<abbr title="SOCXComm#viewFullScreen">
+					viewFullScreen
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	<small>inherited from <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a></small>
+      </td>
+    </tr>
+    
+
+    <tr  class="public inherited">
+      <td class="type">
+      	<span>
+      	Object
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#viewNightScreen">
+				<abbr title="SOCXComm#viewNightScreen">
+					viewNightScreen
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	<small>inherited from <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a></small>
+      </td>
+    </tr>
+    
+
+    <tr  class="public inherited">
+      <td class="type">
+      	<span>
+      	Object
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#viewSingleScreen">
+				<abbr title="SOCXComm#viewSingleScreen">
+					viewSingleScreen
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	<small>inherited from <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a></small>
+      </td>
+    </tr>
+    
+
+    <tr  class="public inherited">
+      <td class="type">
+      	<span>
+      	Object
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#viewSixScreen">
+				<abbr title="SOCXComm#viewSixScreen">
+					viewSixScreen
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	<small>inherited from <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a></small>
+      </td>
+    </tr>
+    
+
+    <tr  class="public inherited">
+      <td class="type">
+      	<span>
+      	Object
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#viewSixteenScreen">
+				<abbr title="SOCXComm#viewSixteenScreen">
+					viewSixteenScreen
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	<small>inherited from <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a></small>
+      </td>
+    </tr>
+    
+
+    <tr  class="public inherited">
+      <td class="type">
+      	<span>
+      	Object
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#viewThirteenScreen">
+				<abbr title="SOCXComm#viewThirteenScreen">
+					viewThirteenScreen
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	<small>inherited from <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a></small>
+      </td>
+    </tr>
+    
+    
+  </tbody>
+</table>
+			
+
+
+			<!-- CLASS EVENTS SUMMARY -->
+			
+
+			<!--
+			################################################################################
+			## DETAILS
+			################################################################################
+			-->
+
+			<!-- CLASS CONSTRUCTOR DETAILS -->
+			<h2>
+				<a name='constructor_details'></a>
+				Constructor details
+				<small><a href="#">Top</a></small>
+				<h3 id="SOCXComm"  class="public">
+  
+  <div class="location">
+
+  	<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno255">OCXComm.js</a> at line 255
+
+  </div>
+	
+	<div class="signature">
+		
+  
+		<strong>SOCXComm</strong>
+		
+    <span class="params">
+      ( ocxObj)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>结构化控件</p><p>See <a href="OCXComm.html">OCXComm</a></p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>ocxObj</a><p>ocxObj对象</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+
+			</h2>
+
+
+			<!-- CLASS STATIC PROPERTIES & ENUMERATIONS DETAIL -->
+			
+
+
+			<!-- CLASS STATIC METHODS DETAIL -->
+			
+
+
+			<!-- CLASS PROPERTIES DETAIL -->
+			
+			<h2>
+				<a name='properties_details'></a>
+				Properties Detail
+				<small><a href="#">Top</a></small>
+			</h2>
+			<h3 id="currentViews" class="public inherited">
+  
+  <div class="location">
+
+  	<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno52">OCXComm.js</a> at line 52
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      number
+    </span>
+	  
+  
+		<strong>currentViews</strong>
+	  
+	  <span class="defaultvalue">
+	    
+	  </span>
+	</div>
+</h3>
+
+<div class="description inherited"><p>当前窗口数</p><p>Inherited from <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a></p></div>
+
+<div class="details inherited">
+	<ul class="Properties">
+	
+	</ul>
+  
+</div>
+			
+
+
+			<!-- CLASS METHODS DETAIL -->
+			
+			<h2>
+				<a name='methods_details'></a>
+				Methods Detail
+				<small><a href="#">Top</a></small>
+			</h2>
+			<h3 id="changeViewSplit"  class="public inherited">
+  
+  <div class="location">
+
+  	<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno155">OCXComm.js</a> at line 155
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      Object
+    </span>
+	  
+  
+		<strong>changeViewSplit</strong>
+		
+    <span class="params">
+      (Integer splitNum)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description inherited"><p>切换实时图片显示分屏</p><p>Inherited from <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a></p></div>
+
+<div class="details inherited">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Integer
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>splitNum</a><p>分配数[-1,0,1,4,6,8,9,13,16,1000]==>[退出全屏,全屏,单屏....]</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Object
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>data.code = {number} 0,成功;其他，错误; data.action="ChangeViewSplit"</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="closeLivePic"  class="public">
+  
+  <div class="location">
+
+  	<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno466">OCXComm.js</a> at line 466
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      Object
+    </span>
+	  
+  
+		<strong>closeLivePic</strong>
+		
+    <span class="params">
+      (Integer nWndNo)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>关闭实时图片显示</p><pre class="example sh_javascript"> <caption>Example usage of <b>closeLivePic</b>.</caption> var nWndNo = 1;     closeLivePic(nWndNo);</pre></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Integer
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>nWndNo</a><p>图片显示窗口号</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Object
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>data.code = {number} 0,成功;其他，错误; data.action="CloseLivePic"</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="exitFullScreen"  class="public inherited">
+  
+  <div class="location">
+
+  	<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno170">OCXComm.js</a> at line 170
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      Object
+    </span>
+	  
+  
+		<strong>exitFullScreen</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description inherited"><p>退出全屏</p><p>Inherited from <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a></p><p>See changeViewSplit</p></div>
+
+<div class="details inherited">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Object
+			</span>
+    </td>
+    
+    <td class="last">
+    
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="generateOcxParamJson"  class="public inherited">
+  
+  <div class="location">
+
+  	<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno77">OCXComm.js</a> at line 77
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      Object
+    </span>
+	  
+  
+		<strong>generateOcxParamJson</strong>
+		
+    <span class="params">
+      (String action, Object params)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description inherited"><p>生成OCX参数</p><p>Inherited from <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a></p></div>
+
+<div class="details inherited">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				String
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>action</a><p>操作行为</p>
+    </td>
+    
+  
+  <tr>
+    <td class="type">
+			<span>
+				Object
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>params</a><p>参数 (Optional)</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Object
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>JSON数据</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="getVersion"  class="public inherited">
+  
+  <div class="location">
+
+  	<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno134">OCXComm.js</a> at line 134
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      Object
+    </span>
+	  
+  
+		<strong>getVersion</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description inherited"><p>获取控件版本</p><p>Inherited from <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a></p></div>
+
+<div class="details inherited">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Object
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>data.code = {number} 0,成功;其他，错误;    data.action="GetVersion";    data.version = 1.0.0.1 版本号</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="init"  class="public inherited">
+  
+  <div class="location">
+
+  	<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno103">OCXComm.js</a> at line 103
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      Object
+    </span>
+	  
+  
+		<strong>init</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description inherited"><p>初始化控件,全局初始化一次</p><p>Inherited from <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a></p></div>
+
+<div class="details inherited">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Object
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>data.code = 0,成功;其他，错误; data.action="Init"</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="initLivePicPlayWnd"  class="public">
+  
+  <div class="location">
+
+  	<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno407">OCXComm.js</a> at line 407
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      Object
+    </span>
+	  
+  
+		<strong>initLivePicPlayWnd</strong>
+		
+    <span class="params">
+      (String strOcxID, Integer eOcxType)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>实时图片显示窗口初始化</p><pre class="example sh_javascript"> <caption>Example usage of <b>initLivePicPlayWnd</b>.</caption> var strOcxID = "RealPicPlay";     eOcxType = 5;     initLivePicPlayWnd(strOcxID,eOcxType);</pre></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				String
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>strOcxID</a><p>自定义ID</p>
+    </td>
+    
+  
+  <tr>
+    <td class="type">
+			<span>
+				Integer
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>eOcxType</a><p>目前设置为 5</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Object
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>data.code = {number} 0,成功;其他，错误; data.action="InitLivePicPlayWnd"</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="isIE"  class="public inherited">
+  
+  <div class="location">
+
+  	<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno64">OCXComm.js</a> at line 64
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      boolean
+    </span>
+	  
+  
+		<strong>isIE</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description inherited"><p>判断是否为IE浏览器</p><p>Inherited from <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a></p></div>
+
+<div class="details inherited">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				boolean
+			</span>
+    </td>
+    
+    <td class="last">
+    
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="isTrustSite"  class="public">
+  
+  <div class="location">
+
+  	<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno346">OCXComm.js</a> at line 346
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      Object
+    </span>
+	  
+  
+		<strong>isTrustSite</strong>
+		
+    <span class="params">
+      (String szIP)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>判断IP地址是否已为信任站点</p><pre class="example sh_javascript"> <caption>Example usage of <b>isTrustSite</b>.</caption> var szIP = "192.168.16.95";     isTrustSite(szIP);</pre></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				String
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>szIP</a><p>服务IP</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Object
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>data.code = {number} 0,成功;其他，错误;  data.action="IsTrustSite"</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="loginCPG"  class="public">
+  
+  <div class="location">
+
+  	<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno312">OCXComm.js</a> at line 312
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      Object
+    </span>
+	  
+  
+		<strong>loginCPG</strong>
+		
+    <span class="params">
+      (Object params)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>登录卡口网关服务</p><pre class="example sh_javascript"> <caption>Example usage of <b>loginCPG</b>.</caption> var params = {};     params.szServerIP = "192.168.15.38";     params.nPort = 13320;     params.szUser = "admin";     params.szPassword = "admin";     // Login method     loginCPG(params);</pre></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Object
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>params</a>
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				String
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>szServerIP</a><p>服务IP</p>
+    </td>
+    
+  
+  <tr>
+    <td class="type">
+			<span>
+				Integer
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>nPort</a><p>服务端口</p>
+    </td>
+    
+  
+  <tr>
+    <td class="type">
+			<span>
+				String
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>szUser</a><p>用户名</p>
+    </td>
+    
+  
+  <tr>
+    <td class="type">
+			<span>
+				String
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>szPassword</a><p>密码</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Object
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>data.code = {number} 0,成功;其他，错误;     data.action="LoginCPG"</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="logoutCPG"  class="public">
+  
+  <div class="location">
+
+  	<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno327">OCXComm.js</a> at line 327
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      Object
+    </span>
+	  
+  
+		<strong>logoutCPG</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>登出卡口网关服务</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Object
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>data.code = {number} 0,成功;其他，错误; data.action="LogoutCPG"</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="openLivePic"  class="public">
+  
+  <div class="location">
+
+  	<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno445">OCXComm.js</a> at line 445
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      Object
+    </span>
+	  
+  
+		<strong>openLivePic</strong>
+		
+    <span class="params">
+      (Integer nWndNo, Integer nChlID)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>打开实时图片显示</p><pre class="example sh_javascript"> <caption>Example usage of <b>openLivePic</b>.</caption> var nWndNo = 1;     nChlID = 4;     openLivePic(nWndNo,nChlID);</pre></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Integer
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>nWndNo</a><p>图片显示窗口号</p>
+    </td>
+    
+  
+  <tr>
+    <td class="type">
+			<span>
+				Integer
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>nChlID</a><p>显示的通道ID</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Object
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>data.code = {number} 0,成功;其他，错误; data.action="OpenLivePic"</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="registerCallback"  class="public">
+  
+  <div class="location">
+
+  	<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno272">OCXComm.js</a> at line 272
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      void
+    </span>
+	  
+  
+		<strong>registerCallback</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>注册控件消息回调函数，用于控件消息回调给web</p><p>See <a href="OCXComm.html#registerCallback">OCXComm#registerCallback</a></p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				void
+			</span>
+    </td>
+    
+    <td class="last">
+    
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="setOcxObj"  class="public inherited">
+  
+  <div class="location">
+
+  	<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno57">OCXComm.js</a> at line 57
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      void
+    </span>
+	  
+  
+		<strong>setOcxObj</strong>
+		
+    <span class="params">
+      (Object ocxObj)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description inherited"><p>设置ocxObj对象</p><p>Inherited from <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a></p></div>
+
+<div class="details inherited">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Object
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>ocxObj</a>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				void
+			</span>
+    </td>
+    
+    <td class="last">
+    
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="setTrustSite"  class="public">
+  
+  <div class="location">
+
+  	<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno366">OCXComm.js</a> at line 366
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      Object
+    </span>
+	  
+  
+		<strong>setTrustSite</strong>
+		
+    <span class="params">
+      (String szIP)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>设置信任站点</p><pre class="example sh_javascript"> <caption>Example usage of <b>isTrustSite</b>.</caption> var szIP = "192.168.16.95";     setTrustSite(szIP);</pre></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				String
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>szIP</a><p>服务IP</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Object
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>data.code = {number} 0,成功;其他，错误; data.action="SetTrustSite"</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="sysFunc"  class="public">
+  
+  <div class="location">
+
+  	<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno281">OCXComm.js</a> at line 281
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      void
+    </span>
+	  
+  
+		<strong>sysFunc</strong>
+		
+    <span class="params">
+      (object paramJson)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>系统相关调度接口，主要是控件初始化、反初始化、服务登录登出等</p><p>See <a href="OCXComm.html#sysFunc">OCXComm#sysFunc</a></p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				object
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>paramJson</a><p>generateOcxParamJson生成的参数</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				void
+			</span>
+    </td>
+    
+    <td class="last">
+    
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="sysFuncVideo"  class="public">
+  
+  <div class="location">
+
+  	<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno384">OCXComm.js</a> at line 384
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      void
+    </span>
+	  
+  
+		<strong>sysFuncVideo</strong>
+		
+    <span class="params">
+      (String paramJson)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>实时图片显示相关处理接口，包括实时图片窗口处理、打开和关闭实时图片浏览等</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				String
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>paramJson</a>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				void
+			</span>
+    </td>
+    
+    <td class="last">
+    
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="unInit"  class="public inherited">
+  
+  <div class="location">
+
+  	<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno118">OCXComm.js</a> at line 118
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      Object
+    </span>
+	  
+  
+		<strong>unInit</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description inherited"><p>反初始化控件</p><p>Inherited from <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a></p></div>
+
+<div class="details inherited">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Object
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>data.code = {number} 0,成功;其他，错误;  data.action="UnInit"</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="unInitLivePicPlayWnd"  class="public">
+  
+  <div class="location">
+
+  	<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno424">OCXComm.js</a> at line 424
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      Object
+    </span>
+	  
+  
+		<strong>unInitLivePicPlayWnd</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>实时图片显示窗口初始化</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Object
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>data.code = {number} 0,成功;其他，错误; data.action="DeleteView"</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="viewEightScreen"  class="public inherited">
+  
+  <div class="location">
+
+  	<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno213">OCXComm.js</a> at line 213
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      Object
+    </span>
+	  
+  
+		<strong>viewEightScreen</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description inherited"><p>八屏查看</p><p>Inherited from <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a></p><p>See changeViewSplit</p></div>
+
+<div class="details inherited">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Object
+			</span>
+    </td>
+    
+    <td class="last">
+    
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="viewFourScreen"  class="public inherited">
+  
+  <div class="location">
+
+  	<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno195">OCXComm.js</a> at line 195
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      Object
+    </span>
+	  
+  
+		<strong>viewFourScreen</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description inherited"><p>四屏查看</p><p>Inherited from <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a></p><p>See changeViewSplit</p></div>
+
+<div class="details inherited">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Object
+			</span>
+    </td>
+    
+    <td class="last">
+    
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="viewFullScreen"  class="public inherited">
+  
+  <div class="location">
+
+  	<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno178">OCXComm.js</a> at line 178
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      Object
+    </span>
+	  
+  
+		<strong>viewFullScreen</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description inherited"><p>全屏查看</p><p>Inherited from <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a></p><p>See changeViewSplit</p></div>
+
+<div class="details inherited">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Object
+			</span>
+    </td>
+    
+    <td class="last">
+    
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="viewNightScreen"  class="public inherited">
+  
+  <div class="location">
+
+  	<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno222">OCXComm.js</a> at line 222
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      Object
+    </span>
+	  
+  
+		<strong>viewNightScreen</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description inherited"><p>九屏查看</p><p>Inherited from <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a></p><p>See changeViewSplit</p></div>
+
+<div class="details inherited">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Object
+			</span>
+    </td>
+    
+    <td class="last">
+    
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="viewSingleScreen"  class="public inherited">
+  
+  <div class="location">
+
+  	<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno186">OCXComm.js</a> at line 186
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      Object
+    </span>
+	  
+  
+		<strong>viewSingleScreen</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description inherited"><p>单屏查看</p><p>Inherited from <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a></p><p>See changeViewSplit</p></div>
+
+<div class="details inherited">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Object
+			</span>
+    </td>
+    
+    <td class="last">
+    
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="viewSixScreen"  class="public inherited">
+  
+  <div class="location">
+
+  	<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno204">OCXComm.js</a> at line 204
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      Object
+    </span>
+	  
+  
+		<strong>viewSixScreen</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description inherited"><p>六屏查看</p><p>Inherited from <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a></p><p>See changeViewSplit</p></div>
+
+<div class="details inherited">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Object
+			</span>
+    </td>
+    
+    <td class="last">
+    
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="viewSixteenScreen"  class="public inherited">
+  
+  <div class="location">
+
+  	<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno240">OCXComm.js</a> at line 240
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      Object
+    </span>
+	  
+  
+		<strong>viewSixteenScreen</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description inherited"><p>十六屏查看</p><p>Inherited from <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a></p><p>See changeViewSplit</p></div>
+
+<div class="details inherited">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Object
+			</span>
+    </td>
+    
+    <td class="last">
+    
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="viewThirteenScreen"  class="public inherited">
+  
+  <div class="location">
+
+  	<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno231">OCXComm.js</a> at line 231
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      Object
+    </span>
+	  
+  
+		<strong>viewThirteenScreen</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description inherited"><p>十三屏查看</p><p>Inherited from <a href="OCXComm.html" ><abbr title="OCXComm">OCXComm</abbr></a></p><p>See changeViewSplit</p></div>
+
+<div class="details inherited">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Object
+			</span>
+    </td>
+    
+    <td class="last">
+    
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+
+			
+
+
+			<!-- CLASS EVENTS DETAIL -->
+			
+
+		</div>
+
+		<footer>
+	Documentation generated by <a href="https://github.com/micmath/jsdoc">JSDoc 3</a> using <a href="https://github.com/danyg/jsdoc3Template">jsdoc3Template</a> by danyg & lechecacharro on Tue May 16 2017 00:28:36 GMT+0800 (CST)
+</footer>
+
+	</body>
+</html>

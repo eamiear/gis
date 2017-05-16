@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link rel="stylesheet" type="text/css" href="styles/stylesheet.css">
+		<title>Gois API Documentation</title>
+	</head>
+	<body id="class">
+
+		<header>
+			<div class="header">
+				<script type="text/javascript" src="js/jQuery.172.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	var header = $('.header'),
+		content = $('.content')
+		footer = $('footer')
+	;
+
+	function mtn(str){
+		if(
+			'' === str
+			|| undefined === str
+			|| null === str
+		){
+			return 0;
+		}else{
+			var a = parseInt(str.replace(/px|ex|em/, ''), 10);
+			if(isNaN(a)){
+				a = 0;
+			}
+			return a;
+		}
+	}
+	
+	function resize(){
+		var availableHeight = $(window).height() - (header.outerHeight() + footer.outerHeight()),
+			availableWidth = $(window).width(),
+			contentOffsetH = mtn(content.css('borderTopWidth')) + 
+				mtn(content.css('marginTop')) +
+				mtn(content.css('paddingTop')) +
+				
+				mtn(content.css('paddingBottom')) +
+				mtn(content.css('marginBottom')) +
+				mtn(content.css('borderBottomWidth')),
+			contentOffsetW = mtn(content.css('borderLeftWidth')) + 
+				mtn(content.css('marginLeft')) +
+				mtn(content.css('paddingLeft')) +
+				
+				mtn(content.css('paddingRight')) +
+				mtn(content.css('marginRight')) +
+				mtn(content.css('borderRightWidth'))
+		;
+		content.height(availableHeight - contentOffsetH);
+		content.width(availableWidth - contentOffsetW);
+	}
+	resize();
+	$(window).resize(resize);
+});
+</script>
+
+<ul>
+	
+	<li><a href="class_index.html">Classes</a></li>
+	
+	
+	
+	
+	
+	<li><a href="module_index.html">Modules</a></li>
+	
+	
+	
+	
+	
+	<li><a href="function_index.html">Methods/Functions</a></li>
+	
+	
+	<li><a href="global.html">Globals</a></li>
+	
+	<li><a href="file_index.html">Files</a></li>
+	<li><a href="doc-index.html">Index</a></li>
+</ul>
+
+<div id="title">
+	
+	<a href="readme.html">
+		
+
+		Gois API API
+
+		
+	</a>
+	
+</div>
+				<div class="type">Class</div>
+				<h1>
+					PlayerUtils
+				</h1>
+			</div>
+		</header>
+
+		<div class="content">
+
+			<div class="anchor_list">
+	<h2>Contents</h2>
+	<ul>
+		
+		
+		
+		
+		
+
+		
+
+		
+
+		
+
+		
+		<li><a href="#static_methods">Static Methods</a></li>
+		
+
+		
+
+			
+	</ul>
+</div>
+			
+			<!-- CLASS SIGNATURE -->
+			<p class="PrincipalTitle">
+				<span> </span>
+				<span>class </span>
+				<strong>
+					PlayerUtils
+				</strong>
+
+				
+
+				
+
+				
+			</p>
+
+
+			<!-- CLASS DESCRIPTION -->
+			<div class="description "><p>播放器工具类</p></div>
+
+
+			<!-- CLASS CONSTRUCTOR SUMMARY -->
+			<h2>
+				<a name='constructor'></a>
+				Constructor
+				<small><a href="#">Top</a></small>
+			</h2>
+			<table>
+				<tbody>
+					<tr>
+						<td class="type">&nbsp;</td>
+						<td class="last">
+							<a href="#PlayerUtils">PlayerUtils</a>
+							<span>()</span>
+							
+						<td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+
+
+			<!-- CLASS REQUIRES -->
+
+			<!-- NAMESPACE SUB-NAMESPACES -->
+						
+
+			<!-- CLASS CONSTANTS SUMMARY -->
+			
+
+
+			<!-- CLASS STATIC PROPERTIES & ENUMERATIONS SUMMARY -->
+			
+
+			<!-- CLASS PROPERTIES SUMMARY -->
+			
+
+			<!-- CLASS STATIC METHODS SUMMARY -->
+			
+			<h2>
+				<a name='static_methods'></a>
+				Static Methods
+				<small><a href="#">Top</a></small>
+			</h2>
+			<table>
+  <tbody>
+  
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	HTMLElement
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#createObjParam">
+				<abbr title="PlayerUtils.createObjParam">
+					createObjParam
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(String key, String value)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	HTMLElement
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#createPlayerDom">
+				<abbr title="PlayerUtils.createPlayerDom">
+					createPlayerDom
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(String id, String classId)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+    
+  </tbody>
+</table>
+			
+
+			<!-- CLASS METHODS SUMMARY -->
+			
+
+
+			<!-- CLASS EVENTS SUMMARY -->
+			
+
+			<!--
+			################################################################################
+			## DETAILS
+			################################################################################
+			-->
+
+			<!-- CLASS CONSTRUCTOR DETAILS -->
+			<h2>
+				<a name='constructor_details'></a>
+				Constructor details
+				<small><a href="#">Top</a></small>
+				<h3 id="PlayerUtils"  class="public">
+  
+  <div class="location">
+
+  	<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno485">OCXComm.js</a> at line 485
+
+  </div>
+	
+	<div class="signature">
+		
+  
+		<strong>PlayerUtils</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>播放器工具类</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+
+			</h2>
+
+
+			<!-- CLASS STATIC PROPERTIES & ENUMERATIONS DETAIL -->
+			
+
+
+			<!-- CLASS STATIC METHODS DETAIL -->
+			
+			<h2>
+				<a name='static_methods_details'></a>
+				Static Methods Detail
+				<small><a href="#">Top</a></small>
+			</h2>
+			<h3 id="createObjParam"  class="public">
+  
+  <div class="location">
+
+  	<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno507">OCXComm.js</a> at line 507
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    static
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      HTMLElement
+    </span>
+	  
+  
+		<strong>createObjParam</strong>
+		
+    <span class="params">
+      (String key, String value)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>构建播放器Object DOM对象的Param参数</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				String
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>key</a><p>参数key</p>
+    </td>
+    
+  
+  <tr>
+    <td class="type">
+			<span>
+				String
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>value</a><p>参数值</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				HTMLElement
+			</span>
+    </td>
+    
+    <td class="last">
+    
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="createPlayerDom"  class="public">
+  
+  <div class="location">
+
+  	<a href="E__Develop_gis_documents_generator_src_gois_src_test_OCXComm_js.html#lineno492">OCXComm.js</a> at line 492
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    static
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      HTMLElement
+    </span>
+	  
+  
+		<strong>createPlayerDom</strong>
+		
+    <span class="params">
+      (String id, String classId)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>构建播放器DOM对象</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				String
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>id</a>
+    </td>
+    
+  
+  <tr>
+    <td class="type">
+			<span>
+				String
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>classId</a>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				HTMLElement
+			</span>
+    </td>
+    
+    <td class="last">
+    
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+
+			
+
+
+			<!-- CLASS PROPERTIES DETAIL -->
+			
+
+
+			<!-- CLASS METHODS DETAIL -->
+			
+
+
+			<!-- CLASS EVENTS DETAIL -->
+			
+
+		</div>
+
+		<footer>
+	Documentation generated by <a href="https://github.com/micmath/jsdoc">JSDoc 3</a> using <a href="https://github.com/danyg/jsdoc3Template">jsdoc3Template</a> by danyg & lechecacharro on Tue May 16 2017 00:28:36 GMT+0800 (CST)
+</footer>
+
+	</body>
+</html>

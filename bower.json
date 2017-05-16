@@ -1,0 +1,28 @@
+{
+  "name": "gosuncn-arcgis",
+  "version": "0.0.0",
+  "homepage": "",
+  "authors": [
+    "gosuncn"
+  ],
+  "description": "",
+  "main": [
+
+  ],
+  "moduleType": [
+    "amd"
+  ],
+  "keywords": [
+    "Esri",
+    "Bootstrap",
+    "ArcGIS",
+    "JavaScript",
+    "Map",
+    "Mapping"
+  ],
+  "license": "",
+  "ignore": [
+    "**/.*",
+    "README.md"
+  ]
+}
