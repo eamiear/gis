@@ -6,8 +6,6 @@ npm-debug.log
 .svn
 dist
 package
-
 .vscode/
-
 .typingsrc
 /.vs/config/applicationhost.config

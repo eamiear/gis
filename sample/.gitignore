@@ -7,7 +7,6 @@ dist
 package
 public/**
 server/public/**
-views/**
 **/public/
 
 .vscode/
