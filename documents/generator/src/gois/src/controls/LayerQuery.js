@@ -1,7 +1,4 @@
-/**
- * A module representing a jacket.
- * @module extras/controls/LayerQuery
- */
+
 define([
 	"dojo/_base/declare",
     "dojo/_base/Deferred",
@@ -20,11 +17,10 @@ define([
 	webMercatorUtils
 ) {
 	/**
+	 * @exports extras.controls.LayerQuery
 	 * @description LayerQuery
-	 * @class
-	 * @namespace extras.controls.LayerQuery
-	 * @name LayerQuery
-	 * @constructor
+	 * @class extras.controls.LayerQuery
+	 * @construct
 	 */
 	return declare("extras.controls.LayerQuery",null,{
 		layerQueryLayer:null,
@@ -112,16 +108,13 @@ define([
 			this.map.addLayer(this.layerQueryLayer);
 		},
 		/**
-		 * @method
-		 * @name startDraw
-		 * @memberof LayerQuery
-		 * @description startDraw
+		 * startDraw ............
+		 * @memberOf  extras.controls.LayerQuery
+		 *
+		 *
 		 * @param {string} type
 		 * @param {object} sybmol
 		 * @param {boolean} isNotClearLayer 是否不清空图层(默认 false - 清空)
-		 *
-		 * @example <caption>Usage of globalSetting</caption>
-		 *  startDraw(type,sybmol,isNotClearLayer);
 		 */
 		startDraw: function(type,sybmol,isNotClearLayer){
             var deferred = new Deferred();
@@ -132,6 +125,17 @@ define([
 			}));
             return deferred.promise;
 		},
+		/**
+		 * @description basicSearch
+		 * @memberOf extras.controls.LayerQuery
+		 * @see startDraw
+		 *
+		 * @param {string} type
+		 * @param {object} symbol
+		 * @param {boolean} isNotClearLayer 是否不清空图层(默认 false - 清空)
+		 * @param {function} callback
+		 * @returns {*}
+         */
 		basicSearch: function(type,symbol,isNotClearLayer,callback){
 			var renderSymbol;
 			symbol = symbol || {};
@@ -153,7 +157,10 @@ define([
             });
 		},
         /**
-         *
+         * 
+		 * @method
+		 * @name domainSearch
+		 *
          * @param {string} options.type					图形类型（'polygon,polyline,extent,circle...'）
          * @param {object} options.symbol				图元样式
          * @param {boolean} options.isNotClearLayer	    是否不清除图层  （默认不清除）
@@ -175,6 +182,12 @@ define([
                 dojo.publish(options.subscribeHook || 'domain-search',[graphic]);
             }));
         },
+		/**
+		 * 
+		 * @method
+		 * @name pullBoxSearch
+		 * @returns {*}
+         */
 		pullBoxSearch:function(){
             return this.domainSearch({
                 type: esri.toolbars.draw.EXTENT,
@@ -182,6 +195,12 @@ define([
                 subscribeHook: 'pullBoxSearchFinish'
             });
 		},
+		/**
+		 * 
+		 * @method
+		 * @name polygonSearch
+		 * @returns {*}
+         */
 		polygonSearch:function(){
             return this.domainSearch({
                 type: esri.toolbars.draw.POLYGON,
@@ -189,6 +208,12 @@ define([
                 subscribeHook: 'polygonSearchFinish'
             });
 		},
+		/**
+		 * 
+		 * @method
+		 * @name lineSearch
+		 * @returns {*}
+         */
 		lineSearch:function(){
             return this.domainSearch({
                 type: esri.toolbars.draw.FREEHAND_POLYLINE,
@@ -196,6 +221,12 @@ define([
                 subscribeHook: 'lineSearchFinish'
             });
 		},
+		/**
+		 * 
+		 * @method
+		 * @name circleSearch
+		 * @returns {*}
+         */
 		circleSearch:function(){
             return this.domainSearch({
                 type: esri.toolbars.draw.CIRCLE,
@@ -206,11 +237,16 @@ define([
 
 		/**
 		 * 属性查询
-		 * @param {Object} id	工程图层ID
-		 * @param {Object} where	属性条件
-		 * @param {Object} sussFunction		成功返回调用函数，以字符串格式返回数据
-		 * @param {Object} errorFunction	失败返回调用函数,返回错误信息
-		 */
+		 * 
+		 * @method
+		 * @name queryByAttribute
+		 *
+		 * @param {string} layerId
+		 * @param {string} attrName
+		 * @param {string} attrValue
+         * @param {boolean} isLike
+         * @returns {*}
+         */
 		queryByAttribute : function(layerId,attrName,attrValue,isLike){
 			var param = new SpatialQueryParam();
 			param.layerId = layerId;
@@ -221,10 +257,10 @@ define([
 		},
 		/**
 		 * 空间查询
-		 * @param {Object} id
+		 * 
+		 * @name queryByAttribute
+		 * @param {string} layerId
 		 * @param {Object} geometry
-		 * @param {Object} sussFunction
-		 * @param {Object} errorFunction
 		 */
 		queryByGeometry : function(layerId,geometry){
 			var param = new SpatialQueryParam();
@@ -234,10 +270,15 @@ define([
 		},
 		/**
 		 * 综合查询
-		 * @param {Object} params
-		 * @param {Object} sussFunction
-		 * @param {Object} errorFunction
-		 */
+		 * 
+		 *
+		 * @param {string} layerId
+		 * @param {Geometry} geometry
+		 * @param {string} attrName
+		 * @param {string} attrValue
+		 * @param {boolean} isLike
+         * @returns {*}
+         */
 		queryByAttrAndGeo : function(layerId,geometry,attrName,attrValue,isLike){
 			var param = new SpatialQueryParam();
 			param.layerId = layerId;
@@ -246,6 +287,18 @@ define([
 			param.attrValue = attrValue;
 			return this.queryByLayerId(3,param)
 		},
+		/**
+		 * 
+		 * @name queryByLayerId
+		 * @param {string} type
+		 * @param {object} param
+		 * @param {string} param.layerId;
+		 * @param {string} param.attrName;
+		 * @param {string} param.attrValue;
+		 * @param {Geometry} param.geometry;
+		 * @param {boolean} param.isLike;
+         * @returns {*}
+         */
 		queryByLayerId:function(type,param){
 			var layerId = param.layerId;
 			var attrName = param.attrName;
@@ -265,6 +318,14 @@ define([
 			}
 			return resultData;
 		},
+		/**
+		 * @name getGraphicBy
+		 * 
+		 * @param {GraphicLayer | string} layer
+		 * @param {string} property
+		 * @param {string} value
+         * @returns {*}
+         */
 		getGraphicBy: function(layer,property, value) {
 			var feature = null;
 			if(layer){
@@ -298,15 +359,38 @@ define([
 			}
 			return feature;
 		},
+		/**
+		 * @name getGraphicById
+		 * 
+		 * @param {GraphicLayer | string} layer
+		 * @param {string} idKey
+         * @returns {*}
+         */
 		getGraphicById: function(layer,idKey) {
 			return this.getGraphicBy(layer,'id', idKey);
 		},
+		/**
+		 * @name getAllGraphic
+		 * 
+		 * @param {GraphicLayer | string} layer
+         * @returns {*}
+         */
 		getAllGraphic:function(layer){
 			if(typeof layer === "string"){
 				layer = this.map.getLayer(layer);
 			}
 			return layer.graphics;
 		},
+		/**
+		 * @name getGraphicByAttributeAndGeometry
+		 * 
+		 * @param {GraphicLayer | string} layer
+		 * @param {Geometry} geometry
+		 * @param {string} attrName
+		 * @param {string} attrValue
+         * @param {boolean} isLike
+         * @returns {*}
+         */
 		getGraphicByAttributeAndGeometry:function(layer,geometry,attrName,attrValue,isLike){
 			var foundGraphics = null;
 			var resultData = this.getGraphicByAttribute(layer,attrName,attrValue,isLike);
@@ -320,6 +404,13 @@ define([
 			}
 			return foundGraphics;
 		},
+		/**
+		 * @name getGraphicByGeometry
+		 * 
+		 * @param {GraphicLayer | string} layer
+		 * @param {Geometry} geometry
+         * @returns {*}
+         */
 		getGraphicByGeometry:function(layer,geometry){
 			var foundGraphics = null;
 			if(layer && geometry){
@@ -334,6 +425,15 @@ define([
 			}
 			return foundGraphics;
 		},
+		/**
+		 * @name getGraphicByAttribute
+		 * 
+		 * @param {GraphicLayer | string} layer
+		 * @param {string} attrName
+		 * @param {string} attrValue
+         * @param {boolean} isLike
+         * @returns {*}
+         */
 		getGraphicByAttribute: function(layer,attrName, attrValue,isLike) {
 			var foundGraphics = null;
 			if(layer){
@@ -384,6 +484,10 @@ define([
 		getRootPath: function(){
 			return [location.protocol,"//",location.host,"/",location.pathname.split('/')[1]].join('');
 		},
+		/**
+		 * @name clear
+		 * 
+		 */
 		clear: function(){
 			this.layerQueryLayer && this.layerQueryLayer.clear();
 		}

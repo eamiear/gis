@@ -6,7 +6,7 @@
     "destination": "./documents/doc/gois-api"
   },
   "plugins": [
-
+    "plugins/markdown"
   ],
   "templates": {
     "cleverLinks": false,
@@ -15,9 +15,14 @@
       "outputSourceFiles": true
     },
     "path": "./documents/generator/templates/jsdoc3Template",
-    "theme": "cerulean",
-    "navType": "vertical",
-    "linenums": true,
-    "dateFormat": "MMMM Do YYYY, h:mm:ss a"
+
+    "systemName"            : "Gosuncn Gis Api",
+    "footer"                : "",
+    "copyright"             : "gosuncn@0.0.1",
+    "includeDate"           : true,
+    "navType"               : "inline",
+    "theme"                 : "cerulean",
+    "linenums"              : true,
+    "dateFormat"            : "YYYY-MM-DD, h:mm:ss a"
   }
 }

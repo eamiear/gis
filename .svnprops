@@ -1,5 +1,6 @@
 **/.DS_Store
 build/
+documents/doc/
 node_modules
 sample/node_modules/*
 documents/node_modules/*

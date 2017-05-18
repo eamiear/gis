@@ -15,5 +15,8 @@
         },
         "openGraph": {},
         "meta": {}
+    },
+    "opts": {
+        "encoding": "utf8"
     }
 }

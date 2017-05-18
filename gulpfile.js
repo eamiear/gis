@@ -73,10 +73,9 @@ gulp.task('compact-js', function () {
 });
 
 gulp.task('doc', function (cb) {
-    var jsdoc = require('./index');
-
-    var config = require('./src/jsdocConfig');
-    gulp.src(['README.md'].concat(['./src/**/*.js']), {read: false})
+    //var jsdoc = require('./index');
+    var config = require('./jsdocConfig');
+    gulp.src(['README.md'].concat(['./src/**/*.js','!./src/extras/test/**/*.js']), {read: false})
         .pipe(jsdoc(config, cb));
 });
 
@@ -86,6 +85,7 @@ gulp.task('watch', function () {
     gulp.watch('src/less/**/*.less', ['less']);
     gulp.watch('./src/**/*.css', ['compact-css']);
     gulp.watch('./src/**/*.js', ['compact-js']);
+    gulp.watch(['./src/**/*.js','!./src/extras/test/**/*.js'], ['doc']);
 });
 
 gulp.task('default', ["watch"]);

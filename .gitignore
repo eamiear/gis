@@ -5,6 +5,8 @@ npm-debug.log
 .git
 .svn
 dist
+build/
+documents/doc
 package
 .vscode/
 .typingsrc
