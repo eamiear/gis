@@ -12,7 +12,6 @@ var gulp = require('gulp'),
 //gulp.src(globs[, options]) 执行任务处理的文件  globs：处理的文件路径(字符串或者字符串数组)
 //gulp.dest(path[, options]) 处理完后文件生成路径
 
-
 gulp.task('less', function() {
     gulp.src('src/less/*.less')
         .pipe(less())
@@ -73,15 +72,18 @@ gulp.task('compact-js', function () {
 });
 
 gulp.task('doc', function (cb) {
-    //var jsdoc = require('./index');
     var config = require('./jsdocConfig');
     gulp.src(['README.md'].concat(['./src/**/*.js','!./src/extras/test/**/*.js']), {read: false})
         .pipe(jsdoc(config, cb));
+        //.pipe(livereload());
 });
 
 //watch for changes on ts files and compile and copy when saved
 gulp.task('watch', function () {
     livereload.listen();
+    gulp.watch('documents/doc/**/*.html',function(file){
+        livereload.changed(file.path);
+    });
     gulp.watch('src/less/**/*.less', ['less']);
     gulp.watch('./src/**/*.css', ['compact-css']);
     gulp.watch('./src/**/*.js', ['compact-js']);
@@ -89,4 +91,4 @@ gulp.task('watch', function () {
 });
 
 gulp.task('default', ["watch"]);
-gulp.task('build', ["compact-css",'compact-js']);
+gulp.task('build', ["compact-css",'compact-js','doc']);

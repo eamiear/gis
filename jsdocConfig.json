@@ -3,6 +3,7 @@
     "allowUnknownTags": true
   },
   "opts": {
+    "private": true,
     "destination": "./documents/doc/gois-api"
   },
   "plugins": [
@@ -15,13 +16,15 @@
       "outputSourceFiles": true
     },
     "path": "./documents/generator/templates/jsdoc3Template",
+    "anyTemplateSpecificParameter": "whatever",
 
     "systemName"            : "Gosuncn Gis Api",
     "footer"                : "",
-    "copyright"             : "gosuncn@0.0.1",
+    "copyright"             : "gosuncn © 2017",
     "includeDate"           : true,
     "navType"               : "inline",
-    "theme"                 : "cerulean",
+    "theme"                 : "cosmo",
+    "inverseNav"            : true,
     "linenums"              : true,
     "dateFormat"            : "YYYY-MM-DD, h:mm:ss a"
   }

@@ -1,4 +1,18 @@
-
+/**
+ * @fileOverview This is base definition for all composed classes defined by the system
+ * Module representing a LayerQuery.
+ * @module extras/controls/LayerQuery
+ *
+ * @requires dojo/_base/declare
+ * @requires dojo/_base/Deferred
+ * @requires esri/graphic
+ * @requires esri/layers/GraphicsLayer
+ * @requires esri/geometry/Point
+ * @requires esri/symbols/PictureMarkerSymbol
+ * @requires esri/symbols/SimpleLineSymbol
+ * @requires esri/symbols/SimpleFillSymbol
+ * @requires esri/geometry/webMercatorUtils
+ */
 define([
 	"dojo/_base/declare",
     "dojo/_base/Deferred",
@@ -6,6 +20,8 @@ define([
 	"esri/layers/GraphicsLayer",
 	"esri/geometry/Point",
 	"esri/symbols/PictureMarkerSymbol",
+	"esri/symbols/SimpleLineSymbol",
+	"esri/symbols/SimpleFillSymbol",
 	"esri/geometry/webMercatorUtils"
 ], function(
 	declare,
@@ -14,17 +30,17 @@ define([
 	GraphicsLayer,
 	Point,
 	PictureMarkerSymbol,
+	SimpleLineSymbol,
+	SimpleFillSymbol,
 	webMercatorUtils
 ) {
-	/**
-	 * @exports extras.controls.LayerQuery
-	 * @description LayerQuery
-	 * @class extras.controls.LayerQuery
-	 * @construct
-	 */
-	return declare("extras.controls.LayerQuery",null,{
+	return declare([],/**  @lends module:extras/controls/LayerQuery */{
+		/** @member layerQueryLayer */
 		layerQueryLayer:null,
-        //默认样式
+		/**
+		 * 默认样式
+		 * @member defaultSymbol
+		 */
         defaultSymbol: {
             "POINT": {
                 type:"esriSMS",
@@ -92,6 +108,9 @@ define([
                 }
             }
         },
+		/**
+		 * @constructs
+		 */
 		constructor:function(){
 			//发布toolBarLoadedEvent监听(用来获得MAP和Toolbar)
 			dojo.subscribe("toolBarLoadedEvent", this, "initLayerQuery");
@@ -100,7 +119,11 @@ define([
 			this.layerQueryLayer = new extras.graphic.InfoGraphicLayer({id:"GXX_GIS_QUERYRESULT_LAYER"});
 		},
 		/**
+		 * @method
 		 * @private
+		 * @memberOf module:extras/controls/LayerQuery#
+		 *
+		 * @listens module:extras/controls/ToolBar~event:toolBarLoadedEvent
 		 */
 		initLayerQuery : function(toolbar){
 			this.toolbar = toolbar;
@@ -108,32 +131,41 @@ define([
 			this.map.addLayer(this.layerQueryLayer);
 		},
 		/**
-		 * startDraw ............
-		 * @memberOf  extras.controls.LayerQuery
+		 * 绘制图形
+		 * @private
+		 * @method
+		 * @memberOf module:extras/controls/LayerQuery#
 		 *
-		 *
-		 * @param {string} type
-		 * @param {object} sybmol
+		 * @param {string} type    			图形类型
+		 * @param {object} symbol			图形样式
 		 * @param {boolean} isNotClearLayer 是否不清空图层(默认 false - 清空)
-		 */
-		startDraw: function(type,sybmol,isNotClearLayer){
+		 *
+		 * @returns {*|r.promise|promise|d.promise|h.promise} Deferred.promise
+         */
+		startDraw: function(type,symbol,isNotClearLayer){
             var deferred = new Deferred();
 			!isNotClearLayer && this.layerQueryLayer.clear();
 			this.map.reorderLayer(this.layerQueryLayer,this.map._layers.length -1);
-			this.toolbar.draw(type,sybmol || this.defaultSymbol[type.toUpperCase()],dojo.hitch(this,function(graphic){
+			this.toolbar.draw(type,symbol || this.defaultSymbol[type.toUpperCase()],dojo.hitch(this,function(graphic){
                 deferred.resolve(graphic);
 			}));
             return deferred.promise;
 		},
 		/**
-		 * @description basicSearch
-		 * @memberOf extras.controls.LayerQuery
-		 * @see startDraw
+		 * A Method With Default Symbol For StartDraw
+		 * @memberOf module:extras/controls/LayerQuery#
+		 * @see {@link module:extras/controls/LayerQuery#startDraw}
 		 *
 		 * @param {string} type
 		 * @param {object} symbol
 		 * @param {boolean} isNotClearLayer 是否不清空图层(默认 false - 清空)
 		 * @param {function} callback
+		 *
+		 * @example
+		 * <caption>Usage of basicSearch</caption>
+		 *
+		 * GisObject.layerQuery.basicSearch('extent');
+		 *
 		 * @returns {*}
          */
 		basicSearch: function(type,symbol,isNotClearLayer,callback){
@@ -146,32 +178,36 @@ define([
 					break;
 				case "polyline":
 				case "freehandpolyline":
-					renderSymbol = new esri.symbols.SimpleLineSymbol(dojo.mixin({}, this.defaultSymbol.LINE,symbol));
+					renderSymbol = new SimpleLineSymbol(dojo.mixin({}, this.defaultSymbol.LINE,symbol));
 					break;
 				default:
-					renderSymbol = new esri.symbols.SimpleFillSymbol(dojo.mixin({}, this.defaultSymbol.POLYGON,symbol));
+					renderSymbol = new SimpleFillSymbol(dojo.mixin({}, this.defaultSymbol.POLYGON,symbol));
 					break;
 			}
             return this.startDraw(type, renderSymbol,isNotClearLayer).then(function (graphic) {
                 callback && callback(graphic);
             });
 		},
-        /**
-         * 
-		 * @method
-		 * @name domainSearch
+		/**
+		 * @memberOf module:extras/controls/LayerQuery#
+		 * @see {@link module:extras/controls/LayerQuery#basicSearch}
 		 *
-         * @param {string} options.type					图形类型（'polygon,polyline,extent,circle...'）
-         * @param {object} options.symbol				图元样式
-         * @param {boolean} options.isNotClearLayer	    是否不清除图层  （默认不清除）
-         * @param {object} options.attributes			图元属性
-         * @param {string} options.subscribeHook		发布订阅监听钩子
-         * @example <caption>Usage of </caption>
-         * var options = {
+		 * @param {object} options
+		 * @param {string} options.type					图形类型['polygon,polyline,extent,circle...']
+		 * @param {object} options.symbol				图元样式
+		 * @param {boolean} options.isNotClearLayer	    是否不清除图层  （默认不清除）
+		 * @param {object} options.attributes			图元属性
+		 * @param {string} options.subscribeHook		发布订阅监听钩子
+		 *
+		 * @example
+		 * <caption>Usage of </caption>
+		 * var options = {
          *   type: 'polygon',
          *   subscribeHook: 'pullCircleFinish'
          * }
-         * GisObject.layerQuery.domainSearch(options);
+		 * GisObject.layerQuery.domainSearch(options);
+		 *
+		 * @returns {promise}
          */
         domainSearch: function(options){
             options = options || {};
@@ -183,54 +219,74 @@ define([
             }));
         },
 		/**
-		 * 
-		 * @method
-		 * @name pullBoxSearch
-		 * @returns {*}
+		 * @memberOf module:extras/controls/LayerQuery#
+		 * @see {@link module:extras/controls/LayerQuery#domainSearch}
+		 *
+		 * @example
+		 * <caption>Usage of pullBoxSearch</caption>
+		 *
+		 * GisObject.layerQuery.pullBoxSearch();
+		 *
+		 * @returns {promise}
          */
 		pullBoxSearch:function(){
             return this.domainSearch({
                 type: esri.toolbars.draw.EXTENT,
-                symbol: new esri.symbols.SimpleFillSymbol(this.defaultSymbol.POLYGON),
+                symbol: SimpleFillSymbol(this.defaultSymbol.POLYGON),
                 subscribeHook: 'pullBoxSearchFinish'
             });
 		},
 		/**
-		 * 
-		 * @method
-		 * @name polygonSearch
-		 * @returns {*}
+		 * @memberOf module:extras/controls/LayerQuery#
+		 * @see {@link module:extras/controls/LayerQuery#domainSearch}
+		 *
+		 * @example
+		 * <caption>Usage of polygonSearch</caption>
+		 *
+		 * GisObject.layerQuery.polygonSearch();
+		 *
+		 * @returns {promise}
          */
 		polygonSearch:function(){
             return this.domainSearch({
                 type: esri.toolbars.draw.POLYGON,
-                symbol: new esri.symbols.SimpleFillSymbol(this.defaultSymbol.POLYGON),
+                symbol: SimpleFillSymbol(this.defaultSymbol.POLYGON),
                 subscribeHook: 'polygonSearchFinish'
             });
 		},
 		/**
-		 * 
-		 * @method
-		 * @name lineSearch
-		 * @returns {*}
-         */
+		 * @memberOf module:extras/controls/LayerQuery#
+		 * @see {@link module:extras/controls/LayerQuery#domainSearch}
+		 *
+		 * @example
+		 * <caption>Usage of lineSearch</caption>
+		 *
+		 * GisObject.layerQuery.lineSearch();
+		 *
+		 * @returns {promise}
+		 */
 		lineSearch:function(){
             return this.domainSearch({
                 type: esri.toolbars.draw.FREEHAND_POLYLINE,
-                symbol: new esri.symbols.SimpleLineSymbol(this.defaultSymbol.LINE),
+                symbol: SimpleLineSymbol(this.defaultSymbol.LINE),
                 subscribeHook: 'lineSearchFinish'
             });
 		},
 		/**
-		 * 
-		 * @method
-		 * @name circleSearch
-		 * @returns {*}
-         */
+		 * @memberOf module:extras/controls/LayerQuery#
+		 * @see {@link module:extras/controls/LayerQuery#domainSearch}
+		 *
+		 * @example
+		 * <caption>Usage of circleSearch</caption>
+		 *
+		 * GisObject.layerQuery.circleSearch();
+		 *
+		 * @returns {promise}
+		 */
 		circleSearch:function(){
             return this.domainSearch({
                 type: esri.toolbars.draw.CIRCLE,
-                symbol: new esri.symbols.SimpleFillSymbol(this.defaultSymbol.POLYGON),
+                symbol: SimpleFillSymbol(this.defaultSymbol.POLYGON),
                 subscribeHook: 'circleSearchFinish'
             });
 		},
@@ -238,8 +294,7 @@ define([
 		/**
 		 * 属性查询
 		 * 
-		 * @method
-		 * @name queryByAttribute
+		 * @memberOf module:extras/controls/LayerQuery#
 		 *
 		 * @param {string} layerId
 		 * @param {string} attrName
@@ -257,8 +312,8 @@ define([
 		},
 		/**
 		 * 空间查询
-		 * 
-		 * @name queryByAttribute
+		 * @memberOf module:extras/controls/LayerQuery#
+		 *
 		 * @param {string} layerId
 		 * @param {Object} geometry
 		 */
@@ -271,9 +326,10 @@ define([
 		/**
 		 * 综合查询
 		 * 
+		 * @memberOf module:extras/controls/LayerQuery#
 		 *
 		 * @param {string} layerId
-		 * @param {Geometry} geometry
+		 * @param {eris.geometry.Point} geometry
 		 * @param {string} attrName
 		 * @param {string} attrValue
 		 * @param {boolean} isLike
@@ -288,14 +344,14 @@ define([
 			return this.queryByLayerId(3,param)
 		},
 		/**
-		 * 
-		 * @name queryByLayerId
+		 * @memberOf module:extras/controls/LayerQuery#
+		 *
 		 * @param {string} type
 		 * @param {object} param
 		 * @param {string} param.layerId;
 		 * @param {string} param.attrName;
 		 * @param {string} param.attrValue;
-		 * @param {Geometry} param.geometry;
+		 * @param {eris.geometry.Point} param.geometry;
 		 * @param {boolean} param.isLike;
          * @returns {*}
          */
@@ -319,9 +375,9 @@ define([
 			return resultData;
 		},
 		/**
-		 * @name getGraphicBy
+		 * @memberOf module:extras/controls/LayerQuery#
 		 * 
-		 * @param {GraphicLayer | string} layer
+		 * @param {esri.layer.GraphicLayer | string} layer
 		 * @param {string} property
 		 * @param {string} value
          * @returns {*}
@@ -360,9 +416,9 @@ define([
 			return feature;
 		},
 		/**
-		 * @name getGraphicById
+		 * @memberOf module:extras/controls/LayerQuery#
 		 * 
-		 * @param {GraphicLayer | string} layer
+		 * @param {esri.layer.GraphicLayer | string} layer
 		 * @param {string} idKey
          * @returns {*}
          */
@@ -370,9 +426,9 @@ define([
 			return this.getGraphicBy(layer,'id', idKey);
 		},
 		/**
-		 * @name getAllGraphic
-		 * 
-		 * @param {GraphicLayer | string} layer
+		 * @memberOf module:extras/controls/LayerQuery#
+		 *
+		 * @param {esri.layer.GraphicLayer | string} layer
          * @returns {*}
          */
 		getAllGraphic:function(layer){
@@ -382,10 +438,10 @@ define([
 			return layer.graphics;
 		},
 		/**
-		 * @name getGraphicByAttributeAndGeometry
+		 * @memberOf module:extras/controls/LayerQuery#
 		 * 
-		 * @param {GraphicLayer | string} layer
-		 * @param {Geometry} geometry
+		 * @param {esri.layer.GraphicLayer | string} layer
+		 * @param {esri.geometry.Point} geometry
 		 * @param {string} attrName
 		 * @param {string} attrValue
          * @param {boolean} isLike
@@ -405,10 +461,10 @@ define([
 			return foundGraphics;
 		},
 		/**
-		 * @name getGraphicByGeometry
+		 * @memberOf module:extras/controls/LayerQuery#
 		 * 
-		 * @param {GraphicLayer | string} layer
-		 * @param {Geometry} geometry
+		 * @param {esri.layer.GraphicLayer | string} layer
+		 * @param {esri.geometry.Point} geometry
          * @returns {*}
          */
 		getGraphicByGeometry:function(layer,geometry){
@@ -426,9 +482,9 @@ define([
 			return foundGraphics;
 		},
 		/**
-		 * @name getGraphicByAttribute
+		 * @memberOf module:extras/controls/LayerQuery#
 		 * 
-		 * @param {GraphicLayer | string} layer
+		 * @param {esri.layer.GraphicLayer | string} layer
 		 * @param {string} attrName
 		 * @param {string} attrValue
          * @param {boolean} isLike
@@ -466,17 +522,6 @@ define([
 							foundGraphics.push(feature);
 						}
 					}
-					/*if(feature && feature.attributes) {
-					 if(!isLike){
-					 if (feature.attributes[attrName] == attrValue) {
-					 foundGraphics.push(feature);
-					 }
-					 }else{
-					 if (feature.attributes[attrName].indexOf(attrValue) != -1){
-					 foundGraphics.push(feature);
-					 }
-					 }
-					 }*/
 				}
 			}
 			return foundGraphics;
@@ -485,8 +530,7 @@ define([
 			return [location.protocol,"//",location.host,"/",location.pathname.split('/')[1]].join('');
 		},
 		/**
-		 * @name clear
-		 * 
+		 * @memberOf module:extras/controls/LayerQuery#
 		 */
 		clear: function(){
 			this.layerQueryLayer && this.layerQueryLayer.clear();
