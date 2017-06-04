@@ -32,33 +32,33 @@ function screenResize(){
         //Non-IE
         myWidth = $(window).innerWidth();
         myHeight = $(window).innerHeight();
-    } 
+    }
     else if(document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight)){
         //IE 6+ in 'standards compliant mode'
         myWidth = document.documentElement.clientWidth;
-        myHeight = document.documentElement.clientHeight;  
+        myHeight = document.documentElement.clientHeight;
     }
-    window.onresize = function () 
-    { 
+    window.onresize = function ()
+    {
         if( typeof( $(window).innerWidth() ) == 'number' ) {
             //Non-IE
             myWidth = window.innerWidth;
             myHeight = window.innerHeight;
-        } 
+        }
         else if(document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight)){
             //IE 6+ in 'standards compliant mode'
             myWidth = document.documentElement.clientWidth;
-            myHeight = document.documentElement.clientHeight;  
+            myHeight = document.documentElement.clientHeight;
         }
         mapheight();
-    } 
+    }
 }
 
 function codeChange(){
     if($("#code_area")[0].offsetWidth >0){
         $("#code_open").hide();
         $("#code_close").show();
-    }else{  
+    }else{
         $("#code_close").hide();
         $("#code_open").show();
     }
@@ -69,14 +69,14 @@ function toggleFooter () {
     var map = $('#container');
     var toggleImg = $('#toggle-img');
     if(code_area[0].offsetWidth <=0){//如果已经关闭，则打开
-        code_area.animate({ 
+        code_area.animate({
             width: 500
         }, 200);
     map.animate({
         width: myWidth - 785
     },200);
     }else{
-        code_area.animate({ 
+        code_area.animate({
              width: 0
         }, 200);
     map.animate({
@@ -97,7 +97,7 @@ function run(){
     //iframeHead = iframeHead.replace('您的密钥','E4805d16520de693a3fe707cdc962045');
     var iframeFooter=iframeContent.slice(nr,iframeContent.length);
     var iFrame=document.getElementById("container").contentWindow;
-    
+
     var isIE = /msie/.test(navigator.userAgent.toLowerCase());
     if(!isIE){
 	    iFrame.document.designMode = 'On';
@@ -105,7 +105,7 @@ function run(){
 	    iFrame.document.open();
 	    iFrame.document.write(iframeHead);
 	    iFrame.document.write(iframeFooter);
-	    iFrame.document.close(); 
+	    iFrame.document.close();
 	    iFrame.document.designMode = 'Off';
     }
 }
@@ -116,6 +116,9 @@ function mapheight(){
     $("#container").height(myHeight - 50);
 }
 function getresource(){
+
+
+
     init();
     function createXmlHttpRequest(){
         try {
@@ -131,6 +134,10 @@ function getresource(){
     }else{
         mylink = url+window.location.toString().split("#")[1]+".htm";
     }
+  $('#myresource').load('http://localhost:3000/demo/a1_2.htm', function (result) {
+    console.log(result)
+  })
+  return;
     var xmlHttp = createXmlHttpRequest();
     xmlHttp.open("get",mylink,false);
     xmlHttp.send();
@@ -140,10 +147,10 @@ function getresource(){
         //str = str.replace('E4805d16520de693a3fe707cdc962045', '您的密钥');
         //str = str.replace('63ebcdc7ae2791e5c03acda6aca6de52', '您的密钥');
         $("#myresource").val(str);
-        initEditor();   
+        initEditor();
         isInt = 1;
         isTab = 0;
-    }   
+    }
 }
 /**初始化文本编辑器**/
 function initEditor(){
@@ -154,7 +161,7 @@ function initEditor(){
                 styleActiveLine: true,
                 matchBrackets: true,
                 mode:"htmlmixed",
-                viewportMargin: Infinity              
+                viewportMargin: Infinity
             });
         }else{
             editor.setValue($("#myresource").val());
@@ -162,7 +169,7 @@ function initEditor(){
 }
 
 function refresh(){
-    $("#myresource").val(localStorage.content); 
+    $("#myresource").val(localStorage.content);
     initEditor();
     run();
     //$("#myresource").val(localStorage.content.replace('E4805d16520de693a3fe707cdc962045', '您的密钥'));
@@ -181,14 +188,14 @@ function setIntro(id){
 }
 
 /** 复制功能 **/
-var clip = null;    
+var clip = null;
 var copyTimer = null;   //显示复制成功的定时器
 function init() {
     clip = new ZeroClipboard.Client();
-    clip.setHandCursor( true );         
+    clip.setHandCursor( true );
     clip.addEventListener('load', function (client) {
         debugstr("Flash movie loaded and ready.");
-    });         
+    });
     clip.addEventListener('mouseOver', function (client) {
             // update the text on mouse over
     $("#d_clip_button").css({fontWeight:"bold"});
@@ -197,14 +204,14 @@ function init() {
         iframeContent=editor.getValue();
     }
     clip.setText( iframeContent );
-    }); 
+    });
     clip.addEventListener('mouseOut', function (client) {
         $("#d_clip_button").css({fontWeight:"normal"});
         // $("#d_clip_button").style.fontWeight = "normal";
     });
     clip.addEventListener('complete', function (client, text) {
-        debugstr("Copied text to clipboard: " + text );        
-    });         
+        debugstr("Copied text to clipboard: " + text );
+    });
     clip.glue('d_clip_button');
 }
 
@@ -214,7 +221,7 @@ function navigation(){
     var menu_body = $('#menu ul>li>.submenu');
     var menu_i = $('#menu ul>li>a>i');
     var flag = 0;
-    menu_head.on('click',function(event){   
+    menu_head.on('click',function(event){
         if(!$(this).hasClass("open clickState")){
             var des = ($(this).attr("listid")-1) * 52;
             $("#menu").animate({scrollTop:des},200);
@@ -245,7 +252,7 @@ function navigation(){
         //代码宽度还原
         $("#code_area").width(500);
         mapheight();
-    }); 
+    });
 }
 /**设置显示源码的拖拽效果**/
 function dragCode(){
@@ -265,12 +272,12 @@ function dragCode(){
             $("#code_area").width(bottomX);
             $("#myresource").width(bottomX*0.8);
             $("#container").width(myWidth - bottomX -287);
-            $("#overiframe").width(myWidth - bottomX -287);     
+            $("#overiframe").width(myWidth - bottomX -287);
         };
         document.onmouseup=function(){
             document.onmousemove=null;
             $("#overiframe").hide();
-            codeChange();           
+            codeChange();
             init();
         };
     });
@@ -286,14 +293,14 @@ function downLoadHtml(){
             if(page == description[i]){
                 $('container').src = 'demo/' + page + '.htm';
                 mapheight();
-                setIntro(page); 
+                setIntro(page);
             }
         }
         }else{
         page = "a1_2";
         $('#container').attr("src",'demo/a1_2.htm');
         mapheight();
-        setIntro(page); 
+        setIntro(page);
         menuLocation();
     }
 }
