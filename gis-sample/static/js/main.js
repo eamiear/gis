@@ -1,53 +1,30 @@
 var isInt = 0;      //判断源码是否已经获取过，如果获取过，则直接显示当前页面源码，否则从服务器获取
 var isTab = 1;
-var myWidth = 0, myHeight = 0, isOpen = 0, isFull = 0;editor = null;//获取浏览器高度和宽度,高亮代码编辑器
-
-var selfUrl = document.location.href.substring(0,document.location.href.lastIndexOf("/"));
-var url = selfUrl+"/demo/";
-var description = ["a1_1","a1_2","a1_3","a1_4","a1_5","a1_6","a1_7",
-    "a2_1","a2_2","a2_3",
-    "a3_1","a3_2","a3_3",
-    "a4_1","a4_2","a4_3",
-    "a5_1","a5_2","a5_3",
-    "a6_1","a6_2","a6_3","a7_1",
-    "b0_1","b0_2","b0_3","b0_4","b0_5","b0_6","b0_7",
-    "c1_1","c1_2","c1_3","c1_4","c1_5","c1_6","c1_7","c1_8","c1_9","c1_10","c1_11","c1_12","c1_13","c1_14","c1_15","c1_16","c1_17","c1_18","c1_19",
-    "c2_1","c2_2","c2_3","c2_4","c2_5","c2_6","c2_7","c2_8","c2_9",
-    "d0_1","d0_2","d0_3","d0_4","d0_5",
-    "e0_1","e0_2","e0_3","e0_4",
-    "f0_1","f0_2","f0_3","f0_4","f0_5","f0_6","f0_7",
-    "g0_1","g0_2","g0_3","g0_4","g0_5",
-    "h0_1","h0_2","h0_3","h0_4","h0_5","h0_6",
-    "i1_1","i1_2","i1_3","i1_4","i1_5","i1_6","i2_1","i3_1","i3_2","i3_3","i3_4",
-    "i4_1","i4_2","i4_3","i4_4","i4_5","i4_6","i4_7","i4_8","i4_9","i4_10",
-    "i5_1","i5_2","i5_3","i5_4","i5_5","i5_6","i5_7","i5_8",
-    "i6_1","i6_2",
-    "i7_1","i7_2","i7_3","i7_4",
-    "i8_1","i8_2","i8_3","i8_4",
-    "j1_0","j1_1","j1_2","j1_3","j2_0","j3_0","j4_0","j5_3","j5_4","j5_5","j5_7","j5_8","j5_9",
-    "k0_1","k0_2","k0_3"
-];
-
+var myWidth = 0, myHeight = 0, isOpen = 0, editor = null;//获取浏览器高度和宽度,高亮代码编辑器
+var prefixUrl = "views/",
+  currentPage = null,
+  firstPage,
+  loader = new M.Loader({el: '#mapContent'});
 
 function screenResize(){
-    function initLayout(){
-        if(typeof( $(window).innerWidth()) == 'number' ) {
-            //Non-IE
-            myWidth = $(window).innerWidth();
-            myHeight = $(window).innerHeight();
-        }
-        else if(document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight)){
-            //IE 6+ in 'standards compliant mode'
-            myWidth = document.documentElement.clientWidth;
-            myHeight = document.documentElement.clientHeight;
-        }
+  function initLayout(){
+    if(typeof( $(window).innerWidth()) == 'number' ) {
+      //Non-IE
+      myWidth = $(window).innerWidth();
+      myHeight = $(window).innerHeight();
     }
+    else if(document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight)){
+      //IE 6+ in 'standards compliant mode'
+      myWidth = document.documentElement.clientWidth;
+      myHeight = document.documentElement.clientHeight;
+    }
+  }
 
+  initLayout();
+  window.onresize = function (){
     initLayout();
-    window.onresize = function (){
-        initLayout();
-        mapheight();
-    }
+    mapheight();
+  }
 }
 
 /** 设置地图容器宽度 **/
@@ -57,13 +34,13 @@ function mapheight(){
 }
 
 function codeChange(){
-    if($("#code_area")[0].offsetWidth >0){
-        $("#code_open").hide();
-        $("#code_close").show();
-    }else{
-        $("#code_close").hide();
-        $("#code_open").show();
-    }
+  if($("#code_area")[0].offsetWidth >0){
+    $("#code_open").hide();
+    $("#code_close").show();
+  }else{
+    $("#code_close").hide();
+    $("#code_open").show();
+  }
 }
 /**开关代码编辑器**/
 function toggleFooter () {
@@ -90,34 +67,25 @@ function toggleFooter () {
 
 // 获取资源文件
 function getresource(){
-    var mylink;
-    if(window.location.toString().indexOf("#") == -1){
-      //  mylink = url+"a1_2.htm";
-        mylink = "views/demo/"+"a1_2.htm";
-    }else{
-      // mylink = url+window.location.toString().split("#")[1]+".htm";
-        mylink = "views/demo/"+window.location.toString().split("#")[1]+".htm";
-    }
-
-    $.get(mylink, function (result) {
-        $("#myresource").val(result);
-        localStorage.content = result;
-        initEditor();
-        isInt = 1;
-        isTab = 0;
-    });
+  var link = prefixUrl + (currentPage ? currentPage : firstPage);
+  $.get(link, function (result) {
+      $("#myresource").val(result);
+      localStorage.content = result;
+      initEditor();
+      isInt = 1;
+      isTab = 0;
+  });
 }
 
 // 设置资源到iframe
 function setIntro(id){
-    $('#container').attr("src",id);
-    var location = window.location.toString();
-    if (location.indexOf('#') > 0) {
-        location = location.substr(0, location.indexOf('#'));
-    }
-    window.location = location += '#' + id;
-    isTab = 1;
-    getresource();
+  loader.create();
+  $('#container').attr("src",prefixUrl + id).on('load', function () {
+    loader.destroy();
+  });
+  currentPage = id;
+  isTab = 1;
+  getresource();
 }
 
 /**初始化文本编辑器**/
@@ -200,7 +168,8 @@ function initNavigation(){
     new M.Create({
         elem: '#menu',
         data: menuDatas
-    })
+    });
+  firstPage = $('.submenu').find('a').attr('href');
 }
 /**左侧导航**/
 function navigation(){
@@ -239,6 +208,7 @@ function navigation(){
         //代码宽度还原
         $("#code_area").width(500);
         mapheight();
+      return false;
     });
 }
 /**设置显示源码的拖拽效果**/
@@ -269,56 +239,42 @@ function dragCode(){
         };
     });
 }
-/**跳转到对应的html页面**/
-function downLoadHtml(){
-    var location = window.location.toString();
-        var page;
-        var index = location.indexOf('#');
-        if (index > 0) {
-            page = location.substr(index + 1, location.length - 1);
-            for(var i=0;i<description.length;i++){
-                if(page == description[i]){
-                    $('container').src = 'demo/' + page + '.htm';
-                    mapheight();
-                    setIntro(page);
-                }
-            }
-        }else{
-            page = "a1_2";
-            $('#container').attr("src",'demo/a1_2.htm');
-            mapheight();
-            setIntro(page);
-            menuLocation();
-        }
-}
 /**刷新页面保证menu的定位**/
 function menuLocation(){
-    var id = window.location.toString().split("#")[1],
-        $menu;
-    if(id){
-	    localStorage.id = id;
-        $menu = $("#menu a[href$='"+localStorage.id);
-        $menu.parents("li").find(".one_head").addClass("open clickState");
-        $menu.parents("li").find("i").removeClass("t_close").addClass("t_open");
-        $menu.parents(".submenu").show();
-        $menu.addClass("clickState");
+    var $menu;
+    if(firstPage){
+      $menu = $("#menu a[href$='"+ firstPage);
+      $menu.parents("li").find(".one_head").addClass("open clickState");
+      $menu.parents("li").find("i").removeClass("t_close").addClass("t_open");
+      $menu.parents(".submenu").show();
+      $menu.addClass("clickState");
 	    var des = (($menu.parents("li").find(".header").attr("listid"))-1) * 52;
 	    $("#menu").animate({scrollTop:des},0);
     }
 }
+function initContainer(){
+  if(firstPage){
+    loader.create();
+    $('#container').attr('src',firstPage).on('load', function () {
+      loader.destroy();
+    });
+  }
+}
+function init() {
+  initNavigation();
+  navigation();
+  menuLocation();
+  initContainer();
+}
 /**页面初始化**/
 (function(){
-    //setTimeout(downLoadHtml,2);
-    initNavigation();
-    navigation();
+  init();
+  getresource();
 
-    menuLocation();
-    getresource();
+  dragCode();
+  codeChange();
 
-    dragCode();
-    codeChange();
-
-    initClipboard();
-    screenResize();
+  initClipboard();
+  screenResize();
 })();
 
