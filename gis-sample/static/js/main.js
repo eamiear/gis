@@ -139,29 +139,33 @@ function run(){
 var clip = null;
 var copyTimer = null;   //显示复制成功的定时器
 function initClipboard() {
+  if(clip){
+    clip.reposition('d_clip_button');
+  }else{
     ZeroClipboard.setMoviePath('./static/assets/zeroclipboard/ZeroClipboard.swf');
     clip = new ZeroClipboard.Client();
     clip.setHandCursor( true );
     clip.addEventListener('load', function (client) {
-        window.console && console.info("Flash movie loaded and ready.");
+      window.console && console.info("Flash movie loaded and ready.");
     });
     clip.addEventListener('mouseOver', function (client) {
-        // update the text on mouse over
-        $("#d_clip_button").css({fontWeight:"bold"});
-        var iframeContent=$("#myresource").val();
-        if(editor){
-            iframeContent=editor.getValue();
-        }
-        clip.setText( iframeContent );
+      // update the text on mouse over
+      $("#d_clip_button").css({fontWeight:"bold"});
+      var iframeContent=$("#myresource").val();
+      if(editor){
+        iframeContent=editor.getValue();
+      }
+      clip.setText( iframeContent );
     });
     clip.addEventListener('mouseOut', function (client) {
-        $("#d_clip_button").css({fontWeight:"normal"});
-        // $("#d_clip_button").style.fontWeight = "normal";
+      $("#d_clip_button").css({fontWeight:"normal"});
+      // $("#d_clip_button").style.fontWeight = "normal";
     });
     clip.addEventListener('complete', function (client, text) {
-        window.console && console.info("Copied text to clipboard: " + text );
+      window.console && console.info("Copied text to clipboard: " + text );
     });
     clip.glue('d_clip_button');
+  }
 }
 
 function initNavigation(){
@@ -235,7 +239,7 @@ function dragCode(){
             document.onmousemove=null;
             $("#overiframe").hide();
             codeChange();
-            //initClipboard();
+            initClipboard();
         };
     });
 }

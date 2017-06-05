@@ -19,7 +19,7 @@ var dealSomingAsync = function(path, fileReg, replaceReg, fn) {
     })
 };
 
-dealSomingAsync(path.resolve(__dirname, 'demo'), /\.htm/, /(192.168.16.177:8088)/g, function() {
+/*dealSomingAsync(path.resolve(__dirname, 'demo'), /\.htm/, /(192.168.16.177:8088)/g, function() {
     return '172.16.16.109:8088'
 });
 
@@ -29,4 +29,8 @@ dealSomingAsync(path.resolve(__dirname, 'demo'), /\.js/, /(192.168.16.177:8088)/
 
 dealSomingAsync(path.resolve(__dirname, 'demo'), /\.htm/, /(jsLib)/g, function() {
     return 'src/assets'
+});*/
+
+dealSomingAsync(path.resolve(__dirname, 'views/demo'), /\.htm/, /(..\/src\/assets\/jquery\/jquery-1.11.2.min.js)/g, function() {
+  return '../../static/assets/jquery/jquery-1.11.2.min.js'
 });

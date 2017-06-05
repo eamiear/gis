@@ -8,7 +8,7 @@ djConfig = {
     parseOnLoad: true,
     measureTotal:0,
     modulePaths: {
-        "extras": selfUrl +"/src/scripts/gis/extras"
+        "extras": selfUrl +"/static/assets/gis/extras"
     }
 };
 
