@@ -59,7 +59,7 @@ gulp.task('compact-css', function () {
          }))
         .pipe(cssmin())
         .pipe(gulp.dest('./build/'))
-        .pipe(gulp.dest('./sample/static/css'));
+        .pipe(gulp.dest('./sample/static/assets/gis'));
     //.pipe(notify({ message: 'compact-css task complete' }))
 });
 gulp.task('compact-js', function () {
@@ -67,7 +67,7 @@ gulp.task('compact-js', function () {
         //.pipe(concat('gis.js'))
         .pipe(uglify())
         .pipe(gulp.dest('./build/'))
-        .pipe(gulp.dest('./sample/static/js'));
+        .pipe(gulp.dest('./sample/static/assets/gis'));
     //.pipe(notify({ message: 'compact-js task complete' }));
 });
 

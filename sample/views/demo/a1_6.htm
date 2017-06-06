@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>同时加载两个地图</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"/>
+	<link rel="stylesheet" href="https://js.arcgis.com/3.15/dijit/themes/claro/claro.css">
+    <link rel="stylesheet" href="https://js.arcgis.com/3.15/esri/css/esri.css">
+	<style type="text/css">
+	body, html {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}
+	#map1_container,#map2_container {width:100%;height:400px;float:left;overflow: hidden;margin:0;}
+	#allmap1{margin:0 0 3px;height:100%;}
+	#allmap2{margin:3px 0 0;height:100%;}
+	</style>
+	<script type="text/javascript" src="../../static/assets/gis/config/config.js"></script>
+	<script src="http://172.16.16.109:8088/jsapi/3.14/init.js"></script>
+</head>
+<body>
+	<div id="map1_container"><div id="allmap1"></div></div>
+	<div id="map2_container"><div id="allmap2"></div></div>
+</body>
+</html>
+<script type="text/javascript">
+dojo.require("extras.MapInitObject");
+var GisObject,GisObject02;
+
+dojo.ready(function(){
+	GisObject = new extras.MapInitObject("allmap1");
+	GisObject.setMapOptions({
+		logo:false,
+		extent : "12557877.595482401,2596928.9267310356,12723134.450635016,2688653.360673282",
+		level:10,
+		center:null
+	});
+	
+	GisObject.addLayers([{
+		"id": "800",
+		"layerId": 1307,
+		"online":true,
+		"name": "百度电子地图",
+		"suffix": "png",
+		"tileSize": "256",
+		"tileType": "Baidumap",
+		"mapStyle":"roadmap",
+		"tile_url": "http://192.168.16.177:8080/bdamp"
+	}]);
+	//GisObject.addDefaultLayers();
+});
+</script>

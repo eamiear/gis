@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>地图展示</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"/>
+<!-- 	<link rel="stylesheet" href="http://172.16.16.109:8088/jsapi/3.14/dijit/themes/claro/claro.css"> -->
+<!--     <link rel="stylesheet" href="http://172.16.16.109:8088/jsapi/3.14/esri/css/esri.css"> -->
+<!--	<link rel="stylesheet" href="https://js.arcgis.com/3.16/dijit/themes/claro/claro.css">
+	<link rel="stylesheet" href="https://js.arcgis.com/3.16/esri/css/esri.css">-->
+	<link rel="stylesheet" href="http://172.16.16.109:8088/jsapi/3.14/dijit/themes/claro/claro.css">
+	<link rel="stylesheet" href="http://172.16.16.109:8088/jsapi/3.14/esri/css/esri.css">
+	<style type="text/css">
+		body, html,#mapDiv {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}
+	</style>
+	<script type="text/javascript" src="../../static/assets/gis/config/config.js"></script>
+<!-- 	<script src="http://172.16.16.109:8088/jsapi/3.14/init.js"></script> -->
+	<!--<script src="https://js.arcgis.com/3.16/"></script>-->
+	<script src="http://172.16.16.109:8088/jsapi/3.14/init.js"></script>
+</head>
+<body>
+	<div id="mapDiv"></div>
+</body>
+</html>
+<script type="text/javascript">
+dojo.require("extras.MapInitObject");
+var GisObject;
+
+dojo.ready(function(){
+	GisObject = new extras.MapInitObject("mapDiv");
+	GisObject.setMapOptions({
+		logo:false,
+		extent : "12557877.595482401,2596928.9267310356,12723134.450635016,2688653.360673282",
+		level:5,
+		center:null
+	});
+	
+	GisObject.addDefaultLayers();
+	setTimeout(function(){
+		GisObject.loadDefaultCluster();
+	},3000);
+});
+</script>

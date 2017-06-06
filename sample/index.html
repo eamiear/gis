@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>地图API示例</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="stylesheet" type="text/css" href="static/assets/codemirror/codemirror.css">
+  <link rel="stylesheet" type="text/css" href="static/css/base.css">
+</head>
+<body onLoad="mapheight();">
+<div id="header">
+  <a class="logo">
+    <img src="static/images/logo.png">
+  </a>
+</div>
+<div id="content">
+  <div id="menu">
+    <!-- menu list -->
+  </div>
+  <div id="code_area" unselectable="on">
+    <div id="openbar" unselectable="on">
+      <div id="d_menu">
+        <div id="d_clip_container"><a id="d_clip_button" class="copy" style="z-index: 1000;">复制</a></div>
+        <div id="d_run_container"><a id="d_run_button" onClick="run();" class="run">运行</a></div>
+        <div id="d_refresh_container"><a id="d_refresh_button" onClick="refresh();">刷新</a></div>
+        <div id="d_help_container"><a id="d_help_button" href="http://jshelp.thinkgis.cn/jsapi/draw-amd.html" target="_blank">帮助</a></div>
+      </div>
+      <p>源代码编辑器</p>
+    </div>
+    <textarea id="myresource" class="clearfix" onChange="clip.setText(this.value)"></textarea>
+    <div id="code_close" onClick="toggleFooter();"></div>
+  </div>
+  <div id="drag"></div>
+  <div id="mapContent" class="clearfix">
+    <div id="code_open" onClick="toggleFooter();"></div>
+    <div id="overiframe" style=" background:url(about:_blank);" unselectable="on"></div>
+    <iframe class="" style="width: 100%; height: 100%;" unselectable="on" name="container" id="container"></iframe>
+  </div>
+</div>
+
+
+<script type="text/javascript" src="static/assets/jquery/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" src="static/assets/zeroclipboard/ZeroClipboard.js"></script>
+<script type="text/javascript" src="static/assets/codemirror/codemirror.min.js"></script>
+<script type="text/javascript" src="static/js/m.js"></script>
+<script type="text/javascript" src="static/js/items.js"></script>
+<script type="text/javascript" src="static/js/main.js"></script>
+
+</body>
+</html>

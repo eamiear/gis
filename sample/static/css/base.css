@@ -11,16 +11,16 @@ body{
     width: 10px;
 }
 ::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 6px #d1cfcf; 
+    box-shadow: inset 0 0 6px #d1cfcf;
     border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb {
     border-radius: 12px;
-    background: #f7f7f7; 
-    -webkit-box-shadow: inset 0 0 6px #d1cfcf; 
+    background: #f7f7f7;
+    -webkit-box-shadow: inset 0 0 6px #d1cfcf;
 }
 ::-webkit-scrollbar-thumb:window-inactive {
-    background: rgba(245,245,245,0.4); 
+    background: rgba(245,245,245,0.4);
 }
 /**responsive**/
 @media screen and (max-width: 1024px){
@@ -188,7 +188,7 @@ body{
 	-webkit-user-select:none;
 	-moz-user-select:none;
 }
-#code_area #openbar span.split, 
+#code_area #openbar span.split,
 #code_area #openbar>a{
 	line-height:36px;
 	color:#000;
@@ -263,11 +263,11 @@ body{
 	margin-top: -45px;
 }
 /**��ͼ����**/
-#overiframe { 
-	width:100%; 
+#overiframe {
+	width:100%;
 	height:100%;
 	position:absolute;
-	z-index:999; 
+	z-index:999;
 	display:none;
 	-webkit-user-select:none;
 }
@@ -296,17 +296,17 @@ body{
 	padding-left:2px;
 }
 #drag{
-	width: 2px;
+	width: 4px;
 	height: 100%;
 	background: #eee;
 	cursor: w-resize;
 	float:left;
 }
 
-.esriPopup .titleButton.maximize {  
-     display: none;  
-} 
+.esriPopup .titleButton.maximize {
+     display: none;
+}
 
-.esriPopup .action.zoomTo {  
-     display: none;  
-} 
+.esriPopup .action.zoomTo {
+     display: none;
+}

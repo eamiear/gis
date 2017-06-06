@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>自定义属性信息提示窗</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"/>
+	<link rel="stylesheet" href="http://172.16.16.109:8088/jsapi/3.14/dijit/themes/claro/claro.css">
+    <link rel="stylesheet" href="http://172.16.16.109:8088/jsapi/3.14/esri/css/esri.css">
+	<style type="text/css">
+		body, html,#mapDiv {width: 100%;height: 600px;overflow: hidden;margin:0;font-family:"微软雅黑";}
+		#toolsPanel{
+			width: 100%;height: 100px;overflow: hidden;margin:0;font-family:"微软雅黑";margin-left:5px; font-size:14px;color: #000000;
+		}
+		
+	</style>
+	<script type="text/javascript" src="../../static/assets/gis/config/config.js"></script>
+	<script type="text/javascript" src="../../static/assets/jquery/jquery-1.11.2.min.js"></script>
+	<script src="http://172.16.16.109:8088/jsapi/3.14/init.js"></script>
+</head>
+<body>
+	<div id="mapDiv"></div>
+</body>
+</html>
+<script type="text/javascript">
+dojo.require("extras.MapInitObject");
+dojo.require("esri.geometry.Extent");
+dojo.require("esri.dijit.PopupTemplate");
+
+
+var GisObject,scaleBar;
+var isClick = false;
+dojo.ready(function(){
+	GisObject = new extras.MapInitObject("mapDiv");
+	
+	GisObject.setMapOptions({
+		logo:false,
+		extent : "12557877.595482401,2596928.9267310356,12723134.450635016,2688653.360673282",
+		level:10,
+		center:null
+	});
+	
+	GisObject.addDefaultLayers();
+	
+	setTimeout(function(){
+		GisObject.layerManager.addGraphicToMap("Gxx_Layer_Test",0,{
+			showpopuptype:0,
+			"geometries":[{
+		       "id":"XX",   //唯一ID
+		       "x":113.33,  //经纬度坐标
+		       "y":23.12,    //经纬度坐标
+		       "attributes":{
+			    	"title":"XX人员信息窗",  //将对应属信息回传
+			    	"name":"测试名称",
+			    	"sex":"男",
+			    	"address":"测试地址",
+			    	"phone":"联系方式"
+			    }
+		    }],
+		    "symbol":{
+				"type":"esriPMS", //点位图片展示
+				"angle":0,    //旋转角度
+				"height":36,    //高度
+				"width":36,    //宽度
+				"xoffset":0,  //x偏移量
+				"yoffset":0,  //y偏移量
+				"url":selfUrl + "/themes/default/img/tt.png" //图片访问路径
+		    },
+		    "infotemplate":{
+		    	"title":"{title}",  //指定对应points -> attributes中的标题
+		            "fieldInfos":[{
+		    	   "fieldName":"name",//  指定对应points ->attributes中的对应字段 
+		    	   "label":"姓名",         //显示弹窗信息对应的中文名称
+		               "visible":true          //默认为显示状态 true,
+		    	},{
+		    	   "fieldName":"sex",//  指定对应points ->attributes中的对应字段 
+		    	   "label":"性别",         //显示弹窗信息对应的中文名称
+		               "visible":true          //默认为显示状态 true,
+		    	},{
+		    	   "fieldName":"address",//  指定对应points ->attributes中的对应字段 
+		    	   "label":"地址",         //显示弹窗信息对应的中文名称
+		               "visible":true          //默认为显示状态 true,
+		    	},{
+		    	   "fieldName":"phone",//  指定对应points ->attributes中的对应字段 
+		    	   "label":"联系方式",         //显示弹窗信息对应的中文名称
+		           "visible":true          //默认为显示状态 true,
+		    	}]
+		    }
+		})
+	},2000)
+	
+});
+
+</script>
