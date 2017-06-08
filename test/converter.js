@@ -34,9 +34,7 @@ const createFileOverviewDescription = (className,modulePath,requirePath) => {
 };
 
 const createParam = (type,name,index) => {
-  return index == 0 ? `@param {${type}} ${name}
-  ` : `   * @param {${type}} ${name}
-  `;
+  return index == 0 ? `@param {${type}} ${name}` : `\n     * @param {${type}} ${name}`;
 };
 
 /* 构造函数 */
@@ -44,34 +42,42 @@ const createConstructor = (params,options,constructorBody) => {
   return `
     /**
      * @constructs
-     ${params}
+     * ${params}
      */
     constructor: function (${options}) {
       ${constructorBody}
-    }
+    },
   `;
 };
 
 /* 方法*/
-const createMethod = (description,moduleName,params,returns,method) => {
+const createMethod = (description,moduleName,params,returns,method,methodName) => {
   return `
     /**
      * @description ${description}
      * @method
      * @memberOf module:${moduleName}#
      * ${params}
-     * @returns ${returns}
+     * @example
+     * <caption>Usage of ${methodName}</caption>
+     *
+     * ${returns}
      */
     ${method}
   `;
 };
 
+const createReturn = (returns)=>{
+  return returns ? `@returns ${returns}` : '';
+};
+
 /* 属性 */
 const createAttributes = (moduleName,attribute) => {
-  return `
-   /** @member ${moduleName} */
-    ${attribute},
+  let attrs = null;
+  attrs = `
+  /** @member ${moduleName} */${attribute},
   `;
+  return attrs;
 };
 
 const getMethodBody = (method,boundaryStart,boundaryEnd)=>{
@@ -125,7 +131,9 @@ const cleanComments = (data)=>{
   //console.log(test.match(/\/\*(\s|.)*?\*\//g));
   //console.log(test.replace(/\/\*(\s|.)*?\*\//g,''))
 
-  data.replace(/\/\*(\s|.)*?\*\//g,'');
+  //var t = '的 //dsfallglla'
+  //console.log(t.replace(/\/\/(\s|\w*|.*?)/,''))
+  return data.replace(/\/\*(\s|.)*?\*\//g,'').replace(/\/\/(\s|\w*|.*?)/,'');
 };
 
 const createDefineHeader = (data) => {
@@ -216,7 +224,7 @@ const createDefineHeader = (data) => {
   const constructorMethod = methodBody.slice(methodBody.indexOf(constructorBoundary[0]),methodBody.indexOf(constructorBoundary[1]));
   let constructorParams = constructorMethod.match(/\:\s*\w+\((.*?)\)/)[1];
   constructorParams = constructorParams ? constructorParams : '';
-  const constructorMethodBody = constructorMethod.slice(constructorMethod.indexOf('{')+1);
+  const constructorMethodBody = constructorMethod.slice(constructorMethod.indexOf('{')+1,constructorMethod.lastIndexOf('},'));
 
   /*
   * * @param {Object} id	工程图层ID
@@ -233,6 +241,7 @@ const createDefineHeader = (data) => {
   // atrributes + constructor + method
 
   const constructorFormat = createConstructor(paramsFormat.join(''),constructorParams,constructorMethodBody);
+  //console.log(constructorMethodBody);
   //console.log(methodBody.slice(methodBody.indexOf('constructor')));
   let methodsBodyStr = atrributesFormatStr.join('') + constructorFormat;
 
@@ -257,8 +266,32 @@ const createDefineHeader = (data) => {
       }
     }).join('');
 
-    const methodItem = createMethod('',moduleClassPath,paramsFormat,{},methods);
-    //console.log(methodItem);
+    const methodName = item.slice(0,item.indexOf(':')).trim();
+    let returnType = '';
+    if(methods.indexOf('return') != -1){
+      let returns = methods.slice(methods.indexOf('return') + 'return'.length).split(';')[0];
+      //var t = ' (d ) ';
+      //console.log(t.match(/\s\((\s|\w*)*\)/g));
+      const strings = returns.match(/\s\((\s|\w*)*\)/g);
+      //var t = `
+      //  {
+      //    dsfsfd
+      //  }
+      //`;
+      console.log(returns)
+      const objects = returns.match(/\{.*\}/g);
+      //console.log(objects)
+      if(strings && strings[0]){
+        returnType = createReturn('string');
+      }else if(objects){
+
+      }
+    }
+    //console.log(returnType)
+    const methodItem = createMethod('',moduleClassPath,paramsFormat,returnType,methods,methodName);
+
+
+
     methodSubBodyStr.push(methodItem);
   });
   methodsBodyStr += methodSubBodyStr.join('');
@@ -273,8 +306,8 @@ const generate = (path,out,fileReg) => {
     if(fileReg.test(item)){
       const filepath = path + '/' + item;
       const outputPath = out + '/' + item;
-      const data = fs.readFileSync(filepath,'utf-8');
-      //cleanComments(data);
+      let data = fs.readFileSync(filepath,'utf-8');
+      data = cleanComments(data);
       fs.writeFile(outputPath,createDefineHeader(data),(err) => {
         err ? console.log('convert fail: ' + err) : console.log(item + ' convert success!')
       })
