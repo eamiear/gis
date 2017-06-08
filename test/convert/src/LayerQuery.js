@@ -15,12 +15,19 @@ dojo.require("esri.dijit.PopupTemplate");
 
 
 dojo.declare("extras.control.LayerQuery",null,{
+  //dsdsf
 	layerQueryLayer:null,
-	constructor:function()
+  coords: null,
+  screenCoords: null,
+  _frameIndex: 0,
+  _framesAdvancing: true,
+  _interval: null,
+  templateString: "<div class='highlight'></div>",
+	constructor:function(options,tag)
 	{
 		//发布toolBarLoadedEvent监听(用来获得MAP和Toolbar)
         dojo.subscribe("toolBarLoadedEvent", this, "initLayerQuery");
-        
+
         //默认样式
         this.defaultSymbol = {
             "POINT": {
@@ -83,7 +90,7 @@ dojo.declare("extras.control.LayerQuery",null,{
                 }
             }
         };
-        
+
         this.layerQueryLayer = new esri.layers.GraphicsLayer({id:"GXX_GIS_QUERYRESULT_LAYER"});
 	},
 	initLayerQuery : function(toolbar){
@@ -113,47 +120,6 @@ dojo.declare("extras.control.LayerQuery",null,{
 			this.layerQueryLayer.add(graphic);
 		}));
 	},
-	circleSearch:function(){
-		this.startDraw(esri.toolbars.draw.CIRCLE, new esri.symbols.SimpleFillSymbol(this.defaultSymbol.POLYGON),dojo.hitch(this,function(graphic){
-			this.layerQueryLayer.add(graphic);
-		
-			var resultData = this.queryByGeometry("GXX_Device",graphic.geometry);
-			
-			
-			dojo.forEach(resultData, dojo.hitch(this,function(graphic, index){
-				//var pt = esri.geometry.webMercatorUtils.geographicToWebMercator(graphic.geometry); 
-				var pt = graphic.geometry;
-				var sms = null;  
-	            switch(index){
-	            	case 0:
-	            		sms = new esri.symbols.PictureMarkerSymbol(baseUrl+"/themes/default/images/location/1.png",36,36);  
-	            		break;
-	            	case 1:
-	            		sms = new esri.symbols.PictureMarkerSymbol(baseUrl+"/themes/default/images/location/2.png",36,36);
-	            		break;
-	            	case 2:
-	            		sms = new esri.symbols.PictureMarkerSymbol(baseUrl+"/themes/default/images/location/3.png",36,36);
-	            		break;
-	            	case 3:
-	            		sms = new esri.symbols.PictureMarkerSymbol(baseUrl+"/themes/default/images/location/4.png",36,36);
-	            		break;
-	            	default:
-	            		sms = new esri.symbols.PictureMarkerSymbol(baseUrl+"/themes/default/images/location/0.png",36,36);
-	            		break;
-	            } 
-	            
-	            var template = new esri.dijit.PopupTemplate({
-		          title: "{title}",
-		          description:"{description}",
-		        });
-	            
-	            var newGraphic = new esri.Graphic(pt, sms, {title:"标题"+index,description:"内容"+index},template);
-	            this.layerQueryLayer.add(newGraphic);
-			}));
-			
-			
-		}));
-	},
 	/**
 	 * 属性查询
 	 * @param {Object} id	工程图层ID
@@ -168,122 +134,7 @@ dojo.declare("extras.control.LayerQuery",null,{
 		param.attrValue = attrValue;
 		param.isLike = isLike || true;
 		return this.queryByLayerId(1,param)
-	},
-	/**
-	 * 空间查询
-	 * @param {Object} id
-	 * @param {Object} geometry
-	 * @param {Object} sussFunction
-	 * @param {Object} errorFunction
-	 */
-	queryByGeometry : function(layerId,geometry){
-		var param = new SpatialQueryParam();
-		param.layerId = layerId;
-		param.geometry = geometry;
-		return this.queryByLayerId(2,param)
-	},
-	/**
-	 * 综合查询
-	 * @param {Object} params
-	 * @param {Object} sussFunction
-	 * @param {Object} errorFunction
-	 */
-	queryByAttrAndGeo : function(layerId,geometry,attrName,attrValue,isLike){
-		var param = new SpatialQueryParam();
-		param.layerId = layerId;
-		param.geometry = geometry;
-		param.attrName = attrName;
-		param.attrValue = attrValue;
-		return this.queryByLayerId(3,param)
-	},
-	queryByLayerId:function(type,param){
-		var layerId = param.layerId;
-		var attrName = param.attrName;
-		var attrValue = param.attrValue;
-		var geometry = param.geometry || null;
-		var isLike = param.isLike || true; //默认是模糊查询
-		var layer = this.map.getLayer(layerId);
-		var resultData = null;
-		if(layer){
-			if(type == 1){ // 属性是查询
-				resultData = this.getGraphicByAttribute(layer,attrName,attrValue,isLike);
-			}else if(type == 2){ //空间查询
-				resultData = this.getGraphicByGeometry(layer,geometry);
-			}else if(type == 3){ //属性空间联合查询
-				resultData = this.getGraphicByAttributeAndGeometry(layer,geometry,attrName,attrValue,isLike);
-			}
-		}
-		return resultData;
-	},
-	 getGraphicBy: function(layer,property, value) {
-        var feature = null;
-        if(layer){
-        	var graphics = layer.graphics;
-	        for(var i=0, len= graphics.length; i<len; ++i) {
-	            if(graphics[i][property] == value) {
-	                feature = this.features[i];
-	                break;
-	            }
-	        }
-        }
-        return feature;
-    },
-    getGraphicById: function(layer,idKey) {
-        return this.getGraphicBy(layer,'id', idKey);
-    },
-    getAllGraphic:function(layer){
-    	return layer.graphics;
-    },
-    getGraphicByAttributeAndGeometry:function(layer,geometry,attrName,attrValue,isLike){
-    	var foundGraphics = null;
-    	var resultData = this.getGraphicByAttribute(layer,attrName,attrValue,isLike);
-    	if(resultData && resultData.lenght > 0){
-    		foundGraphics = [];
-	    	dojo.forEach(resultData,function(graphic, index){
-	    		if(geometry.contains(graphic.geometry)){
-	    			foundGraphics.push(graphic);
-				 }
-	    	});
-    	}
-    	return foundGraphics;
-    },
-    getGraphicByGeometry:function(layer,geometry){
-    	 var foundGraphics = null;
-    	 if(layer && geometry){
-    		 foundGraphics = [];
-    		 var allGraphic = this.getAllGraphic(layer);
-    		 for(var i = 0,len = allGraphic.length; i < len; i++) {
-    			 var g = allGraphic[i];
-    			 if(geometry.contains(g.geometry.getPoint(0))){
-    				 foundGraphics.push(g);
-    			 }
-    		 }
-    	 }
-    	 return foundGraphics;
-    },
-    getGraphicByAttribute: function(layer,attrName, attrValue,isLike) {
-       var foundGraphics = null;
-	       if(layer){
-	    	   var feature = null;
-	    	   foundGraphics = [];
-	    	   var graphics = layer.graphics;
-		       for(var i = 0,len = graphics.length; i < len; i++) {            
-		           feature = graphics[i];
-		           if(feature && feature.attributes) {
-		        	   if(!isLike){
-			               if (feature.attributes[attrName] == attrValue) {
-			            	   foundGraphics.push(feature);
-			               }
-		               }else{
-		            	   if (feature.attributes[attrName].indexOf(attrValue) != -1){
-		            		   foundGraphics.push(feature);
-			               }
-		               }
-		           }
-		       }
-	       }
-        return foundGraphics;
-    }
+	}
 });
 
 var SpatialQueryParam = function(){
