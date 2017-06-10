@@ -1,0 +1,34 @@
+{
+  "tags": {
+    "allowUnknownTags": true
+  },
+  "opts": {
+    "private": true,
+
+    //"template": "./node_modules/jsdoc-oblivion/template",
+    "destination": "./documents/doc/gois-api"
+  },
+  "plugins": [
+    "plugins/markdown"
+  ],
+  "templates": {
+    "cleverLinks": false,
+    "monospaceLinks": false,
+    "default": {
+      "outputSourceFiles": true
+    },
+    "path": "./documents/generator/templates/jsdoc3Template",
+    "anyTemplateSpecificParameter": "whatever",
+
+    "systemName"            : "Gosuncn Gis Api",
+    "footer"                : "",
+    "copyright"             : "gosuncn © 2017",
+    "includeDate"           : true,
+    "navType"               : "inline",
+    //"theme"                 : "oblivion",
+    "theme"                 : "cosmo",
+    "inverseNav"            : true,
+    "linenums"              : true,
+    "dateFormat"            : "YYYY-MM-DD, h:mm:ss a"
+  }
+}
