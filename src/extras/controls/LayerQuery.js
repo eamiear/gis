@@ -1,391 +1,290 @@
 /**
- * @fileOverview This is base definition for all composed classes defined by the system
- * Module representing a LayerQuery.
- * @module extras/controls/LayerQuery
- *
- * @requires dojo/_base/declare
- * @requires dojo/_base/Deferred
- * @requires esri/graphic
- * @requires esri/layers/GraphicsLayer
- * @requires esri/geometry/Point
- * @requires esri/symbols/PictureMarkerSymbol
- * @requires esri/symbols/SimpleLineSymbol
- * @requires esri/symbols/SimpleFillSymbol
- * @requires esri/geometry/webMercatorUtils
- */
-define([
-  "dojo/_base/declare",
-  "dojo/_base/Deferred",
-  "esri/graphic",
-  "esri/layers/GraphicsLayer",
-  "esri/geometry/Point",
-  "esri/symbols/PictureMarkerSymbol",
-  "esri/symbols/SimpleLineSymbol",
-  "esri/symbols/SimpleFillSymbol",
-  "esri/geometry/webMercatorUtils"
-], function (
-   declare,
-   Deferred,
-   Graphic,
-   GraphicsLayer,
-   Point,
-   PictureMarkerSymbol,
-   SimpleLineSymbol,
-   SimpleFillSymbol,
-   webMercatorUtils
-) {
-  return declare([], /**  @lends module:extras/controls/LayerQuery */{
-    /** @member layerQueryLayer */
+* Created by sk_ on 2017-6-10.
+*/
+
+/**
+* @fileOverview This is base definition for all composed classes defined by the system
+* Module representing a LayerQuery.
+* @module extras/control/LayerQuery
+*
+* 
+* @requires esri.graphic 
+* @requires esri.layers.GraphicsLayer 
+* @requires esri.geometry.Point 
+* @requires esri.geometry.webMercatorUtils 
+* @requires esri.toolbars.draw 
+* @requires esri.symbols.PictureMarkerSymbol 
+* @requires esri.dijit.PopupTemplate 
+*/
+define(["esri/graphic", "esri/layers/GraphicsLayer", "esri/geometry/Point", "esri/geometry/webMercatorUtils", "esri/toolbars/draw", "esri/symbols/PictureMarkerSymbol", "esri/dijit/PopupTemplate"],
+function(
+graphic, GraphicsLayer, Point, webMercatorUtils, draw, PictureMarkerSymbol, PopupTemplate) {
+  return declare(null,
+  /**  @lends module:extras/control/LayerQuery */
+  {
+
+    /** @member 
+	layerQueryLayer */
     layerQueryLayer: null,
+
     /**
-     * 默认样式
-     * @member defaultSymbol
+     * @constructs
+     * 
      */
-    defaultSymbol: {
-      "POINT": {
-        type: "esriSMS",
-        style: "esriSMSCircle",
-        angle: 0,
-        color: [255, 0, 0, 255],
-        outline: {
-          type: "esriSLS",
-          style: "esriSLSSolid",
-          width: 1.5,
-          color: [255, 255, 255]
+    constructor: function() {
+
+      dojo.subscribe("toolBarLoadedEvent", this, "initLayerQuery");
+
+      this.defaultSymbol = {
+        "POINT": {
+          type: "esriSMS",
+          style: "esriSMSCircle",
+          angle: 0,
+          color: [255, 0, 0, 255],
+          outline: {
+            type: "esriSLS",
+            style: "esriSLSSolid",
+            width: 1.5,
+            color: [255, 255, 255]
+          },
+          size: 6.75,
+          xoffset: 0,
+          yoffset: 0,
         },
-        size: 6.75,
-        xoffset: 0,
-        yoffset: 0
-      },
-      "IMAGE": {
-        type: "esriPMS",
-        angle: 0,
-        width: 32,
-        height: 32,
-        xoffset: 0,
-        yoffset: 0,
-        url: this.getRootPath() + "/themes/default/images/tt.png"
-      },
-      "TEXT": {
-        type: "esriTS",
-        angle: 0,
-        color: [51, 51, 51, 255],
-        font: {
-          family: "微软雅黑",
-          size: 9,
-          style: "normal",
-          variant: "normal",
-          weight: "normal"
+        "IMAGE": {
+          type: "esriPMS",
+          angle: 0,
+          width: 32,
+          height: 32,
+          xoffset: 0,
+          yoffset: 0,
+          url: baseUrl + "/themes/default/images/tt.png"
         },
-        horizontalAlignment: "center",
-        kerning: true,
-        rotated: false,
-        text: "默认文本",
-        xoffset: 0,
-        yoffset: 0
-      },
-      "LINE": {
-        type: "esriSLS",
-        style: "esriSLSSolid",
-        width: 1.5,
-        color: [255, 0, 0, 255]
-      },
-      "POLYLINE": {
-        type: "esriSLS",
-        style: "esriSLSSolid",
-        width: 1.5,
-        color: [255, 0, 0, 255]
-      },
-      "POLYGON": {
-        type: "esriSFS",
-        style: "esriSFSSolid",
-        color: [0, 0, 0, 64],
-        outline: {
+        "TEXT": {
+          type: "esriTS",
+          angle: 0,
+          color: [51, 51, 51, 255],
+          font: {
+            family: "微软雅黑",
+            size: 9,
+            style: "normal",
+            variant: "normal",
+            weight: "normal"
+          },
+          horizontalAlignment: "center",
+          kerning: true,
+          rotated: false,
+          text: "默认文本",
+          xoffset: 0,
+          yoffset: 0
+        },
+        "LINE": {
           type: "esriSLS",
           style: "esriSLSSolid",
           width: 1.5,
           color: [255, 0, 0, 255]
+        },
+        "POLYGON": {
+          type: "esriSFS",
+          style: "esriSFSSolid",
+          color: [0, 0, 0, 64],
+          outline: {
+            type: "esriSLS",
+            style: "esriSLSSolid",
+            width: 1.5,
+            color: [255, 0, 0, 255]
+          }
         }
-      }
-    },
-    /**
-     * @constructs
-     */
-    constructor: function () {
-      //发布toolBarLoadedEvent监听(用来获得MAP和Toolbar)
-      dojo.subscribe("toolBarLoadedEvent", this, "initLayerQuery");
+      };
 
-      this.mapCommonUtils = new extras.utils.MapCommonUtils();
-      this.layerQueryLayer = new extras.graphic.InfoGraphicLayer({id: "GXX_GIS_QUERYRESULT_LAYER"});
+      this.layerQueryLayer = new esri.layers.GraphicsLayer({
+        id: "GXX_GIS_QUERYRESULT_LAYER"
+      });
+
     },
+
     /**
+     * @description initLayerQuery
      * @method
-     * @private
-     * @memberOf module:extras/controls/LayerQuery#
+     * @memberOf module:extras/control/LayerQuery#
+     * @param {string} toolbar
+     * 
+     * @example
+     * <caption>Usage of initLayerQuery</caption>
+     * require(['extras/control/LayerQuery'],function(LayerQuery){
+     *   var instance = new LayerQuery();
+     *   instance.initLayerQuery(toolbar);
+     * })
+     * 
      *
-     * @listens module:extras/controls/ToolBar~event:toolBarLoadedEvent
+     * 
      */
-    initLayerQuery: function (toolbar) {
+    initLayerQuery: function(toolbar) {
       this.toolbar = toolbar;
       this.map = this.toolbar.map;
       this.map.addLayer(this.layerQueryLayer);
     },
+
     /**
-     * 绘制图形
-     * @private
+     * @description startDraw
      * @method
-     * @memberOf module:extras/controls/LayerQuery#
+     * @memberOf module:extras/control/LayerQuery#
+     * @param {number} type
+     * @param {number} sybmol
+     * @param {function} callBackFun
+     * 
+     * @example
+     * <caption>Usage of startDraw</caption>
+     * require(['extras/control/LayerQuery'],function(LayerQuery){
+     *   var instance = new LayerQuery();
+     *   instance.startDraw(type,sybmol,callBackFun);
+     * })
+     * 
      *
-     * @param {string} type          图形类型
-     * @param {object} symbol      图形样式
-     * @param {boolean} isNotClearLayer 是否不清空图层(默认 false - 清空)
-     *
-     * @returns {dojo.Promise}
-     * return a promise object. see the link [dojo.promise](http://dojotoolkit.org/reference-guide/1.10/dojo/promise.html) for more details.
+     * 
      */
-    startDraw: function (type, symbol, isNotClearLayer) {
-      var deferred = new Deferred();
-      !isNotClearLayer && this.layerQueryLayer.clear();
+    startDraw: function(type, sybmol, callBackFun) {
+      this.layerQueryLayer.clear();
       this.map.reorderLayer(this.layerQueryLayer, this.map._layers.length - 1);
-      this.toolbar.draw(type, symbol || this.defaultSymbol[type.toUpperCase()], dojo.hitch(this, function (graphic) {
-        deferred.resolve(graphic);
+      this.toolbar.draw(type, sybmol || this.defaultSymbol[type.toUpperCase()], dojo.hitch(this,
+      function(graphic) {
+        if (graphic) {
+          callBackFun(graphic);
+        } else {
+          callBackFun(null);
+        }
       }));
-      return deferred.promise;
-    },
-    /**
-     * A Method With Default Symbol For StartDraw
-     * @memberOf module:extras/controls/LayerQuery#
-     * @see {@link module:extras/controls/LayerQuery#startDraw}
-     *
-     * @param {string} type
-     * @param {object} symbol
-     * @param {boolean} isNotClearLayer 是否不清空图层(默认 false - 清空)
-     * @param {function} callback
-     *
-     * @example
-     * <caption>Usage of basicSearch</caption>
-     *
-     * GisObject.layerQuery.basicSearch('extent').done(function(graphics){
-		 *      // Something of your code
-		 * });
-     *
-     * @returns {dojo.Promise}
-     * return a promise object. see the link [dojo.promise](http://dojotoolkit.org/reference-guide/1.10/dojo/promise.html) for more details.
-     */
-    basicSearch: function (type, symbol, isNotClearLayer, callback) {
-      var renderSymbol;
-      symbol = symbol || {};
-      switch (type) {
-        case "point":
-        case "multipoint":
-          //dojo.mixin({}, this.defaultSymbol.POINT,symbol);
-          break;
-        case "polyline":
-        case "freehandpolyline":
-          renderSymbol = new SimpleLineSymbol(dojo.mixin({}, this.defaultSymbol.LINE, symbol));
-          break;
-        default:
-          renderSymbol = new SimpleFillSymbol(dojo.mixin({}, this.defaultSymbol.POLYGON, symbol));
-          break;
-      }
-      return this.startDraw(type, renderSymbol, isNotClearLayer).then(function (graphic) {
-        callback && callback(graphic);
-      });
-    },
-    /**
-     * 绘制图形并发布消息绘制结束消息
-     * @memberOf module:extras/controls/LayerQuery#
-     * @see {@link module:extras/controls/LayerQuery#basicSearch}
-     * @fires module:extras/controls/LayerQuery#subscribeHook
-     *
-     * @param {object} options
-     * @param {string} options.type          图形类型
-     *                               <code>polygon, polyline, extent, circle... </code>
-     * @param {object} options.symbol        图元样式
-     * @param {boolean} options.isNotClearLayer      是否不清除图层  （默认不清除）
-     * @param {object} options.attributes      图元属性
-     * @param {string} options.subscribeHook    发布订阅监听钩子
-     *
-     * @example
-     * <caption>Usage of domainSearch with <b><code>publish/subscribe</code></b></caption>
-     * var options = {
-     *   type: 'polygon',
-     *   subscribeHook: 'pullCircleFinish'
-     * }
-     *
-     * GisObject.layerQuery.domainSearch(options);
-     * var handler = dojo.subscribe('pullCircleFinish',function(graphics){
-     *    // coding...
-     *
-     *    // unsubscribe this message
-     *    dojo.unsubscribe(handler);
-     * })
-     *
-     * @example
-     * <caption>Usage of domainSearch with <b><code>promise</code></b></caption>
-     *
-     * GisObject.layerQuery.domainSearch(options).done(function(graphics){
-     *    // coding....
-     * })
-     *
-     * @returns {dojo.Promise}
-     * return a promise object. see the link [dojo.promise](http://dojotoolkit.org/reference-guide/1.10/dojo/promise.html) for more details.
-     */
-    domainSearch: function (options) {
-      options = options || {};
-      return this.basicSearch(options.type || esri.toolbars.draw.POLYGON, options.symbol, options.isNotClearLayer || true).then(dojo.hitch(this, function (graphic) {
-        dojo.mixin(graphic.attributes, options.attributes, {type: 'search'});
-        this.toolbar.drawLayer.clear();
-        this.layerQueryLayer.add(graphic);
-        /**
-         * subscribeHook - 'domain-search' event.
-         *
-         * @event module:extras/controls/LayerQuery#subscribeHook
-         * @param {eris.Graphic[]} graphics - 图元数组，更多详情请查看 [eris.Graphic](https://developers.arcgis.com/javascript/3/jsapi/graphic-amd.html)
-         */
-        dojo.publish(options.subscribeHook || 'domain-search', [graphic]);
-      }));
-    },
-    /**
-     * draw a extent graphic on the map and publish an event letting listeners know whether the action is completed.
-     * @memberOf module:extras/controls/LayerQuery#
-     * @see {@link module:extras/controls/LayerQuery#domainSearch}
-     * @fires module:extras/controls/LayerQuery#subscribeHook
-     *
-     * @example
-     * <caption>Usage of pullBoxSearch with <b><code>publish/subscribe</code></b></caption>
-     *
-     * GisObject.layerQuery.pullBoxSearch();
-     * var handler = dojo.subscribe('pullBoxSearchFinish',function(graphics){
-     *    // coding...
-     *    dojo.unsubscribe(handler);
-     * })
-     *
-     * @example
-     * <caption>Usage of pullBoxSearch with <b><code>promise</code></b></caption>
-     *
-     * GisObject.layerQuery.pullBoxSearch().done(function(graphics){
-     *    // coding....
-     * })
-     *
-     * @returns {dojo.Promise}
-     * return a promise object. see the link [dojo.promise](http://dojotoolkit.org/reference-guide/1.10/dojo/promise.html) for more details.
-     */
-    pullBoxSearch: function () {
-      return this.domainSearch({
-        type: esri.toolbars.draw.EXTENT,
-        symbol: SimpleFillSymbol(this.defaultSymbol.POLYGON),
-        subscribeHook: 'pullBoxSearchFinish'
-      });
-    },
-    /**
-     * draw a polygon graphic on the map and publish an event letting listeners know whether the action is completed.
-     * @memberOf module:extras/controls/LayerQuery#
-     * @see {@link module:extras/controls/LayerQuery#domainSearch}
-     * @fires module:extras/controls/LayerQuery#subscribeHook
-     *
-     * @example
-     * <caption>Usage of polygonSearch with <b><code>publish/subscribe</code></b></caption>
-     *
-     * GisObject.layerQuery.polygonSearch();
-     * var handler = dojo.subscribe('polygonSearchFinish',function(graphics){
-     *    // coding...
-     *    dojo.unsubscribe(handler);
-     * })
-     *
-     * @example
-     * <caption>Usage of polygonSearch with <b><code>promise</code></b></caption>
-     *
-     * GisObject.layerQuery.polygonSearch().done(function(graphics){
-     *    // coding....
-     * })
-     *
-     * @returns {dojo.Promise}
-     * return a promise object. see the link [dojo.promise](http://dojotoolkit.org/reference-guide/1.10/dojo/promise.html) for more details.
-     */
-    polygonSearch: function () {
-      return this.domainSearch({
-        type: esri.toolbars.draw.POLYGON,
-        symbol: SimpleFillSymbol(this.defaultSymbol.POLYGON),
-        subscribeHook: 'polygonSearchFinish'
-      });
-    },
-    /**
-     * draw a line graphic on the map and publish an event letting listeners know whether the action is completed.
-     * @memberOf module:extras/controls/LayerQuery#
-     * @see {@link module:extras/controls/LayerQuery#domainSearch}
-     * @fires module:extras/controls/LayerQuery#subscribeHook
-     *
-     * @example
-     * <caption>Usage of lineSearch with <b><code>publish/subscribe</code></b></caption>
-     *
-     * GisObject.layerQuery.lineSearch();
-     * var handler = dojo.subscribe('lineSearchFinish',function(graphics){
-     *    // coding...
-     *    dojo.unsubscribe(handler);
-     * })
-     *
-     * @example
-     * <caption>Usage of lineSearch with <b><code>promise</code></b></caption>
-     *
-     * GisObject.layerQuery.lineSearch().done(function(graphics){
-     *    // coding....
-     * })
-     *
-     * @returns {dojo.Promise}
-     * return a promise object. see the link [dojo.promise](http://dojotoolkit.org/reference-guide/1.10/dojo/promise.html) for more details.
-     */
-    lineSearch: function () {
-      return this.domainSearch({
-        type: esri.toolbars.draw.FREEHAND_POLYLINE,
-        symbol: SimpleLineSymbol(this.defaultSymbol.LINE),
-        subscribeHook: 'lineSearchFinish'
-      });
-    },
-    /**
-     * draw a circle graphic on the map and publish an event letting listeners know whether the action is completed.
-     * @memberOf module:extras/controls/LayerQuery#
-     * @see {@link module:extras/controls/LayerQuery#domainSearch}
-     * @fires module:extras/controls/LayerQuery#subscribeHook
-     *
-     * @example
-     * <caption>Usage of circleSearch with <b><code>publish/subscribe</code></b></caption>
-     *
-     * GisObject.layerQuery.circleSearch();
-     * var handler = dojo.subscribe('circleSearchFinish',function(graphics){
-     *    // coding...
-     *    dojo.unsubscribe(handler);
-     * })
-     *
-     * @example
-     * <caption>Usage of circleSearch with <b><code>promise</code></b></caption>
-     * GisObject.layerQuery.circleSearch().done(function(graphics){
-     *    // coding....
-     * })
-     *
-     * @returns {dojo.Promise}
-     * return a promise object. see the link [dojo.promise](http://dojotoolkit.org/reference-guide/1.10/dojo/promise.html) for more details.
-     */
-    circleSearch: function () {
-      return this.domainSearch({
-        type: esri.toolbars.draw.CIRCLE,
-        symbol: SimpleFillSymbol(this.defaultSymbol.POLYGON),
-        subscribeHook: 'circleSearchFinish'
-      });
     },
 
     /**
-     * 属性查询
+     * @description pullBoxSearch
+     * @method
+     * @memberOf module:extras/control/LayerQuery#
+     * 
+     * 
+     * @example
+     * <caption>Usage of pullBoxSearch</caption>
+     * require(['extras/control/LayerQuery'],function(LayerQuery){
+     *   var instance = new LayerQuery();
+     *   instance.pullBoxSearch();
+     * })
+     * 
      *
-     * @memberOf module:extras/controls/LayerQuery#
+     * 
+     */
+    pullBoxSearch: function() {
+      this.startDraw(esri.toolbars.draw.EXTENT, new esri.symbols.SimpleFillSymbol(this.defaultSymbol.POLYGON), dojo.hitch(this,
+      function(graphic) {
+
+        this.layerQueryLayer.add(graphic);
+      }));
+    },
+
+    /**
+     * @description polygonSearch
+     * @method
+     * @memberOf module:extras/control/LayerQuery#
+     * 
+     * 
+     * @example
+     * <caption>Usage of polygonSearch</caption>
+     * require(['extras/control/LayerQuery'],function(LayerQuery){
+     *   var instance = new LayerQuery();
+     *   instance.polygonSearch();
+     * })
+     * 
      *
-     * @param {string} layerId
+     * 
+     */
+    polygonSearch: function() {
+      this.startDraw(esri.toolbars.draw.POLYGON, new esri.symbols.SimpleFillSymbol(this.defaultSymbol.POLYGON), dojo.hitch(this,
+      function(graphic) {
+        this.layerQueryLayer.add(graphic);
+      }));
+    },
+
+    /**
+     * @description circleSearch
+     * @method
+     * @memberOf module:extras/control/LayerQuery#
+     * 
+     * 
+     * @example
+     * <caption>Usage of circleSearch</caption>
+     * require(['extras/control/LayerQuery'],function(LayerQuery){
+     *   var instance = new LayerQuery();
+     *   instance.circleSearch();
+     * })
+     * 
+     *
+     * 
+     */
+    circleSearch: function() {
+      this.startDraw(esri.toolbars.draw.CIRCLE, new esri.symbols.SimpleFillSymbol(this.defaultSymbol.POLYGON), dojo.hitch(this,
+      function(graphic) {
+        this.layerQueryLayer.add(graphic);
+
+        var resultData = this.queryByGeometry("GXX_Device", graphic.geometry);
+
+        dojo.forEach(resultData, dojo.hitch(this,
+        function(graphic, index) {
+
+          var pt = graphic.geometry;
+          var sms = null;
+          switch (index) {
+          case 0:
+            sms = new esri.symbols.PictureMarkerSymbol(baseUrl + "/themes/default/images/location/1.png", 36, 36);
+            break;
+          case 1:
+            sms = new esri.symbols.PictureMarkerSymbol(baseUrl + "/themes/default/images/location/2.png", 36, 36);
+            break;
+          case 2:
+            sms = new esri.symbols.PictureMarkerSymbol(baseUrl + "/themes/default/images/location/3.png", 36, 36);
+            break;
+          case 3:
+            sms = new esri.symbols.PictureMarkerSymbol(baseUrl + "/themes/default/images/location/4.png", 36, 36);
+            break;
+          default:
+            sms = new esri.symbols.PictureMarkerSymbol(baseUrl + "/themes/default/images/location/0.png", 36, 36);
+            break;
+          }
+
+          var template = new esri.dijit.PopupTemplate({
+            title: "{title}",
+            description: "{description}",
+          });
+
+          var newGraphic = new esri.Graphic(pt, sms, {
+            title: "标题" + index,
+            description: "内容" + index
+          },
+          template);
+          this.layerQueryLayer.add(newGraphic);
+        }));
+
+      }));
+    },
+
+    /**
+     * @description queryByAttribute
+     * @method
+     * @memberOf module:extras/control/LayerQuery#
+     * @param {number} layerId
      * @param {string} attrName
      * @param {string} attrValue
      * @param {boolean} isLike
-     * @returns {*}
+     * 
+     * @example
+     * <caption>Usage of queryByAttribute</caption>
+     * require(['extras/control/LayerQuery'],function(LayerQuery){
+     *   var instance = new LayerQuery();
+     *   instance.queryByAttribute(layerId,attrName,attrValue,isLike);
+     * })
+     * 
+     *
+     * @returns string
      */
-    queryByAttribute: function (layerId, attrName, attrValue, isLike) {
+    queryByAttribute: function(layerId, attrName, attrValue, isLike) {
       var param = new SpatialQueryParam();
       param.layerId = layerId;
       param.attrName = attrName;
@@ -393,31 +292,52 @@ define([
       param.isLike = isLike || true;
       return this.queryByLayerId(1, param)
     },
+
     /**
-     * 空间查询
-     * @memberOf module:extras/controls/LayerQuery#
+     * @description queryByGeometry
+     * @method
+     * @memberOf module:extras/control/LayerQuery#
+     * @param {number} layerId
+     * @param {number} geometry
+     * 
+     * @example
+     * <caption>Usage of queryByGeometry</caption>
+     * require(['extras/control/LayerQuery'],function(LayerQuery){
+     *   var instance = new LayerQuery();
+     *   instance.queryByGeometry(layerId,geometry);
+     * })
+     * 
      *
-     * @param {string} layerId
-     * @param {Object} geometry
+     * @returns string
      */
-    queryByGeometry: function (layerId, geometry) {
+    queryByGeometry: function(layerId, geometry) {
       var param = new SpatialQueryParam();
       param.layerId = layerId;
       param.geometry = geometry;
       return this.queryByLayerId(2, param)
     },
+
     /**
-     * 综合查询
-     * @memberOf module:extras/controls/LayerQuery#
-     *
-     * @param {string} layerId
-     * @param {eris.geometry.Point} geometry
+     * @description queryByAttrAndGeo
+     * @method
+     * @memberOf module:extras/control/LayerQuery#
+     * @param {number} layerId
+     * @param {number} geometry
      * @param {string} attrName
      * @param {string} attrValue
      * @param {boolean} isLike
-     * @returns {*}
+     * 
+     * @example
+     * <caption>Usage of queryByAttrAndGeo</caption>
+     * require(['extras/control/LayerQuery'],function(LayerQuery){
+     *   var instance = new LayerQuery();
+     *   instance.queryByAttrAndGeo(layerId,geometry,attrName,attrValue,isLike);
+     * })
+     * 
+     *
+     * @returns string
      */
-    queryByAttrAndGeo: function (layerId, geometry, attrName, attrValue, isLike) {
+    queryByAttrAndGeo: function(layerId, geometry, attrName, attrValue, isLike) {
       var param = new SpatialQueryParam();
       param.layerId = layerId;
       param.geometry = geometry;
@@ -425,116 +345,145 @@ define([
       param.attrValue = attrValue;
       return this.queryByLayerId(3, param)
     },
+
     /**
-     * @memberOf module:extras/controls/LayerQuery#
-     *
-     * @param {string} type
+     * @description queryByLayerId
+     * @method
+     * @memberOf module:extras/control/LayerQuery#
+     * @param {number} type
      * @param {object} param
-     * @param {string} param.layerId;
-     * @param {string} param.attrName;
-     * @param {string} param.attrValue;
-     * @param {eris.geometry.Point} param.geometry;
-     * @param {boolean} param.isLike;
+     * 
+     * @example
+     * <caption>Usage of queryByLayerId</caption>
+     * require(['extras/control/LayerQuery'],function(LayerQuery){
+     *   var instance = new LayerQuery();
+     *   instance.queryByLayerId(type,param);
+     * })
+     * 
+     *
      * @returns {*}
      */
-    queryByLayerId: function (type, param) {
+    queryByLayerId: function(type, param) {
       var layerId = param.layerId;
       var attrName = param.attrName;
       var attrValue = param.attrValue;
       var geometry = param.geometry || null;
-      var isLike = param.isLike || true; //默认是模糊查询
+      var isLike = param.isLike || true;
       var layer = this.map.getLayer(layerId);
       var resultData = null;
       if (layer) {
-        if (type == 1) { // 属性是查询
+        if (type == 1) {
           resultData = this.getGraphicByAttribute(layer, attrName, attrValue, isLike);
-        } else if (type == 2) { //空间查询
+        } else if (type == 2) {
           resultData = this.getGraphicByGeometry(layer, geometry);
-        } else if (type == 3) { //属性空间联合查询
+        } else if (type == 3) {
           resultData = this.getGraphicByAttributeAndGeometry(layer, geometry, attrName, attrValue, isLike);
         }
       }
       return resultData;
     },
+
     /**
-     * @memberOf module:extras/controls/LayerQuery#
+     * @description getGraphicBy
+     * @method
+     * @memberOf module:extras/control/LayerQuery#
+     * @param {number} layer
+     * @param {number} property
+     * @param {string}  value
+     * 
+     * @example
+     * <caption>Usage of getGraphicBy</caption>
+     * require(['extras/control/LayerQuery'],function(LayerQuery){
+     *   var instance = new LayerQuery();
+     *   instance.getGraphicBy(layer,property, value);
+     * })
+     * 
      *
-     * @param {esri.layer.GraphicLayer | string} layer
-     * @param {string} property
-     * @param {string} value
      * @returns {*}
      */
-    getGraphicBy: function (layer, property, value) {
+    getGraphicBy: function(layer, property, value) {
       var feature = null;
       if (layer) {
-        if (typeof layer === "string") {
-          layer = this.map.getLayer(layer);
-        }
         var graphics = layer.graphics;
-        if (!graphics || !graphics.length) return null;
-
-        for (var i = 0, len = graphics.length; i < len; ++i) {
-          var graphic = graphics[i];
-          // Handle For Cluster Graphic
-          if (graphic[property] == undefined && graphic['attributes']['clusterCount']) {
-            for (var k = 0; k < graphic.attributes.clusterCount; k++) {
-              if (graphic.attributes.data[k][property] == value) {
-                //feature = graphics[i];
-                // Add At 2017/04/25 处理智能追踪时，设备聚合情况下，获取不了图元得问题
-                var tgraphic = graphic.attributes.data[k];
-                tgraphic.layerId = graphic.getLayer()._id;
-                tgraphic.rawNode = graphic.getShape().rawNode;
-                tgraphic.spatialReference = graphic.geometry && graphic.geometry.spatialReference;
-                feature = this.mapCommonUtils.buildClusterGraphic(tgraphic);
-                break;
-              }
-            }
-          } else if (graphics[i][property] == value) {
-            feature = graphics[i];
+        for (var i = 0,
+        len = graphics.length; i < len; ++i) {
+          if (graphics[i][property] == value) {
+            feature = this.features[i];
             break;
           }
         }
       }
       return feature;
     },
+
     /**
-     * @memberOf module:extras/controls/LayerQuery#
+     * @description getGraphicById
+     * @method
+     * @memberOf module:extras/control/LayerQuery#
+     * @param {number} layer
+     * @param {number} idKey
+     * 
+     * @example
+     * <caption>Usage of getGraphicById</caption>
+     * require(['extras/control/LayerQuery'],function(LayerQuery){
+     *   var instance = new LayerQuery();
+     *   instance.getGraphicById(layer,idKey);
+     * })
+     * 
      *
-     * @param {esri.layer.GraphicLayer | string} layer
-     * @param {string} idKey
-     * @returns {*}
+     * @returns string
      */
-    getGraphicById: function (layer, idKey) {
+    getGraphicById: function(layer, idKey) {
       return this.getGraphicBy(layer, 'id', idKey);
     },
+
     /**
-     * @memberOf module:extras/controls/LayerQuery#
+     * @description getAllGraphic
+     * @method
+     * @memberOf module:extras/control/LayerQuery#
+     * @param {number} layer
+     * 
+     * @example
+     * <caption>Usage of getAllGraphic</caption>
+     * require(['extras/control/LayerQuery'],function(LayerQuery){
+     *   var instance = new LayerQuery();
+     *   instance.getAllGraphic(layer);
+     * })
+     * 
      *
-     * @param {esri.layer.GraphicLayer | string} layer
      * @returns {*}
      */
-    getAllGraphic: function (layer) {
-      if (typeof layer === "string") {
-        layer = this.map.getLayer(layer);
-      }
+    getAllGraphic: function(layer) {
       return layer.graphics;
     },
+
     /**
-     * @memberOf module:extras/controls/LayerQuery#
-     *
-     * @param {esri.layer.GraphicLayer | string} layer
-     * @param {esri.geometry.Point} geometry
+     * @description getGraphicByAttributeAndGeometry
+     * @method
+     * @memberOf module:extras/control/LayerQuery#
+     * @param {number} layer
+     * @param {number} geometry
      * @param {string} attrName
      * @param {string} attrValue
      * @param {boolean} isLike
+     * 
+     * @example
+     * <caption>Usage of getGraphicByAttributeAndGeometry</caption>
+     * require(['extras/control/LayerQuery'],function(LayerQuery){
+     *   var instance = new LayerQuery();
+     *   instance.getGraphicByAttributeAndGeometry(layer,geometry,attrName,attrValue,isLike);
+     * })
+     * 
+     *
      * @returns {*}
      */
-    getGraphicByAttributeAndGeometry: function (layer, geometry, attrName, attrValue, isLike) {
+    getGraphicByAttributeAndGeometry: function(layer, geometry, attrName, attrValue, isLike) {
       var foundGraphics = null;
       var resultData = this.getGraphicByAttribute(layer, attrName, attrValue, isLike);
       if (resultData && resultData.lenght > 0) {
         foundGraphics = [];
-        dojo.forEach(resultData, function (graphic, index) {
+        dojo.forEach(resultData,
+        function(graphic, index) {
           if (geometry.contains(graphic.geometry)) {
             foundGraphics.push(graphic);
           }
@@ -542,81 +491,83 @@ define([
       }
       return foundGraphics;
     },
+
     /**
-     * @memberOf module:extras/controls/LayerQuery#
+     * @description getGraphicByGeometry
+     * @method
+     * @memberOf module:extras/control/LayerQuery#
+     * @param {number} layer
+     * @param {number} geometry
+     * 
+     * @example
+     * <caption>Usage of getGraphicByGeometry</caption>
+     * require(['extras/control/LayerQuery'],function(LayerQuery){
+     *   var instance = new LayerQuery();
+     *   instance.getGraphicByGeometry(layer,geometry);
+     * })
+     * 
      *
-     * @param {esri.layer.GraphicLayer | string} layer
-     * @param {esri.geometry.Point} geometry
      * @returns {*}
      */
-    getGraphicByGeometry: function (layer, geometry) {
+    getGraphicByGeometry: function(layer, geometry) {
       var foundGraphics = null;
       if (layer && geometry) {
         foundGraphics = [];
         var allGraphic = this.getAllGraphic(layer);
-        for (var i = 0, len = allGraphic.length; i < len; i++) {
+        for (var i = 0,
+        len = allGraphic.length; i < len; i++) {
           var g = allGraphic[i];
-          if (geometry.contains(g.geometry)) {
+          if (geometry.contains(g.geometry.getPoint(0))) {
             foundGraphics.push(g);
           }
         }
       }
       return foundGraphics;
     },
+
     /**
-     * @memberOf module:extras/controls/LayerQuery#
-     *
-     * @param {esri.layer.GraphicLayer | string} layer
+     * @description getGraphicByAttribute
+     * @method
+     * @memberOf module:extras/control/LayerQuery#
+     * @param {number} layer
      * @param {string} attrName
-     * @param {string} attrValue
+     * @param {string}  attrValue
      * @param {boolean} isLike
+     * 
+     * @example
+     * <caption>Usage of getGraphicByAttribute</caption>
+     * require(['extras/control/LayerQuery'],function(LayerQuery){
+     *   var instance = new LayerQuery();
+     *   instance.getGraphicByAttribute(layer,attrName, attrValue,isLike);
+     * })
+     * 
+     *
      * @returns {*}
      */
-    getGraphicByAttribute: function (layer, attrName, attrValue, isLike) {
+    getGraphicByAttribute: function(layer, attrName, attrValue, isLike) {
       var foundGraphics = null;
       if (layer) {
         var feature = null;
         foundGraphics = [];
         var graphics = layer.graphics;
-        if (!graphics || !graphics.length) return null;
-
-        for (var i = 0, len = graphics.length; i < len; i++) {
+        for (var i = 0,
+        len = graphics.length; i < len; i++) {
           feature = graphics[i];
-
           if (feature && feature.attributes) {
-            if (feature['attributes']['clusterCount']) {
-              for (var k = 0; k < feature.attributes.clusterCount; k++) {
-                var graphic = feature.attributes.data[k];
-                graphic.layerId = feature.getLayer()._id;
-                graphic.spatialReference = feature.geometry && feature.geometry.spatialReference;
-
-                if (!isLike && (graphic[attrName] == value)) {
-                  graphic = this.mapCommonUtils.buildClusterGraphic(graphic);
-                  foundGraphics.push(graphic);
-                } else if (graphic[attrName].indexOf(attrValue) != -1) {
-                  graphic = this.mapCommonUtils.buildClusterGraphic(graphic);
-                  foundGraphics.push(graphic);
-                }
+            if (!isLike) {
+              if (feature.attributes[attrName] == attrValue) {
+                foundGraphics.push(feature);
               }
-            } else if (!isLike && (feature.attributes[attrName] == attrValue)) {
-              foundGraphics.push(feature);
-            } else if (feature.attributes[attrName].indexOf(attrValue) != -1) {
-              foundGraphics.push(feature);
+            } else {
+              if (feature.attributes[attrName].indexOf(attrValue) != -1) {
+                foundGraphics.push(feature);
+              }
             }
           }
         }
       }
       return foundGraphics;
-    },
-    getRootPath: function () {
-      return [location.protocol, "//", location.host, "/", location.pathname.split('/')[1]].join('');
-    },
-    /**
-     * @private
-     * @memberOf module:extras/controls/LayerQuery#
-     */
-    clear: function () {
-      this.layerQueryLayer && this.layerQueryLayer.clear();
     }
+
   })
 });

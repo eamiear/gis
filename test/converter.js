@@ -3,10 +3,13 @@
  */
 const path = require('path');
 const fs = require('fs');
+const beautify = require('./codeformatter');
+const author = 'sk_';
 
-/* 代码结构 */
-const getClassStructure = (comments,requireMoudlePaths,requireMoudleClass,dependency,moduleName,methods) => {
+/* 代码结构 模板*/
+const getClassStructure = (author,comments,requireMoudlePaths,requireMoudleClass,dependency,moduleName,methods) => {
   return `
+${author}
 ${comments}
 define([
   ${requireMoudlePaths}
@@ -20,7 +23,13 @@ define([
 `;
 };
 
-/* 文件描述 */
+const createAuhtor = (author,datetime)=>{
+  return `
+/**
+* Created by ${author} on ${datetime}.
+*/`;
+};
+/* 文件描述模板 */
 const createFileOverviewDescription = (className,modulePath,requirePath) => {
   let comments = `
 /**
@@ -32,12 +41,12 @@ const createFileOverviewDescription = (className,modulePath,requirePath) => {
 */`;
   return comments;
 };
-
+/*方法参数模板*/
 const createParam = (type,name,index) => {
   return index == 0 ? `@param {${type}} ${name}` : `\n     * @param {${type}} ${name}`;
 };
 
-/* 构造函数 */
+/* 构造函数模板 */
 const createConstructor = (params,options,constructorBody) => {
   return `
     /**
@@ -49,37 +58,52 @@ const createConstructor = (params,options,constructorBody) => {
     },
   `;
 };
+/*使用实例模板*/
+const createUsage = (modulePath,className,classParams,methodName,methodParams)=>{
+  return `
+     * @example
+     * <caption>Usage of ${methodName}</caption>
+     * require(['${modulePath}'],function(${className}){
+     *   var instance = new ${className}(${classParams});
+     *   instance.${methodName}(${methodParams});
+     * })
+     * `;
+};
 
-/* 方法*/
-const createMethod = (description,moduleName,params,returns,method,methodName) => {
+/* 方法模板*/
+const createMethod = (description,moduleName,params,returns,method,example) => {
   return `
     /**
      * @description ${description}
      * @method
      * @memberOf module:${moduleName}#
      * ${params}
-     * @example
-     * <caption>Usage of ${methodName}</caption>
+     * ${example}
      *
      * ${returns}
      */
     ${method}
   `;
 };
-
+/*方法返回值模板*/
 const createReturn = (returns)=>{
   return returns ? `@returns ${returns}` : '';
 };
 
-/* 属性 */
+/* 属性模板 */
 const createAttributes = (moduleName,attribute) => {
   let attrs = null;
   attrs = `
-  /** @member ${moduleName} */${attribute},
+  /** @member ${moduleName} */ ${attribute},
   `;
   return attrs;
 };
+/*require*/
+const createRequireTmpl = (path)=>{
+  return `\n* @requires ${path} `;
+};
 
+/*获取方法体*/
 const getMethodBody = (method,boundaryStart,boundaryEnd)=>{
   let slices;
   if(boundaryEnd){
@@ -89,15 +113,16 @@ const getMethodBody = (method,boundaryStart,boundaryEnd)=>{
   }
   return slices;
 };
-
+/*方法中的参数*/
 const getParamsFromMethod = (method,boundaryStart,boundaryEnd)=>{
   const methodBody = getMethodBody(method,boundaryStart,boundaryEnd);
-  let params = methodBody.match(/\:\s*\w+\((.*?)\)/)[1];
-  //console.log(methodBody.match(/\:\s*\w+\((.*?)\)/)[1]);
-  return params = params ? params : '';
+  //console.log(methodBody.match(/\:\s*\w+\((.*?)\)/));
+  let params = methodBody.match(/\:\s*\w+\((.*?)\)/);
+
+  return params ? params[1] : '';
 
 };
-
+/*获取方法内容*/
 const getMethodBodyFromMethod = (method,boundaryStart,boundaryEnd)=>{
   const methodBody = getMethodBody(method,boundaryStart,boundaryEnd);
   //console.log(boundaryStart);
@@ -105,38 +130,65 @@ const getMethodBodyFromMethod = (method,boundaryStart,boundaryEnd)=>{
  // return boundaryEnd ? methodBody.slice(methodBody.indexOf('{')+1) : methodBody;
   return methodBody;
 };
-
+/*模块名称*/
 const createMoudle = (data) => {
   const mouduleStr = data.slice(data.indexOf('dojo'),data.indexOf(";"));
   const moduleName = /\"(.+?)\"/.exec(mouduleStr)[1].replace(/\./g,'/');
   //console.log(RegExp.$1);
   return moduleName;
 };
-
+/*清除注释*/
 const cleanComments = (data)=>{
-  //var test = `
-	///**
-	// * 属性查询
-	// * @param {Object} id	工程图层ID
-	// * @param {Object} where	属性条件
-	// * @param {Object} sussFunction		成功返回调用函数，以字符串格式返回数据
-	// * @param {Object} errorFunction	失败返回调用函数,返回错误信息
-	// */
-	// dsfallglla
-  //
-	// /**
-	// dsdfs
-	// */
-  //`
-  //console.log(test.match(/\/\*(\s|.)*?\*\//g));
-  //console.log(test.replace(/\/\*(\s|.)*?\*\//g,''))
+  /*
+  * //
+  * */
+  //var test = h.replace(/\/\*(\s|.)*?\*\//g,'').replace(/\/\/(\s|\w*|.*?)/,'');
+  //var o = new RegExp('^\\/\\/(\\s|.)*\\n$','img');
+  //console.log(h.replace( /(\/\/.*)|(\/\*(\s|\S)*?\*\/)/g,''))
+  //console.log(h.match(/\/\/(\s|.)*/g));
 
-  //var t = '的 //dsfallglla'
-  //console.log(t.replace(/\/\/(\s|\w*|.*?)/,''))
-  return data.replace(/\/\*(\s|.)*?\*\//g,'').replace(/\/\/(\s|\w*|.*?)/,'');
+  const http = ':\/\/';
+  const httpreg = /\:\/\//g;
+  const escapehttp = '@:@/@/@';
+  const escapehttpreg = /@:@\/@\/@/g;
+  data = data.replace(httpreg, escapehttp);
+  data = data.replace(/(\/\/.*)|(\/\*(\s|\S)*?\*\/)/g,'');
+  return data.replace(escapehttpreg,http);
 };
 
-const createDefineHeader = (data) => {
+const cleanClassPrefix = (data)=>{
+
+};
+
+const skipFile = (data)=>{
+  const hasDefine = data.replace(/\s/g,'').includes('define(');
+  const hasConstructor = data.includes('constructor');
+  return hasDefine || !hasConstructor;
+};
+
+/*方法参数类型*/
+const detectParamType = (param)=>{
+  param = param.toLowerCase();
+  let {keys, values, entries} = Object;
+  let type = {
+    'obj|option|config|param': {},
+    'is|has': true,
+    'max|min|num|scale|zoom|level|x|y|index|mode': 1,
+    'arr|array': 'arr',
+    'callback|cb|func|fn': function(){}
+  };
+  for (let [key, value] of entries(type)) {
+    const detected = key.split('|').some((it)=>{
+      return param.includes(it);
+    });
+    if(detected){
+      return value == 'arr' ? 'array' : typeof value;
+    }
+  }
+  return typeof '';
+};
+
+const create = (data) => {
   const mouduleStr = data.slice(data.indexOf('dojo.require'),data.indexOf("dojo.declare"));
   const requireModule = mouduleStr.match(/\"(.+?)\"/g);
 
@@ -144,174 +196,239 @@ const createDefineHeader = (data) => {
  * @fileOverview This is base definition for all composed classes defined by the system
  * Module representing a LayerQuery.
  * @module extras/controls/LayerQuery
- *
  * @requires dojo/_base/declare
- * @requires dojo/_base/Deferred
- * @requires esri/graphic
- * @requires esri/layers/GraphicsLayer
- * @requires esri/geometry/Point
- * @requires esri/symbols/PictureMarkerSymbol
- * @requires esri/symbols/SimpleLineSymbol
- * @requires esri/symbols/SimpleFillSymbol
- * @requires esri/geometry/webMercatorUtils
  */
   const moduleClassPath = createMoudle(data);
-  let requirePath = requireModule.map((item,index) => {
-    const path = item.replace(/\"/g, '');
-    return `\n* @requires ${path} `;
-  });
-  requirePath = requirePath.toString().replace(/\,/g,'');
+  let requirePath = '';
+  if(requireModule){
+    requirePath = requireModule.map((item,index) => {
+      const path = item.replace(/\"/g, '');
+      return createRequireTmpl(path);
+    });
+    requirePath = requirePath.toString().replace(/\,/g,'');
+  }
   const comments = createFileOverviewDescription(moduleClassPath.slice(moduleClassPath.lastIndexOf('/')+1),moduleClassPath,requirePath);
+  //console.log('fileoverview created.');
+  log('fileoverview created.');
 
   /*
   * [
    "dojo/_base/declare",
-   "dojo/_base/Deferred",
-   "esri/graphic",
-   "esri/layers/GraphicsLayer",
-   "esri/geometry/Point",
-   "esri/symbols/PictureMarkerSymbol",
-   "esri/symbols/SimpleLineSymbol",
-   "esri/symbols/SimpleFillSymbol",
-   "esri/geometry/webMercatorUtils"
    ]
   **/
-  const requireMoudlePaths = requireModule.toString().replace(/\,/g,',\n  ').replace(/\./g,'/');
-
+  let requireMoudlePaths = '';
+  if(requireModule){
+    //console.log(requireMoudlePaths);
+    requireMoudlePaths = requireModule.toString().replace(/\,/g,',\n  ').replace(/\./g,'/');
+  }
+  //console.log('require modoule created. (%s)',requireMoudlePaths.replace(/\s/g,''));
+  log('require modoule created.',requireMoudlePaths.replace(/\s/g,''));
   /*
   * (
    declare,
-   Deferred,
-   Graphic,
-   GraphicsLayer,
-   Point,
-   PictureMarkerSymbol,
-   SimpleLineSymbol,
-   SimpleFillSymbol,
-   webMercatorUtils
    )
   */
-  const requireMoudleClass = requireModule.toString().match(/([A-Za-z]\w+)\"/g).toString().replace(/\"/g,'').replace(/,/g,',\n  ');
+  let requireMoudleClass = '';
+  if(requireModule){
+    requireMoudleClass = requireModule.toString().match(/([A-Za-z]\w+)\"/g).toString().replace(/\"/g,'').replace(/,/g,',\n  ');
+  }
+  //console.log('declare created.');
+  log('declare created.');
 
   const classBody = data.slice(data.indexOf('dojo.declare'),data.lastIndexOf("});"));
-  const dependencyStr = classBody.match(/(.+?\,)+/)[1].replace(',','');
+  //let dependencyStr = classBody.match(/(.+?\,)+/);
+  const dependencyRange = classBody.slice(0,classBody.indexOf('{'));
+  let dependencyStr = dependencyRange.match(/\s*\[(.*?)\]/g);
+  //console.log('----> ',' [dbs,dec]'.match(/\s*\[(.*?)\]/))
   /*
    * declare([],
    */
-  const dependency = dependencyStr == 'null' ? '[]' : dependencyStr;
+  let  dependency = (dependencyStr && dependencyStr[0]) ? dependencyStr[0].replace(',','') : null;
+  dependency = dependencyStr == 'null' ? '[]' : dependencyStr;
+  //console.log('dependency created. (%s)', dependency);
+  log('dependency created. ', dependency);
 
-  const methodBody = classBody.slice((classBody.indexOf(dependencyStr) + dependencyStr.length + 2));
+  let methodBody = '';
+ /* if(dependency){
+
+    methodBody = classBody.slice((classBody.indexOf(dependency) + dependency.toString().length));
+  }else{
+    methodBody = classBody.slice(classBody.indexOf('{'));
+  }*/
+  methodBody = classBody.slice(classBody.indexOf('{'));
 
   /*
   *  layerQueryLayer:null,
-     coords: null,
-     screenCoords: null,
-     _frameIndex: 0,
-     _framesAdvancing: true,
-     _interval: null,
   * */
-  const attributes = methodBody.slice(0,methodBody.indexOf('constructor')).split(',');
+  //const attributes = methodBody.slice(0,methodBody.indexOf('constructor')).split(',');
+  //const attributes = classBody.slice(classBody.indexOf('{')+1,methodBody.indexOf('constructor')).split(',');
+  const attributes = classBody.slice(classBody.indexOf('{')+1,classBody.match(/constructor/).index).split(',');
+
   let atrributesFormatStr = attributes.map((item,index) => {
     if(item){
-      return createAttributes(moduleClassPath,item);
+      const attributeName = item.slice(0,item.indexOf(':'));
+      return createAttributes(attributeName,item);
     }
   });
   atrributesFormatStr.pop();
+  //console.log('attributes created.(%s)',atrributesFormatStr);
+  log('attributes created.',atrributesFormatStr);
 
-    //console.log(atrributesFormatStr.pop())
-
+  //console.log(methodBody);
   const constructorBoundary = methodBody.match(/(\w+[\s]*\:)+[\s]*function/g);
   const constructorMethod = methodBody.slice(methodBody.indexOf(constructorBoundary[0]),methodBody.indexOf(constructorBoundary[1]));
-  let constructorParams = constructorMethod.match(/\:\s*\w+\((.*?)\)/)[1];
-  constructorParams = constructorParams ? constructorParams : '';
+  let constructorParams = constructorMethod.match(/\:\s*\w+\((.*?)\)/);
+  constructorParams = constructorParams ? constructorParams[1] : '';
   const constructorMethodBody = constructorMethod.slice(constructorMethod.indexOf('{')+1,constructorMethod.lastIndexOf('},'));
 
   /*
   * * @param {Object} id	工程图层ID
    * @param {Object} where	属性条件
   * */
-  const paramsFormat = constructorParams.split(',').map((item,index) => {
-    if(item){
-      return createParam(typeof item,item,index);
-    }
-  });
+  let paramsFormat = '';
+  if(constructorParams){
+    paramsFormat = constructorParams.split(',').map((item,index) => {
+      if(item){
+        //const type = (item.indexOf('option') != -1 || item.indexOf('obj') != -1)? 'object' : typeof item;
+        //const type = item.toLowerCase().includes('option') || item.toLowerCase().includes('obj')  || item.toLowerCase().includes('config') ? 'object' : typeof item;
 
-  //console.log(paramsFormat.join(''));
-  //console.log(atrributesFormatStr.join(''));
-  // atrributes + constructor + method
+        return createParam(detectParamType(item),item,index);
+      }
+    });
+    paramsFormat = paramsFormat.join('');
+  }
+  const constructorFormat = createConstructor(paramsFormat,constructorParams,constructorMethodBody);
+  //console.log('constructor created.');
+  log('constructor created.');
 
-  const constructorFormat = createConstructor(paramsFormat.join(''),constructorParams,constructorMethodBody);
-  //console.log(constructorMethodBody);
-  //console.log(methodBody.slice(methodBody.indexOf('constructor')));
   let methodsBodyStr = atrributesFormatStr.join('') + constructorFormat;
 
-  const methodsSubBody = methodBody.slice(methodBody.indexOf(constructorBoundary[1]));
-  const methodsSubBodyBoundary = methodsSubBody.match(/(\w+[\s]*\:)+[\s]*function/g);
   let methodSubBodyStr = [];
-  //console.log(methodsSubBodyBoundary);
-
-  methodsSubBodyBoundary.forEach((item,index)=>{
-    let methodsSubParam;
-    let methods;
-    if(index != methodsSubBodyBoundary.length-1){
-      methodsSubParam = getParamsFromMethod(methodsSubBody,item,methodsSubBodyBoundary[index+1]);
-      methods = getMethodBodyFromMethod(methodsSubBody,item,methodsSubBodyBoundary[index+1]);
-    }else{
-      methodsSubParam = getParamsFromMethod(methodsSubBody,item);
-      methods = getMethodBodyFromMethod(methodsSubBody,item);
-    }
-    const paramsFormat = methodsSubParam.split(',').map((it,i) => {
-      if(it){
-        return createParam(typeof it,it,i);
+  if(constructorBoundary[1]){// 除了构造函数，存在其他方法
+    const methodsSubBody = methodBody.slice(methodBody.indexOf(constructorBoundary[1]));
+    const methodsSubBodyBoundary = methodsSubBody.match(/(\w+[\s]*\:)+[\s]*function/g);
+    methodsSubBodyBoundary.forEach((item,index)=>{
+      let methodsSubParam;
+      let methods;
+      if(index != methodsSubBodyBoundary.length-1){
+        methodsSubParam = getParamsFromMethod(methodsSubBody,item,methodsSubBodyBoundary[index+1]);
+        methods = getMethodBodyFromMethod(methodsSubBody,item,methodsSubBodyBoundary[index+1]);
+      }else{
+        methodsSubParam = getParamsFromMethod(methodsSubBody,item);
+        methods = getMethodBodyFromMethod(methodsSubBody,item);
       }
-    }).join('');
+      const paramsFormat = methodsSubParam.split(',').map((it,i) => {
+        if(it){
+          //const type = it.toLowerCase().includes('option') || it.toLowerCase().includes('obj') || it.toLowerCase().includes('config') ?
+          //  'object' : typeof it;
+          return createParam( detectParamType(it),it,i);
+          //return createParam(typeof it,it,i);
+        }
+      }).join('');
 
-    const methodName = item.slice(0,item.indexOf(':')).trim();
-    let returnType = '';
-    if(methods.indexOf('return') != -1){
-      let returns = methods.slice(methods.indexOf('return') + 'return'.length).split(';')[0];
-      //var t = ' (d ) ';
-      //console.log(t.match(/\s\((\s|\w*)*\)/g));
-      const strings = returns.match(/\s\((\s|\w*)*\)/g);
-      //var t = `
-      //  {
-      //    dsfsfd
-      //  }
-      //`;
-      console.log(returns)
-      const objects = returns.match(/\{.*\}/g);
-      //console.log(objects)
-      if(strings && strings[0]){
-        returnType = createReturn('string');
-      }else if(objects){
-
+      const methodName = item.slice(0,item.indexOf(':')).trim();
+      let returnType = '';
+      if(methods.indexOf('return') != -1){
+        let returns = methods.slice(methods.indexOf('return') + 'return'.length).split(';')[0];
+        //var t = ' (d ) ';
+        //console.log(t.match(/\s\((\s|\w*)*\)/g));
+        const strings = returns.match(/\s*\((.*)\)/g);
+        //var t = `
+        //  {
+        //    dsfsfd
+        //  }
+        //`;
+        //console.log(strings[0])
+        const objects = returns.match(/\s*\{(\s|\w)*\}/g);
+        if(strings && strings[0]){
+          returnType = createReturn('string');
+        }else if(objects && objects[0]){
+          returnType =  createReturn(typeof new Object(objects[0].replace(/\s/g,'')));
+        }else{
+          returnType = createReturn('{*}');
+        }
       }
-    }
-    //console.log(returnType)
-    const methodItem = createMethod('',moduleClassPath,paramsFormat,returnType,methods,methodName);
+      //console.log(returnType)
+      const usage = createUsage(moduleClassPath,moduleClassPath.slice(moduleClassPath.lastIndexOf('/')+1),constructorParams,methodName,methodsSubParam);
+      const methodItem = createMethod(methodName,moduleClassPath,paramsFormat,returnType,methods,usage);
 
-
-
-    methodSubBodyStr.push(methodItem);
-  });
+      methodSubBodyStr.push(methodItem);
+    });
+  }
   methodsBodyStr += methodSubBodyStr.join('');
-  //console.log(methodSubBodyStr.join(''));
-  const st = getClassStructure(comments,requireMoudlePaths,requireMoudleClass,dependency,moduleClassPath,methodsBodyStr);
-  return st;
+  //console.log('method created.');
+  log('method created.');
+
+  const authors = createAuhtor(author,new Date().toLocaleDateString());
+  return getClassStructure(authors,comments,requireMoudlePaths,requireMoudleClass,dependency,moduleClassPath,methodsBodyStr);
+};
+
+const writeFile = (outputPath,data)=>{
+  fs.writeFile(path.resolve(__dirname,outputPath),data,(err) => {
+    err ? console.log('wrote fail: ' + err) : console.log(' wrote success!(%s)',path.resolve(__dirname,outputPath))
+  })
+};
+const log = (description,msg)=>{
+  console.log('*********\n   %s (%s)\n',description,msg||'');
+};
+
+const makedir = (path)=>{
+  if (!fs.existsSync(path)) {
+    //console.log('directory made \(%s\)', path);
+    log('directory made ', path);
+    fs.mkdirSync(path);
+  }
+};
+
+const explorer = (path,out,fileReg)=>{
+  makedir(out);
+  const files = fs.readdirSync(path);
+  files.forEach((file) => {
+    const stat = fs.statSync(path + "/" + file);
+    if (stat.isDirectory()) {
+      let outputdir = out + "\\" + file;
+      explorer(path + "\\" + file, outputdir, fileReg);
+
+    } else {
+      if (fileReg.test(file)) {
+        const filepath = path + "\\" + file;
+        let outputdir = out + "\\";
+        let outputPath = outputdir + file;
+        //if(filepath.includes('test')) return;
+        let data = fs.readFileSync(filepath, 'utf-8');
+        data = cleanComments(data);
+        const isSkip = skipFile(data);
+        //if(!data) return;
+
+        console.log(`
+=============================== IM =========================================
+  extracting file(%s)
+============================================================================
+        `,filepath);
+
+        if(!isSkip){
+          log('formatter starting.......');
+          data = create(data);
+          log('formatter done.......');
+          //console.log(beautify.js_beautify);
+          log('file beautifiy... .',file);
+          data = beautify.js_beautify(data, 2/*, tabchar*/);
+          log('file beautified....',file);
+        }
+        //writeFile('convert/dist/test.js',data);
+        fs.writeFile(outputPath,data,(err) => {
+          err ? console.log('convert fail: ' + err) : console.log(file + ' convert success!')
+        })
+      }
+    }
+  });
 };
 
 const generate = (path,out,fileReg) => {
-  const files = fs.readdirSync(path);
-  files.forEach((item) => {
-    if(fileReg.test(item)){
-      const filepath = path + '/' + item;
-      const outputPath = out + '/' + item;
-      let data = fs.readFileSync(filepath,'utf-8');
-      data = cleanComments(data);
-      fs.writeFile(outputPath,createDefineHeader(data),(err) => {
-        err ? console.log('convert fail: ' + err) : console.log(item + ' convert success!')
-      })
-    }
-  })
+  explorer(path,out,fileReg);
 };
-generate(path.resolve(__dirname, 'convert/src'),path.resolve(__dirname, 'convert/dist'), /\.js/);
+
+/*converter*/
+generate(path.resolve(__dirname, 'convert/src/extras'),path.resolve(__dirname, 'convert/dist/extras'), /\.js/);
+
+//generate('../src/extras','../src/extras', /\.js/);
