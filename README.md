@@ -1,33 +1,46 @@
-# dojo amd creator
+# gis
+> arcgis for JavaScript api封装
 
-[dojo+arcig+amd](http://swingley.github.io/arg/)
+## 快速构建dojo AMD方法体
+- [dojo+arcig+amd](http://swingley.github.io/arg/)
 
-# Documents Introduce
-## jsdoc intro
-[jsdoc](http://www.css88.com/doc/jsdoc/about-including-readme.html)
+## 文档介绍
+### jsdoc
+- [jsdoc](http://www.css88.com/doc/jsdoc/about-including-readme.html)
 
-[about-configuring-jsdoc](http://usejsdoc.org/about-configuring-jsdoc.html)
+- [about-configuring-jsdoc](http://usejsdoc.org/about-configuring-jsdoc.html)
 
-[gulp-jsdoc3](https://github.com/mlucool/gulp-jsdoc3)
+- [gulp-jsdoc3](https://github.com/mlucool/gulp-jsdoc3)
 
-## template intro
-[jsdoc3Template](https://github.com/danyg/jsdoc3Template/wiki#screenshots)
+### jsdoc模板
+- [jsdoc3Template](https://github.com/danyg/jsdoc3Template/wiki#screenshots)
 
-[docstrap template](https://github.com/docstrap/docstrap)
+- [docstrap template](https://github.com/docstrap/docstrap)
 
-[docdash template](https://github.com/clenemt/docdash)
+- [docdash template](https://github.com/clenemt/docdash)
 
-[jsdoc-oblivion](https://github.com/miguelmota/jsdoc-oblivion)
+- [jsdoc-oblivion](https://github.com/miguelmota/jsdoc-oblivion)
 
-[minami](https://github.com/nijikokun/minami)
+- [minami](https://github.com/nijikokun/minami)
 
-[jaguarjs-jsdoc](https://github.com/davidshimjs/jaguarjs-jsdoc)
+- [jaguarjs-jsdoc](https://github.com/davidshimjs/jaguarjs-jsdoc)
 
-## usage demo
-[docstrap themes cosmo](http://docstrap.github.io/docstrap/themes/cosmo/base_chains.js.html)
+### jsdoc使用示例
+- [docstrap themes cosmo](http://docstrap.github.io/docstrap/themes/cosmo/base_chains.js.html)
 
-[opensocial-explorer-webcontent/jsdoc](http://opensocial.github.io/explorer/opensocial-explorer-webcontent/jsdoc/ExplorerContainer.js.html)
+- [opensocial-explorer-webcontent/jsdoc](http://opensocial.github.io/explorer/opensocial-explorer-webcontent/jsdoc/ExplorerContainer.js.html)
 
-[jsdoc3-with-dojo-and-amd](http://stackoverflow.com/questions/26412807/jsdoc3-with-dojo-and-amd)
+- [jsdoc3-with-dojo-and-amd](http://stackoverflow.com/questions/26412807/jsdoc3-with-dojo-and-amd)
 
-[quick-tip-how-to-document-a-dojo-amd-module-for-jsdoc-3](https://www.speich.net/articles/en/2013/08/16/quick-tip-how-to-document-a-dojo-amd-module-for-jsdoc-3/)
+- [quick-tip-how-to-document-a-dojo-amd-module-for-jsdoc-3](https://www.speich.net/articles/en/2013/08/16/quick-tip-how-to-document-a-dojo-amd-module-for-jsdoc-3/)
+
+## 使用
+生成文档
+```
+ gulp doc
+```
+打包文件
+```
+ gulp build
+```
+## 目录结构
