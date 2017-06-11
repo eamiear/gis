@@ -4,7 +4,6 @@
   },
   "opts": {
     "private": true,
-    "template": "./node_modules/jsdoc-docio/template",
     "destination": "./documents/doc/gois-api"
   },
   "plugins": [
@@ -19,12 +18,12 @@
     "path": "./documents/generator/templates/jsdoc3Template",
     "anyTemplateSpecificParameter": "whatever",
 
-    "systemName"            : "gosuncn gis api",
+    "systemName"            : "Gosuncn Gis Api",
     "footer"                : "",
     "copyright"             : "gosuncn © 2017",
     "includeDate"           : true,
     "navType"               : "inline",
-    "theme"                 : "docio",
+    "theme"                 : "cosmo",
     "inverseNav"            : true,
     "linenums"              : true,
     "dateFormat"            : "YYYY-MM-DD, h:mm:ss a"

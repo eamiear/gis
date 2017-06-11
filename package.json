@@ -16,6 +16,6 @@
     "gulp-livereload": "*",
     "gulp-minify-css": "*",
     "gulp-uglify": "*",
-    "jsdoc-oblivion": "0.0.4"
+    "jsdoc-docio": "*"
   }
 }

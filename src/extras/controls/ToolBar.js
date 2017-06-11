@@ -7,17 +7,16 @@
 * Module representing a ToolBar.
 * @module extras/control/ToolBar
 *
-* 
-* @requires esri.layers.GraphicsLayer 
-* @requires esri.toolbars.navigation 
-* @requires esri.toolbars.draw 
-* @requires extras.tools.MeasureDrawTool 
-* @requires esri.symbols.SimpleFillSymbol 
-* @requires esri.symbols.SimpleLineSymbol 
-* @requires esri.symbols.SimpleMarkerSymbol 
-* @requires esri.symbols.PictureMarkerSymbol 
-* @requires esri.symbols.Font 
-* @requires esri.symbols.TextSymbol 
+* @requires esri.layers.GraphicsLayer
+* @requires esri.toolbars.navigation
+* @requires esri.toolbars.draw
+* @requires extras.tools.MeasureDrawTool
+* @requires esri.symbols.SimpleFillSymbol
+* @requires esri.symbols.SimpleLineSymbol
+* @requires esri.symbols.SimpleMarkerSymbol
+* @requires esri.symbols.PictureMarkerSymbol
+* @requires esri.symbols.Font
+* @requires esri.symbols.TextSymbol
 */
 define(["esri/layers/GraphicsLayer", "esri/toolbars/navigation", "esri/toolbars/draw", "extras/tools/MeasureDrawTool", "esri/symbols/SimpleFillSymbol", "esri/symbols/SimpleLineSymbol", "esri/symbols/SimpleMarkerSymbol", "esri/symbols/PictureMarkerSymbol", "esri/symbols/Font", "esri/symbols/TextSymbol"],
 function(
@@ -26,11 +25,11 @@ GraphicsLayer, navigation, draw, MeasureDrawTool, SimpleFillSymbol, SimpleLineSy
   /**  @lends module:extras/control/ToolBar */
   {
 
-    /** @member 
+    /** @member
 	gisObject */
     gisObject: null,
 
-    /** @member 
+    /** @member
 	map */
     map: null,
 
@@ -51,16 +50,16 @@ GraphicsLayer, navigation, draw, MeasureDrawTool, SimpleFillSymbol, SimpleLineSy
      * @method
      * @memberOf module:extras/control/ToolBar#
      * @param {string} map
-     * 
+     *
      * @example
      * <caption>Usage of initToolbar</caption>
      * require(['extras/control/ToolBar'],function(ToolBar){
      *   var instance = new ToolBar(gisObject);
      *   instance.initToolbar(map);
      * })
-     * 
      *
-     * 
+     *
+     *
      */
     initToolbar: function(map) {
       this.map = map;
@@ -94,16 +93,16 @@ GraphicsLayer, navigation, draw, MeasureDrawTool, SimpleFillSymbol, SimpleLineSy
      * @method
      * @memberOf module:extras/control/ToolBar#
      * @param {number} type
-     * 
+     *
      * @example
      * <caption>Usage of setMouseCursor</caption>
      * require(['extras/control/ToolBar'],function(ToolBar){
      *   var instance = new ToolBar(gisObject);
      *   instance.setMouseCursor(type);
      * })
-     * 
      *
-     * 
+     *
+     *
      */
     setMouseCursor: function(type) {
       var cur = baseUrl + '/themes/cursor/pan.ani';
@@ -147,16 +146,16 @@ GraphicsLayer, navigation, draw, MeasureDrawTool, SimpleFillSymbol, SimpleLineSy
      * @method
      * @memberOf module:extras/control/ToolBar#
      * @param {string} graphic
-     * 
+     *
      * @example
      * <caption>Usage of removeDrawGraphic</caption>
      * require(['extras/control/ToolBar'],function(ToolBar){
      *   var instance = new ToolBar(gisObject);
      *   instance.removeDrawGraphic(graphic);
      * })
-     * 
      *
-     * 
+     *
+     *
      */
     removeDrawGraphic: function(graphic) {
       if (graphic) {
@@ -173,16 +172,16 @@ GraphicsLayer, navigation, draw, MeasureDrawTool, SimpleFillSymbol, SimpleLineSy
      * @param {string}  handler
      * @param {string}  handler_before
      * @param {number} idKey
-     * 
+     *
      * @example
      * <caption>Usage of draw</caption>
      * require(['extras/control/ToolBar'],function(ToolBar){
      *   var instance = new ToolBar(gisObject);
      *   instance.draw(type, symbol, handler, handler_before,idKey);
      * })
-     * 
      *
-     * 
+     *
+     *
      */
     draw: function(type, symbol, handler, handler_before, idKey) {
       this.deactivateToolbar();
@@ -238,16 +237,16 @@ GraphicsLayer, navigation, draw, MeasureDrawTool, SimpleFillSymbol, SimpleLineSy
      * @param {string}  handler
      * @param {string}  handler_before
      * @param {number} idKey
-     * 
+     *
      * @example
      * <caption>Usage of indraw</caption>
      * require(['extras/control/ToolBar'],function(ToolBar){
      *   var instance = new ToolBar(gisObject);
      *   instance.indraw(type, symbol, handler, handler_before,idKey);
      * })
-     * 
      *
-     * 
+     *
+     *
      */
     indraw: function(type, symbol, handler, handler_before, idKey) {
       type = type.toLowerCase().replace(/_/g, "");
@@ -295,17 +294,17 @@ GraphicsLayer, navigation, draw, MeasureDrawTool, SimpleFillSymbol, SimpleLineSy
      * @description deactivateToolbar
      * @method
      * @memberOf module:extras/control/ToolBar#
-     * 
-     * 
+     *
+     *
      * @example
      * <caption>Usage of deactivateToolbar</caption>
      * require(['extras/control/ToolBar'],function(ToolBar){
      *   var instance = new ToolBar(gisObject);
      *   instance.deactivateToolbar();
      * })
-     * 
      *
-     * 
+     *
+     *
      */
     deactivateToolbar: function() {
       this.navToolbar.deactivate();
@@ -317,17 +316,17 @@ GraphicsLayer, navigation, draw, MeasureDrawTool, SimpleFillSymbol, SimpleLineSy
      * @description zoomIn
      * @method
      * @memberOf module:extras/control/ToolBar#
-     * 
-     * 
+     *
+     *
      * @example
      * <caption>Usage of zoomIn</caption>
      * require(['extras/control/ToolBar'],function(ToolBar){
      *   var instance = new ToolBar(gisObject);
      *   instance.zoomIn();
      * })
-     * 
      *
-     * 
+     *
+     *
      */
     zoomIn: function() {
       this.setMouseCursor(extras.control.ToolBar.ZOOMIN);
@@ -339,17 +338,17 @@ GraphicsLayer, navigation, draw, MeasureDrawTool, SimpleFillSymbol, SimpleLineSy
      * @description zoomOut
      * @method
      * @memberOf module:extras/control/ToolBar#
-     * 
-     * 
+     *
+     *
      * @example
      * <caption>Usage of zoomOut</caption>
      * require(['extras/control/ToolBar'],function(ToolBar){
      *   var instance = new ToolBar(gisObject);
      *   instance.zoomOut();
      * })
-     * 
      *
-     * 
+     *
+     *
      */
     zoomOut: function() {
       this.setMouseCursor(extras.control.ToolBar.ZOOMOUT);
@@ -361,17 +360,17 @@ GraphicsLayer, navigation, draw, MeasureDrawTool, SimpleFillSymbol, SimpleLineSy
      * @description pan
      * @method
      * @memberOf module:extras/control/ToolBar#
-     * 
-     * 
+     *
+     *
      * @example
      * <caption>Usage of pan</caption>
      * require(['extras/control/ToolBar'],function(ToolBar){
      *   var instance = new ToolBar(gisObject);
      *   instance.pan();
      * })
-     * 
      *
-     * 
+     *
+     *
      */
     pan: function() {
       this.setMouseCursor(extras.control.ToolBar.ZOOMOUT);
@@ -383,17 +382,17 @@ GraphicsLayer, navigation, draw, MeasureDrawTool, SimpleFillSymbol, SimpleLineSy
      * @description fullExtent
      * @method
      * @memberOf module:extras/control/ToolBar#
-     * 
-     * 
+     *
+     *
      * @example
      * <caption>Usage of fullExtent</caption>
      * require(['extras/control/ToolBar'],function(ToolBar){
      *   var instance = new ToolBar(gisObject);
      *   instance.fullExtent();
      * })
-     * 
      *
-     * 
+     *
+     *
      */
     fullExtent: function() {
       this.navToolbar.zoomToFullExtent();
@@ -403,17 +402,17 @@ GraphicsLayer, navigation, draw, MeasureDrawTool, SimpleFillSymbol, SimpleLineSy
      * @description previous
      * @method
      * @memberOf module:extras/control/ToolBar#
-     * 
-     * 
+     *
+     *
      * @example
      * <caption>Usage of previous</caption>
      * require(['extras/control/ToolBar'],function(ToolBar){
      *   var instance = new ToolBar(gisObject);
      *   instance.previous();
      * })
-     * 
      *
-     * 
+     *
+     *
      */
     previous: function() {
       this.navToolbar.zoomToPrevExtent();
@@ -423,17 +422,17 @@ GraphicsLayer, navigation, draw, MeasureDrawTool, SimpleFillSymbol, SimpleLineSy
      * @description next
      * @method
      * @memberOf module:extras/control/ToolBar#
-     * 
-     * 
+     *
+     *
      * @example
      * <caption>Usage of next</caption>
      * require(['extras/control/ToolBar'],function(ToolBar){
      *   var instance = new ToolBar(gisObject);
      *   instance.next();
      * })
-     * 
      *
-     * 
+     *
+     *
      */
     next: function() {
       this.navToolbar.zoomToNextExtent();
@@ -443,17 +442,17 @@ GraphicsLayer, navigation, draw, MeasureDrawTool, SimpleFillSymbol, SimpleLineSy
      * @description measureLength
      * @method
      * @memberOf module:extras/control/ToolBar#
-     * 
-     * 
+     *
+     *
      * @example
      * <caption>Usage of measureLength</caption>
      * require(['extras/control/ToolBar'],function(ToolBar){
      *   var instance = new ToolBar(gisObject);
      *   instance.measureLength();
      * })
-     * 
      *
-     * 
+     *
+     *
      */
     measureLength: function() {
       this.deactivateToolbar();
@@ -464,17 +463,17 @@ GraphicsLayer, navigation, draw, MeasureDrawTool, SimpleFillSymbol, SimpleLineSy
      * @description measureArea
      * @method
      * @memberOf module:extras/control/ToolBar#
-     * 
-     * 
+     *
+     *
      * @example
      * <caption>Usage of measureArea</caption>
      * require(['extras/control/ToolBar'],function(ToolBar){
      *   var instance = new ToolBar(gisObject);
      *   instance.measureArea();
      * })
-     * 
      *
-     * 
+     *
+     *
      */
     measureArea: function() {
       this.deactivateToolbar();
@@ -485,17 +484,17 @@ GraphicsLayer, navigation, draw, MeasureDrawTool, SimpleFillSymbol, SimpleLineSy
      * @description clearDrawLayer
      * @method
      * @memberOf module:extras/control/ToolBar#
-     * 
-     * 
+     *
+     *
      * @example
      * <caption>Usage of clearDrawLayer</caption>
      * require(['extras/control/ToolBar'],function(ToolBar){
      *   var instance = new ToolBar(gisObject);
      *   instance.clearDrawLayer();
      * })
-     * 
      *
-     * 
+     *
+     *
      */
     clearDrawLayer: function() {
       this.drawLayer && this.drawLayer.clear();
@@ -505,17 +504,17 @@ GraphicsLayer, navigation, draw, MeasureDrawTool, SimpleFillSymbol, SimpleLineSy
      * @description clearTrackLayer
      * @method
      * @memberOf module:extras/control/ToolBar#
-     * 
-     * 
+     *
+     *
      * @example
      * <caption>Usage of clearTrackLayer</caption>
      * require(['extras/control/ToolBar'],function(ToolBar){
      *   var instance = new ToolBar(gisObject);
      *   instance.clearTrackLayer();
      * })
-     * 
      *
-     * 
+     *
+     *
      */
     clearTrackLayer: function() {
       this.trackLayer && this.trackLayer.clear();
@@ -525,17 +524,17 @@ GraphicsLayer, navigation, draw, MeasureDrawTool, SimpleFillSymbol, SimpleLineSy
      * @description clearTmptrackLayer
      * @method
      * @memberOf module:extras/control/ToolBar#
-     * 
-     * 
+     *
+     *
      * @example
      * <caption>Usage of clearTmptrackLayer</caption>
      * require(['extras/control/ToolBar'],function(ToolBar){
      *   var instance = new ToolBar(gisObject);
      *   instance.clearTmptrackLayer();
      * })
-     * 
      *
-     * 
+     *
+     *
      */
     clearTmptrackLayer: function() {
       this.tmpTrackLayer && this.tmpTrackLayer.clear();
@@ -545,17 +544,17 @@ GraphicsLayer, navigation, draw, MeasureDrawTool, SimpleFillSymbol, SimpleLineSy
      * @description clearMeasureLayer
      * @method
      * @memberOf module:extras/control/ToolBar#
-     * 
-     * 
+     *
+     *
      * @example
      * <caption>Usage of clearMeasureLayer</caption>
      * require(['extras/control/ToolBar'],function(ToolBar){
      *   var instance = new ToolBar(gisObject);
      *   instance.clearMeasureLayer();
      * })
-     * 
      *
-     * 
+     *
+     *
      */
     clearMeasureLayer: function() {
       this.measureToolbar.clearAll();
@@ -565,17 +564,17 @@ GraphicsLayer, navigation, draw, MeasureDrawTool, SimpleFillSymbol, SimpleLineSy
      * @description clear
      * @method
      * @memberOf module:extras/control/ToolBar#
-     * 
-     * 
+     *
+     *
      * @example
      * <caption>Usage of clear</caption>
      * require(['extras/control/ToolBar'],function(ToolBar){
      *   var instance = new ToolBar(gisObject);
      *   instance.clear();
      * })
-     * 
      *
-     * 
+     *
+     *
      */
     clear: function() {
       this.setMouseCursor(extras.control.ToolBar.PAN);
@@ -592,17 +591,17 @@ GraphicsLayer, navigation, draw, MeasureDrawTool, SimpleFillSymbol, SimpleLineSy
      * @description print
      * @method
      * @memberOf module:extras/control/ToolBar#
-     * 
-     * 
+     *
+     *
      * @example
      * <caption>Usage of print</caption>
      * require(['extras/control/ToolBar'],function(ToolBar){
      *   var instance = new ToolBar(gisObject);
      *   instance.print();
      * })
-     * 
      *
-     * 
+     *
+     *
      */
     print: function() {
 
@@ -612,17 +611,17 @@ GraphicsLayer, navigation, draw, MeasureDrawTool, SimpleFillSymbol, SimpleLineSy
      * @description showMessageWidget
      * @method
      * @memberOf module:extras/control/ToolBar#
-     * 
-     * 
+     *
+     *
      * @example
      * <caption>Usage of showMessageWidget</caption>
      * require(['extras/control/ToolBar'],function(ToolBar){
      *   var instance = new ToolBar(gisObject);
      *   instance.showMessageWidget();
      * })
-     * 
      *
-     * 
+     *
+     *
      */
     showMessageWidget: function() {
 
@@ -632,17 +631,17 @@ GraphicsLayer, navigation, draw, MeasureDrawTool, SimpleFillSymbol, SimpleLineSy
      * @description destroy
      * @method
      * @memberOf module:extras/control/ToolBar#
-     * 
-     * 
+     *
+     *
      * @example
      * <caption>Usage of destroy</caption>
      * require(['extras/control/ToolBar'],function(ToolBar){
      *   var instance = new ToolBar(gisObject);
      *   instance.destroy();
      * })
-     * 
      *
-     * 
+     *
+     *
      */
     destroy: function() {
       this.clear();
@@ -660,16 +659,16 @@ GraphicsLayer, navigation, draw, MeasureDrawTool, SimpleFillSymbol, SimpleLineSy
      * @param {number} x
      * @param {number} y
      * @param {number} zoom
-     * 
+     *
      * @example
      * <caption>Usage of setCenter</caption>
      * require(['extras/control/ToolBar'],function(ToolBar){
      *   var instance = new ToolBar(gisObject);
      *   instance.setCenter(x,y,zoom);
      * })
-     * 
      *
-     * 
+     *
+     *
      */
     setCenter: function(x, y, zoom) {
       this.map.centerAtZoom();
@@ -679,15 +678,15 @@ GraphicsLayer, navigation, draw, MeasureDrawTool, SimpleFillSymbol, SimpleLineSy
      * @description getCenter
      * @method
      * @memberOf module:extras/control/ToolBar#
-     * 
-     * 
+     *
+     *
      * @example
      * <caption>Usage of getCenter</caption>
      * require(['extras/control/ToolBar'],function(ToolBar){
      *   var instance = new ToolBar(gisObject);
      *   instance.getCenter();
      * })
-     * 
+     *
      *
      * @returns {*}
      */
@@ -699,15 +698,15 @@ GraphicsLayer, navigation, draw, MeasureDrawTool, SimpleFillSymbol, SimpleLineSy
      * @description getExtent
      * @method
      * @memberOf module:extras/control/ToolBar#
-     * 
-     * 
+     *
+     *
      * @example
      * <caption>Usage of getExtent</caption>
      * require(['extras/control/ToolBar'],function(ToolBar){
      *   var instance = new ToolBar(gisObject);
      *   instance.getExtent();
      * })
-     * 
+     *
      *
      * @returns {*}
      */
@@ -719,15 +718,15 @@ GraphicsLayer, navigation, draw, MeasureDrawTool, SimpleFillSymbol, SimpleLineSy
      * @description getScale
      * @method
      * @memberOf module:extras/control/ToolBar#
-     * 
-     * 
+     *
+     *
      * @example
      * <caption>Usage of getScale</caption>
      * require(['extras/control/ToolBar'],function(ToolBar){
      *   var instance = new ToolBar(gisObject);
      *   instance.getScale();
      * })
-     * 
+     *
      *
      * @returns string
      */
@@ -739,17 +738,17 @@ GraphicsLayer, navigation, draw, MeasureDrawTool, SimpleFillSymbol, SimpleLineSy
      * @description zoomToExtent
      * @method
      * @memberOf module:extras/control/ToolBar#
-     * 
-     * 
+     *
+     *
      * @example
      * <caption>Usage of zoomToExtent</caption>
      * require(['extras/control/ToolBar'],function(ToolBar){
      *   var instance = new ToolBar(gisObject);
      *   instance.zoomToExtent();
      * })
-     * 
      *
-     * 
+     *
+     *
      */
     zoomToExtent: function() {
 
@@ -760,16 +759,16 @@ GraphicsLayer, navigation, draw, MeasureDrawTool, SimpleFillSymbol, SimpleLineSy
      * @method
      * @memberOf module:extras/control/ToolBar#
      * @param {number} layerName
-     * 
+     *
      * @example
      * <caption>Usage of getLayerByName</caption>
      * require(['extras/control/ToolBar'],function(ToolBar){
      *   var instance = new ToolBar(gisObject);
      *   instance.getLayerByName(layerName);
      * })
-     * 
      *
-     * 
+     *
+     *
      */
     getLayerByName: function(layerName) {
 
@@ -780,16 +779,16 @@ GraphicsLayer, navigation, draw, MeasureDrawTool, SimpleFillSymbol, SimpleLineSy
      * @method
      * @memberOf module:extras/control/ToolBar#
      * @param {number} layerId
-     * 
+     *
      * @example
      * <caption>Usage of getLayerById</caption>
      * require(['extras/control/ToolBar'],function(ToolBar){
      *   var instance = new ToolBar(gisObject);
      *   instance.getLayerById(layerId);
      * })
-     * 
      *
-     * 
+     *
+     *
      */
     getLayerById: function(layerId) {
       this.map.getLayer(layerId);
@@ -801,16 +800,16 @@ GraphicsLayer, navigation, draw, MeasureDrawTool, SimpleFillSymbol, SimpleLineSy
      * @memberOf module:extras/control/ToolBar#
      * @param {string} evtName
      * @param {function} bindFunction
-     * 
+     *
      * @example
      * <caption>Usage of bindMapEvents</caption>
      * require(['extras/control/ToolBar'],function(ToolBar){
      *   var instance = new ToolBar(gisObject);
      *   instance.bindMapEvents(evtName,bindFunction);
      * })
-     * 
      *
-     * 
+     *
+     *
      */
     bindMapEvents: function(evtName, bindFunction) {
 
@@ -821,16 +820,16 @@ GraphicsLayer, navigation, draw, MeasureDrawTool, SimpleFillSymbol, SimpleLineSy
      * @method
      * @memberOf module:extras/control/ToolBar#
      * @param {number} geometry
-     * 
+     *
      * @example
      * <caption>Usage of showInfoWindow</caption>
      * require(['extras/control/ToolBar'],function(ToolBar){
      *   var instance = new ToolBar(gisObject);
      *   instance.showInfoWindow(geometry);
      * })
-     * 
      *
-     * 
+     *
+     *
      */
     showInfoWindow: function(geometry) {
       this.gisObject.layerLocate.unHightlightOnMap();
