@@ -15,20 +15,37 @@
 <body>
 	<div id="mapDiv"></div>
 </body>
-</html>
 <script type="text/javascript">
-dojo.require("extras.MapInitObject");
-var GisObject;
 
-dojo.ready(function(){
-	GisObject = new extras.MapInitObject("mapDiv");
-	GisObject.setMapOptions({
-		logo:false,
-		extent : "12557877.595482401,2596928.9267310356,12723134.450635016,2688653.360673282",
-		level:10,
-		center:null
-	});
-	
-	GisObject.addDefaultLayers();
-});
+  require(["dojo/ready","extras/MapInitObject"], function (ready,MapInitObject) {
+    ready(function () {
+      var GisObject = new MapInitObject("mapDiv");
+      GisObject.setMapOptions({
+        logo:false,
+        extent : "12557877.595482401,2596928.9267310356,12723134.450635016,2688653.360673282",
+        level:10,
+        center:null
+      });
+      GisObject.addDefaultLayers();
+//      GisObject.initLayerManager();
+    })
+
+  }) ;
+
+  /*dojo.require("extras.MapInitObject");
+   var GisObject;
+
+   dojo.ready(function(){
+   GisObject = new extras.MapInitObject("mapDiv");
+   GisObject.setMapOptions({
+   logo:false,
+   extent : "12557877.595482401,2596928.9267310356,12723134.450635016,2688653.360673282",
+   level:10,
+   center:null
+   });
+
+   GisObject.addDefaultLayers();
+   });*/
 </script>
+</html>
+

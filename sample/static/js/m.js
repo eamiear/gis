@@ -31,7 +31,7 @@ var M = {
       $.extend(this.options,options);
     },
     log: function () {
-      window.console && window.console.info("Info: \n\t",[].slice.call(arguments,0).join('\n\t'));
+      window.console && window.console.log("Info: \n\t"+arguments[0],[].slice.call(arguments,1).join('\n\t'));
     }
 };
 M.Create.prototype = {

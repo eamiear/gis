@@ -34,7 +34,11 @@
 
 - [quick-tip-how-to-document-a-dojo-amd-module-for-jsdoc-3](https://www.speich.net/articles/en/2013/08/16/quick-tip-how-to-document-a-dojo-amd-module-for-jsdoc-3/)
 
-## 使用
+## 开发
+下载依赖库
+```
+npm install
+```
 生成文档
 ```
  gulp doc

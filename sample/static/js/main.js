@@ -81,7 +81,10 @@ function getresource(){
 function setIntro(id){
   loader.create();
   $('#container').attr("src",id).on('load', function () {
-    loader.destroy();
+    setTimeout(function(){
+      loader.destroy();
+    },500);
+
   });
   currentPage = id;
   isTab = 1;
@@ -262,7 +265,9 @@ function initContainer(){
   if(firstPage){
     loader.create();
     $('#container').attr('src',firstPage).on('load', function () {
-      loader.destroy();
+      setTimeout(function () {
+        loader.destroy();
+      },500);
       M.log("page(%s) is loaded!",firstPage);
     });
   }

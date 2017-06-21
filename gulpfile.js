@@ -65,9 +65,10 @@ gulp.task('compact-css', function () {
 gulp.task('compact-js', function () {
     return gulp.src(['./src/**/*.js'])
         //.pipe(concat('gis.js'))
+        .pipe(gulp.dest('./sample/static/assets/gis'))
         .pipe(uglify())
-        .pipe(gulp.dest('./build/'))
-        .pipe(gulp.dest('./sample/static/assets/gis'));
+        .pipe(gulp.dest('./build/'));
+        //.pipe(gulp.dest('./sample/static/assets/gis'));
     //.pipe(notify({ message: 'compact-js task complete' }));
 });
 
@@ -81,13 +82,13 @@ gulp.task('doc', function (cb) {
 //watch for changes on ts files and compile and copy when saved
 gulp.task('watch', function () {
     livereload.listen();
-    gulp.watch('documents/doc/**/*.html',function(file){
+   /* gulp.watch('documents/doc/!**!/!*.html',function(file){
         livereload.changed(file.path);
-    });
-    gulp.watch('src/less/**/*.less', ['less']);
+    });*/
+   // gulp.watch('src/less/**/*.less', ['less']);
     gulp.watch('./src/**/*.css', ['compact-css']);
     gulp.watch('./src/**/*.js', ['compact-js']);
-    gulp.watch(['./src/**/*.js','!./src/extras/test/**/*.js'], ['doc']);
+   // gulp.watch(['./src/**/*.js','!./src/extras/test/**/*.js'], ['doc']);
 });
 
 gulp.task('default', ["watch"]);
