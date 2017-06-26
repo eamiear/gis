@@ -14,23 +14,23 @@ var menuDatas = [{
     //href:'',
     children: [{
           title: '地图展示',
-          href: 'views/demo/a1_2.htm'
+          href: 'views/basic/a1_0.htm'
       },
       {
           title: '移动地图',
-          href: 'views/demo/a3_1.htm'
+          href: 'views/basic/a1_1.htm'
       },
       {
         title: '缩放地图',
-        href: 'views/demo/a3_2.htm'
+        href: 'views/basic/a1_2.htm'
       },
       {
         title: '设置地图显示范围',
-        href: 'views/demo/a1_7.htm'
+        href: 'views/basic/a1_3.htm'
       },
       {
         title: '获取地图显示范围',
-        href: 'views/demo/a4_3.htm'
+        href: 'views/basic/a1_4.htm'
       }
     ]
   },

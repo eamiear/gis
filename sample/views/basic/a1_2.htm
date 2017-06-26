@@ -14,7 +14,7 @@
 
 	</style>
 	<script type="text/javascript" src="../../static/assets/gis/config/config.js"></script>
-	<script type="text/javascript" src="static/assets/jquery/jquery-1.11.2.min.js"></script>
+	<script type="text/javascript" src="../../static/assets/jquery/jquery-1.11.2.min.js"></script>
 	<script src="http://172.16.16.109:8088/jsapi/3.14/init.js"></script>
 </head>
 <body>
@@ -26,35 +26,26 @@
 </body>
 </html>
 <script type="text/javascript">
-dojo.require("extras.MapInitObject");
-var GisObject;
-var isClick = false;
-dojo.ready(function(){
-	GisObject = new extras.MapInitObject("mapDiv");
-	GisObject.setMapOptions({
-		logo:false,
-		extent : "12557877.595482401,2596928.9267310356,12723134.450635016,2688653.360673282",
-		level:10,
-		center:null
-	});
+  require(["dojo/ready", "extras/MapInitObject"], function (ready, MapInitObject) {
+    ready(function () {
+      var GisObject = new MapInitObject("mapDiv");
+      var isClick = false;
 
-	GisObject.addDefaultLayers();
+      $("#btn_pan").click(function(){
+        if(!isClick){
+          $(this).val("启用缩放地图");
+          isClick = true;
+          GisObject.map.disableScrollWheelZoom();
+        }else{
+          $(this).val("停用缩放地图");
+          isClick = false;
+          GisObject.map.enableScrollWheelZoom();
+        }
+      });
 
-	$("#btn_pan").click(function(){
-		if(!isClick){
-			$(this).val("启用缩放地图");
-			isClick = true;
-			GisObject.map.disableScrollWheelZoom();
-		}else{
-			$(this).val("停用缩放地图");
-			isClick = false;
-			GisObject.map.enableScrollWheelZoom();
-		}
-	});
-
-
-	setTimeout(function(){
-		GisObject.map.setZoom(16);
-	}, 3000);  //3秒后放大到16级
-});
+      setTimeout(function(){
+        GisObject.map.setZoom(16);
+      }, 3000);  //3秒后放大到16级
+    })
+  });
 </script>

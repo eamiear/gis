@@ -33,8 +33,8 @@ define([
     "esri/symbols/TextSymbol"],
   function (declare,
             GraphicsLayer,
-            navigation,
-            draw,
+            Navigation,
+            Draw,
             MeasureDrawTool,
             SimpleFillSymbol,
             SimpleLineSymbol,
@@ -42,16 +42,12 @@ define([
             PictureMarkerSymbol,
             Font,
             TextSymbol) {
-    return declare(null,
-      /**  @lends module:extras/control/ToolBar */
-      {
+    return declare(null, /**  @lends module:extras/control/ToolBar */ {
 
-        /** @member
-          gisObject */
+        /** @member gisObject */
         gisObject: null,
 
-        /** @member
-          map */
+        /** @member map */
         map: null,
 
         /**
@@ -59,13 +55,9 @@ define([
          * @param {object} gisObject
          */
         constructor: function (gisObject) {
-
           this.gisObject = gisObject;
-
           dojo.subscribe("mapLoadedEvent", this, "initToolbar");
-
         },
-
         /**
          * @description initToolbar
          * @method
@@ -75,27 +67,24 @@ define([
          * @example
          * <caption>Usage of initToolbar</caption>
          * require(['extras/control/ToolBar'],function(ToolBar){
-     *   var instance = new ToolBar(gisObject);
-     *   instance.initToolbar(map);
-     * })
-         *
-         *
-         *
+         *   var instance = new ToolBar(gisObject);
+         *   instance.initToolbar(map);
+         * })
          */
         initToolbar: function (map) {
           this.map = map;
           try {
-            this.navToolbar = new esri.toolbars.Navigation(this.map);
-            this.drawToolbar = new esri.toolbars.Draw(this.map);
-            this.measureToolbar = new extras.tools.MeasureDrawTool(this.map);
+            this.navToolbar = new Navigation(this.map);
+            this.drawToolbar = new Draw(this.map);
+            this.measureToolbar = new MeasureDrawTool(this.map);
 
-            this.drawLayer = new esri.layers.GraphicsLayer({
+            this.drawLayer = new GraphicsLayer({
               id: "GXX_GIS_DRAW_LAYER"
             });
-            this.trackLayer = new esri.layers.GraphicsLayer({
+            this.trackLayer = new GraphicsLayer({
               id: "GXX_GIS_ALL_TRACK_LAYER"
             });
-            this.tmpTrackLayer = new esri.layers.GraphicsLayer({
+            this.tmpTrackLayer = new GraphicsLayer({
               id: "GXX_GIS_TEMP_TRACK_LAYER"
             });
             this.map.addLayer(this.drawLayer);
@@ -118,12 +107,9 @@ define([
          * @example
          * <caption>Usage of setMouseCursor</caption>
          * require(['extras/control/ToolBar'],function(ToolBar){
-     *   var instance = new ToolBar(gisObject);
-     *   instance.setMouseCursor(type);
-     * })
-         *
-         *
-         *
+         *   var instance = new ToolBar(gisObject);
+         *   instance.setMouseCursor(type);
+         * })
          */
         setMouseCursor: function (type) {
           var cur = baseUrl + '/themes/cursor/pan.ani';
@@ -171,12 +157,9 @@ define([
          * @example
          * <caption>Usage of removeDrawGraphic</caption>
          * require(['extras/control/ToolBar'],function(ToolBar){
-     *   var instance = new ToolBar(gisObject);
-     *   instance.removeDrawGraphic(graphic);
-     * })
-         *
-         *
-         *
+         *   var instance = new ToolBar(gisObject);
+         *   instance.removeDrawGraphic(graphic);
+         * })
          */
         removeDrawGraphic: function (graphic) {
           if (graphic) {
@@ -197,12 +180,9 @@ define([
          * @example
          * <caption>Usage of draw</caption>
          * require(['extras/control/ToolBar'],function(ToolBar){
-     *   var instance = new ToolBar(gisObject);
-     *   instance.draw(type, symbol, handler, handler_before,idKey);
-     * })
-         *
-         *
-         *
+         *   var instance = new ToolBar(gisObject);
+         *   instance.draw(type, symbol, handler, handler_before,idKey);
+         * })
          */
         draw: function (type, symbol, handler, handler_before, idKey) {
           this.deactivateToolbar();

@@ -33,7 +33,8 @@ define([
     "esri/symbols/PictureFillSymbol",
     "esri/symbols/Font",
     "esri/symbols/TextSymbol",
-    "esri/toolbars/draw"],
+    "esri/toolbars/draw",
+    "extras/utils/SymbolUtils"],
   function (declare,
             graphic,
             webMercatorUtils,
@@ -45,17 +46,14 @@ define([
             PictureFillSymbol,
             Font,
             TextSymbol,
-            draw) {
-    return declare(null,
-      /**  @lends module:extras/control/LayerDraw */
-      {
-
+            draw,
+            SymbolUtils) {
+    return declare([SymbolUtils], /**  @lends module:extras/control/LayerDraw */ {
         /**
          * @constructs
-         * @param {string} map
+         * @param {object} map
          */
         constructor: function (map) {
-
           dojo.subscribe("toolBarLoadedEvent", this, "initLayerDraw");
 
           this.defaultSymbol = {
@@ -131,12 +129,9 @@ define([
          * @example
          * <caption>Usage of initLayerDraw</caption>
          * require(['extras/control/LayerDraw'],function(LayerDraw){
-     *   var instance = new LayerDraw(map);
-     *   instance.initLayerDraw(toolbar);
-     * })
-         *
-         *
-         *
+         *   var instance = new LayerDraw(map);
+         *   instance.initLayerDraw(toolbar);
+         * })
          */
         initLayerDraw: function (toolbar) {
           this.toolbar = toolbar;
@@ -147,19 +142,16 @@ define([
          * @method
          * @memberOf module:extras/control/LayerDraw#
          *
-         *
          * @example
          * <caption>Usage of addPictureFill</caption>
          * require(['extras/control/LayerDraw'],function(LayerDraw){
-     *   var instance = new LayerDraw(map);
-     *   instance.addPictureFill();
-     * })
-         *
-         *
+         *   var instance = new LayerDraw(map);
+         *   instance.addPictureFill();
+         * })
          * @returns {*}
          */
         addPictureFill: function () {
-          var ext = webMercatorUtils.geographicToWebMercator(new esri.geometry.Extent(60.568, 13.978, 67.668, 32.678));
+          var ext = webMercatorUtils.geographicToWebMercator(new Extent(60.568, 13.978, 67.668, 32.678));
           var pictureFillSymbol = new PictureFillSymbol({
             "url": selfUrl + "/themes/default/images/tt2.jpg",
             "height": 900,
@@ -186,9 +178,9 @@ define([
          * @example
          * <caption>Usage of addPointByImage</caption>
          * require(['extras/control/LayerDraw'],function(LayerDraw){
-     *   var instance = new LayerDraw(map);
-     *   instance.addPointByImage(x,y,symbol,attributs);
-     * })
+         *   var instance = new LayerDraw(map);
+         *   instance.addPointByImage(x,y,symbol,attributs);
+         * })
          *
          *
          * @returns {*}
