@@ -125,5 +125,6 @@ define(['exports'], function (exports) {
         color: [255, 0, 0, 255]
       }
     }
+
   };
 });
