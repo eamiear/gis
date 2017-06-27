@@ -1,8 +1,10 @@
 /**
- * Created by K on 2017/6/22.
+ * Created by K on 2017/6/27.
  */
 define(['exports'], function (exports) {
-  exports.defaultSymbol = {
+
+  // default symbols
+  exports.symbols = {
     "SimpleMarkSymbol": {
       type: "esriSMS",
       style: "esriSMSCircle",
@@ -125,6 +127,19 @@ define(['exports'], function (exports) {
         color: [255, 0, 0, 255]
       }
     }
-
   };
+
+  // mouse cursor
+  exports.mouseCursor = {
+    "PAN": "cursor/pan.ani",
+    "ZOOMIN": "cursor/zoomin.ani",
+    "ZOOMOUT": "cursor/zoomout.ani",
+    "POLYGON": "cursor/select_poly.ani",
+    "POLYLINE": "cursor/select_polyline.ani",
+    "POINT": "cursor/select_polyline.ani",
+    "EXTENT": "7",
+    "IDENTIFY": "8",
+    "OVAL": "9",
+    "POSITION": "10"
+  }
 });

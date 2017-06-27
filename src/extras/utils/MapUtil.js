@@ -13,298 +13,357 @@ define([
     "dojo/_base/declare"
   ],
   function (declare) {
-    return declare(null,
-      /**  @lends module:extras/utils/MapUtil */
-      {
+    return declare(null, /**  @lends module:extras/utils/MapUtil */  {
 
-        /**
-         * @constructs
-         *
-         */
-        constructor: function () {
+      /**
+       * @constructs
+       *
+       */
+      constructor: function () {
 
-        },
+      },
+      getProjectName: function () {
+        return location.pathname.split('/')[1];
+      },
+      getRootPath: function () {
+        return [location.protocol,'//',location.host,'/',this.getProjectName()].join('');
+      },
+      /**
+       * @description 获取路径
+       * @method
+       * @memberOf module:extras/utils/MapUtil#
+       * @param basicPath
+       * @returns {string}
+       */
+      getBasicPath: function (basicPath) {
+        if(!basicPath) {
+          this.logger(basicPath, ' is not defined');
+          return;
+        }
+        return !this.hasLastSlash(basicPath) ? basicPath + '/' : basicPath;
+      },
+      /**
+       * @private
+       * @params {array} arguments
+       * @returns {string}
+       */
+      getBasicAbsPath: function () {
+        var path = '';
+        for (var i = 1; i < arguments.length; i++){
+          path += '/' + arguments[i];
+        }
+        return this.getBasicPath(arguments[0]) + path.slice(1);
+      },
+      /**
+       * @description 路径最后是否包含斜杠'/',绝对路径也返回true
+       * @method
+       * @memberOf module:extras/utils/MapUtil#
+       * @param {string} path
+       * @returns {boolean}
+       */
+      hasLastSlash: function (path) {
+        var lastSeparator = path.split('/')[path.length - 1];
+        // an absolute path acts as a path with last slash
+        return !!lastSeparator ||  (lastSeparator && lastSeparator.indexOf('.') != -1);
+      },
+      getImageBasicPath: function () {
+        return this.getBasicPath(gisConfig.mapImagesUrl);
+      },
+      getImageAbsPath: function () {
+        [].unshift.call(arguments,gisConfig.mapImagesUrl);
+        return this.getBasicAbsPath.apply(this,arguments);
+      },
+      getResourceBasicPath: function () {
+        return this.getBasicPath(gisConfig.mapResourcesUrl);
+      },
+      getResourceAbsPath: function () {
+        [].unshift.call(arguments,gisConfig.mapResourcesUrl);
+        return this.getBasicAbsPath.apply(this,arguments);
+      },
+      logger: function () {
+        window.console && window.console.log("Info: \n\t"+arguments[0],[].slice.call(arguments,1).join('\n\t'));
+      },
 
-        /**
-         * @description getMouseEvent
-         * @method
-         * @memberOf module:extras/utils/MapUtil#
-         * @param {string} e
-         * @param {string} d
-         * @param {string} c
-         * @param {string} a
-         *
-         * @example
-         * <caption>Usage of getMouseEvent</caption>
-         * require(['extras/utils/MapUtil'],function(MapUtil){
+      /**
+       * @description getMouseEvent
+       * @method
+       * @memberOf module:extras/utils/MapUtil#
+       * @param {string} e
+       * @param {string} d
+       * @param {string} c
+       * @param {string} a
+       *
+       * @example
+       * <caption>Usage of getMouseEvent</caption>
+       * require(['extras/utils/MapUtil'],function(MapUtil){
      *   var instance = new MapUtil();
      *   instance.getMouseEvent(e,d,c,a);
      * })
-         *
-         *
-         *
-         */
-        getMouseEvent: function (e, d, c, a) {
-          if (dojo.isIE) {
-            e.onmouseenter = function () {
+       *
+       *
+       *
+       */
+      getMouseEvent: function (e, d, c, a) {
+        if (dojo.isIE) {
+          e.onmouseenter = function () {
+            if (c) {
+              c()
+            }
+          };
+          e.onmouseleave = function () {
+            if (a) {
+              a()
+            }
+          }
+        } else {
+          var b = false;
+          e.onmouseover = function () {
+            if (!b) {
+              b = true;
               if (c) {
                 c()
               }
+            }
+          };
+          e.onmouseout = function () {
+            var i = dojo.coords(e);
+            var h = this,
+              k = window.event || k,
+              f = document.body.scrollLeft + k.clientX,
+              l = document.body.scrollTop + k.clientY;
+            var g = $y = 0;
+            do {
+              g += h.offsetLeft;
+              $y += h.offsetTop
+            } while (( h = h.offsetParent ) && h.tagName != "BODY");
+            var j = {
+              x: g,
+              y: $y
             };
-            e.onmouseleave = function () {
+            if (f <= j.x || f >= (j.x + i.w) || l <= j.y || l >= (j.y + i.h)) {
+              b = false;
               if (a) {
                 a()
               }
             }
-          } else {
-            var b = false;
-            e.onmouseover = function () {
-              if (!b) {
-                b = true;
-                if (c) {
-                  c()
-                }
-              }
-            };
-            e.onmouseout = function () {
-              var i = dojo.coords(e);
-              var h = this,
-                k = window.event || k,
-                f = document.body.scrollLeft + k.clientX,
-                l = document.body.scrollTop + k.clientY;
-              var g = $y = 0;
-              do {
-                g += h.offsetLeft;
-                $y += h.offsetTop
-              } while (( h = h.offsetParent ) && h.tagName != "BODY");
-              var j = {
-                x: g,
-                y: $y
-              };
-              if (f <= j.x || f >= (j.x + i.w) || l <= j.y || l >= (j.y + i.h)) {
-                b = false;
-                if (a) {
-                  a()
-                }
-              }
-            }
           }
-        },
+        }
+      },
 
-        /**
-         * @description getMouseEvents
-         * @method
-         * @memberOf module:extras/utils/MapUtil#
-         * @param {string} d
-         * @param {string} c
-         * @param {string} a
-         *
-         * @example
-         * <caption>Usage of getMouseEvents</caption>
-         * require(['extras/utils/MapUtil'],function(MapUtil){
+      /**
+       * @description getMouseEvents
+       * @method
+       * @memberOf module:extras/utils/MapUtil#
+       * @param {string} d
+       * @param {string} c
+       * @param {string} a
+       *
+       * @example
+       * <caption>Usage of getMouseEvents</caption>
+       * require(['extras/utils/MapUtil'],function(MapUtil){
      *   var instance = new MapUtil();
      *   instance.getMouseEvents(d,c,a);
      * })
-         *
-         *
-         *
-         */
-        getMouseEvents: function (d, c, a) {
-          if (dojo.isIE) {
-            d.onmouseenter = function () {
+       *
+       *
+       *
+       */
+      getMouseEvents: function (d, c, a) {
+        if (dojo.isIE) {
+          d.onmouseenter = function () {
+            if (c) {
+              c()
+            }
+          };
+          d.onmouseleave = function () {
+            if (a) {
+              a()
+            }
+          }
+        } else {
+          var b = false;
+          d.onmouseover = function () {
+            if (!b) {
+              b = true;
               if (c) {
                 c()
               }
+            }
+          };
+          d.onmouseout = function () {
+            var i = dojo.coords(d);
+            var h = this,
+              k = window.event || k,
+              f = document.body.scrollLeft + k.clientX,
+              l = document.body.scrollTop + k.clientY;
+            var g = $y = 0;
+            do {
+              g += h.offsetLeft;
+              $y += h.offsetTop
+            } while (( h = h.offsetParent ) && h.tagName != "BODY");
+            var j = {
+              x: g,
+              y: $y
             };
-            d.onmouseleave = function () {
+            if (f <= j.x || f >= (j.x + i.w) || l <= j.y || l >= (j.y + i.h)) {
+              b = false;
               if (a) {
                 a()
               }
             }
-          } else {
-            var b = false;
-            d.onmouseover = function () {
-              if (!b) {
-                b = true;
-                if (c) {
-                  c()
-                }
-              }
-            };
-            d.onmouseout = function () {
-              var i = dojo.coords(d);
-              var h = this,
-                k = window.event || k,
-                f = document.body.scrollLeft + k.clientX,
-                l = document.body.scrollTop + k.clientY;
-              var g = $y = 0;
-              do {
-                g += h.offsetLeft;
-                $y += h.offsetTop
-              } while (( h = h.offsetParent ) && h.tagName != "BODY");
-              var j = {
-                x: g,
-                y: $y
-              };
-              if (f <= j.x || f >= (j.x + i.w) || l <= j.y || l >= (j.y + i.h)) {
-                b = false;
-                if (a) {
-                  a()
-                }
-              }
-            }
           }
-        },
+        }
+      },
 
-        /**
-         * @description scrollObjectUp
-         * @method
-         * @memberOf module:extras/utils/MapUtil#
-         * @param {string} c
-         * @param {string} a
-         *
-         * @example
-         * <caption>Usage of scrollObjectUp</caption>
-         * require(['extras/utils/MapUtil'],function(MapUtil){
+      /**
+       * @description scrollObjectUp
+       * @method
+       * @memberOf module:extras/utils/MapUtil#
+       * @param {string} c
+       * @param {string} a
+       *
+       * @example
+       * <caption>Usage of scrollObjectUp</caption>
+       * require(['extras/utils/MapUtil'],function(MapUtil){
      *   var instance = new MapUtil();
      *   instance.scrollObjectUp(c,a);
      * })
-         *
-         *
-         * @returns string
-         */
-        scrollObjectUp: function (c, a) {
-          if (!c) {
-            return
-          }
-          var b = this.clearScrollInterval(c);
-          this.scrollUp = window.setInterval(dojo.hitch(this,
-            function () {
-              if (this.scrollStep > 0) {
-                c.scrollTop = this.scrollStep - 1;
-                this.scrollStep = this.scrollStep - 1
-              } else {
-                this.clearScrollInterval();
-                this.scrollStep = c.scrollTop
-              }
-            }), a == null ? 10 : parseInt(a))
-        },
+       *
+       *
+       * @returns string
+       */
+      scrollObjectUp: function (c, a) {
+        if (!c) {
+          return
+        }
+        var b = this.clearScrollInterval(c);
+        this.scrollUp = window.setInterval(dojo.hitch(this,
+          function () {
+            if (this.scrollStep > 0) {
+              c.scrollTop = this.scrollStep - 1;
+              this.scrollStep = this.scrollStep - 1
+            } else {
+              this.clearScrollInterval();
+              this.scrollStep = c.scrollTop
+            }
+          }), a == null ? 10 : parseInt(a))
+      },
 
-        /**
-         * @description scrollObjectNextUp
-         * @method
-         * @memberOf module:extras/utils/MapUtil#
-         * @param {string} c
-         *
-         * @example
-         * <caption>Usage of scrollObjectNextUp</caption>
-         * require(['extras/utils/MapUtil'],function(MapUtil){
+      /**
+       * @description scrollObjectNextUp
+       * @method
+       * @memberOf module:extras/utils/MapUtil#
+       * @param {string} c
+       *
+       * @example
+       * <caption>Usage of scrollObjectNextUp</caption>
+       * require(['extras/utils/MapUtil'],function(MapUtil){
      *   var instance = new MapUtil();
      *   instance.scrollObjectNextUp(c);
      * })
-         *
-         *
-         * @returns string
-         */
-        scrollObjectNextUp: function (c) {
-          if (!c) {
-            return
-          }
-          var b = this.clearScrollInterval(c);
-          var a = c.scrollTop - b;
-          this.scrollStep = c.scrollTop = a > 0 ? a : 0
-        },
+       *
+       *
+       * @returns string
+       */
+      scrollObjectNextUp: function (c) {
+        if (!c) {
+          return
+        }
+        var b = this.clearScrollInterval(c);
+        var a = c.scrollTop - b;
+        this.scrollStep = c.scrollTop = a > 0 ? a : 0
+      },
 
-        /**
-         * @description scrollObjectDown
-         * @method
-         * @memberOf module:extras/utils/MapUtil#
-         * @param {string} c
-         * @param {string} a
-         *
-         * @example
-         * <caption>Usage of scrollObjectDown</caption>
-         * require(['extras/utils/MapUtil'],function(MapUtil){
+      /**
+       * @description scrollObjectDown
+       * @method
+       * @memberOf module:extras/utils/MapUtil#
+       * @param {string} c
+       * @param {string} a
+       *
+       * @example
+       * <caption>Usage of scrollObjectDown</caption>
+       * require(['extras/utils/MapUtil'],function(MapUtil){
      *   var instance = new MapUtil();
      *   instance.scrollObjectDown(c,a);
      * })
-         *
-         *
-         * @returns string
-         */
-        scrollObjectDown: function (c, a) {
-          if (!c) {
-            return
-          }
-          var b = this.clearScrollInterval(c);
-          this.scrollDown = window.setInterval(dojo.hitch(this,
-            function () {
-              if (this.scrollStep < b) {
-                c.scrollTop = this.scrollStep + 1;
-                this.scrollStep = this.scrollStep + 1
-              } else {
-                this.scrollStep = c.scrollTop
-              }
-            }), a == null ? 10 : parseInt(a))
-        },
+       *
+       *
+       * @returns string
+       */
+      scrollObjectDown: function (c, a) {
+        if (!c) {
+          return
+        }
+        var b = this.clearScrollInterval(c);
+        this.scrollDown = window.setInterval(dojo.hitch(this,
+          function () {
+            if (this.scrollStep < b) {
+              c.scrollTop = this.scrollStep + 1;
+              this.scrollStep = this.scrollStep + 1
+            } else {
+              this.scrollStep = c.scrollTop
+            }
+          }), a == null ? 10 : parseInt(a))
+      },
 
-        /**
-         * @description scrollObjectNextDown
-         * @method
-         * @memberOf module:extras/utils/MapUtil#
-         * @param {string} c
-         *
-         * @example
-         * <caption>Usage of scrollObjectNextDown</caption>
-         * require(['extras/utils/MapUtil'],function(MapUtil){
+      /**
+       * @description scrollObjectNextDown
+       * @method
+       * @memberOf module:extras/utils/MapUtil#
+       * @param {string} c
+       *
+       * @example
+       * <caption>Usage of scrollObjectNextDown</caption>
+       * require(['extras/utils/MapUtil'],function(MapUtil){
      *   var instance = new MapUtil();
      *   instance.scrollObjectNextDown(c);
      * })
-         *
-         *
-         * @returns string
-         */
-        scrollObjectNextDown: function (c) {
-          if (!c) {
-            return
-          }
-          var b = this.clearScrollInterval(c);
-          var a = c.scrollTop + b;
-          this.scrollStep = c.scrollTop = dojo.coords(c).h < a ? dojo.coords(c).h : a
-        },
+       *
+       *
+       * @returns string
+       */
+      scrollObjectNextDown: function (c) {
+        if (!c) {
+          return
+        }
+        var b = this.clearScrollInterval(c);
+        var a = c.scrollTop + b;
+        this.scrollStep = c.scrollTop = dojo.coords(c).h < a ? dojo.coords(c).h : a
+      },
 
-        /**
-         * @description clearScrollInterval
-         * @method
-         * @memberOf module:extras/utils/MapUtil#
-         * @param {string} c
-         *
-         * @example
-         * <caption>Usage of clearScrollInterval</caption>
-         * require(['extras/utils/MapUtil'],function(MapUtil){
+      /**
+       * @description clearScrollInterval
+       * @method
+       * @memberOf module:extras/utils/MapUtil#
+       * @param {string} c
+       *
+       * @example
+       * <caption>Usage of clearScrollInterval</caption>
+       * require(['extras/utils/MapUtil'],function(MapUtil){
      *   var instance = new MapUtil();
      *   instance.clearScrollInterval(c);
      * })
-         *
-         *
-         * @returns {*}
-         */
-        clearScrollInterval: function (c) {
-          if (this.scrollUp) {
-            window.clearInterval(this.scrollUp);
-            this.scrollUp = null
-          }
-          if (this.scrollDown) {
-            window.clearInterval(this.scrollDown);
-            this.scrollDown = null
-          }
-          if (c) {
-            var a = dojo.coords(c).h;
-            var b = c.scrollHeight - a;
-            return b
-          }
+       *
+       *
+       * @returns {*}
+       */
+      clearScrollInterval: function (c) {
+        if (this.scrollUp) {
+          window.clearInterval(this.scrollUp);
+          this.scrollUp = null
         }
-      });
+        if (this.scrollDown) {
+          window.clearInterval(this.scrollDown);
+          this.scrollDown = null
+        }
+        if (c) {
+          var a = dojo.coords(c).h;
+          var b = c.scrollHeight - a;
+          return b
+        }
+      }
+    });
     dojo.mixin(extras.utils.MapUtil, (function () {
       var q = 6378137,
         m = 3.141592653589793,

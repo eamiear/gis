@@ -2,7 +2,7 @@
 const http = require('http');
 const fs = require('fs');
 const server = new http.Server();
-const port = 4001;
+const port = 4002;
 server.listen(port);
 
 server.on('request', function(request, response) {

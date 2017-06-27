@@ -35,6 +35,14 @@ var menuDatas = [{
     ]
   },
   {
+    header: '工具条',
+    //href:'',
+    children: [{
+      title: 'tester',
+      href: 'views/toolbar/t_0.html'
+    }]
+  },
+  {
       header: '地图操作示例',
       //href:'',
       children: [{

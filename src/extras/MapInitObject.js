@@ -54,14 +54,14 @@ define([
     "esri/symbols/PictureFillSymbol",
     "esri/symbols/PictureMarkerSymbol",
     "esri/symbols/SimpleLineSymbol",
-    //"extras/controls/ToolBar",
-    //"extras/controls/LayerLocate",
-    //"extras/controls/LayerDraw",
-    //"extras/controls/MapControl",
-    //"extras/controls/LayerManager",
-    //"extras/controls/LayerQuery",
-    //"extras/widgets/infowindow/InfoWindow",
-    //"extras/utils/MapUtil",
+    "extras/controls/ToolBar",
+    "extras/controls/LayerLocate",
+    "extras/controls/LayerDraw",
+    "extras/controls/MapControl",
+    "extras/controls/LayerManager",
+    "extras/controls/LayerQuery",
+    "extras/widgets/infowindow/InfoWindow",
+    "extras/utils/MapUtil",
     "esri/dijit/OverviewMap",
     //"extras/utils/GPSConvertor",
     //"extras/layers/BaiduTiledMap",
@@ -87,14 +87,14 @@ define([
             PictureFillSymbol,
             PictureMarkerSymbol,
             SimpleLineSymbol,
-            //ToolBar,
-            //LayerLocate,
-            //LayerDraw,
-            //MapControl,
-            //LayerManager,
-            //LayerQuery,
-            //InfoWindow,
-            //MapUtil,
+            ToolBar,
+            LayerLocate,
+            LayerDraw,
+            MapControl,
+            LayerManager,
+            LayerQuery,
+            InfoWindow,
+            MapUtil,
             OverviewMap,
             //GPSConvertor,
             //BaiduTiledMap,
@@ -143,6 +143,7 @@ define([
        * @constructs
        * @param {string} divId
        * @param {object} options
+       * @param {object} funcOptions
        */
       constructor: function (divId, options,funcOptions) {
         dojo.byId(divId).onselectstart = dojo.byId(divId).ondrag = function () {
@@ -151,17 +152,33 @@ define([
         this.mapId = divId;
         this.spatialReference = new SpatialReference({wkid: 102100});
         this.mapCenter = new Point(12615151.657772028, 2645790.939302407, this.spatialReference);
-        options && this.setMapOptions(options);
-        funcOptions && this.setFuncOptions(funcOptions);
-        //this.addDefaultLayers();
-        //dojo.subscribe("mapLoadedEvent", this, "loadMapCompelete");
-        dojo.subscribe("mapLoadedEvent", this, dojo.hitch(this,function () {
-          this.loadMapCompelete();
-          this.setExtentOrCenter.call(this);
-        }));
+
+        this.spatialReference = new esri.SpatialReference({ wkid: 102100 });
+
+        // TODO
+        //图层树控制类
+        this.layerManager = new LayerManager();
+        //图层查询控制类
+        this.layerQuery = new LayerQuery();
+        //地图定位类
+        this.layerLocate = new LayerLocate();
+        //地图工具类
+        this.toolbar = new ToolBar(this);
+        //地图常用方法
+        this.mapUtil = new MapUtil();
+        //地图矢量图层操作
+        this.layerDraw = new LayerDraw();
+        //地图控件操作
+        this.mapcontrol = new MapControl(this);
+
+        this._setMapOptions(options);
+        funcOptions && this._setFuncOptions(funcOptions);
+        this._init();
+        dojo.subscribe("mapLoadedEvent", this, "loadMapCompelete");
       },
       /**
        * @description setMapOptions
+       * @private
        * @method
        * @memberOf module:extras/MapInitObject#
        * @param {object} mapOptions
@@ -173,7 +190,8 @@ define([
        *   instance.setMapOptions(mapOptions);
        * })
        */
-      setMapOptions: function (mapOptions) {
+      _setMapOptions: function (mapOptions) {
+        mapOptions = mapOptions || {};
         this.currentOptions = {
           logo: false,
           slider: true,
@@ -199,42 +217,73 @@ define([
             }
           }
         }
-        dojo.mixin(this.currentOptions, mapOptions || {});
-        this.mapOptions['loadDefaultLayer'] !== false && this.addDefaultLayers();
-        if (this.map) {
-          dojo.mixin(this.map, this.currentOptions);
-        } else {
-          this.map = new Map(this.mapId, this.currentOptions);
-          this.map.spatialReference = this.spatialReference;
-          var mapLoadHandler = this.map.on('load', dojo.hitch(this, function () {
-            dojo.publish('mapLoadedEvent', [this.map]);
-            mapLoadHandler.remove();
-          }));
-        }
-        this.removeCurLayers();
+        dojo.mixin(this.currentOptions, mapOptions);
       },
-      setFuncOptions: function (funcOptions) {
+      _setFuncOptions: function (funcOptions) {
         this.currentFuncOptions = {
-          loadDefaultLayer: true,
           basemap: false,
           navigation: false,
           basictools: false
         };
         dojo.mixin(this.currentFuncOptions,funcOptions || {});
-        //dojo.subscribe("mapLoadedEvent", this, dojo.hitch(this,function (map) {
-        //  // TODO create a map to wrap handlers
-        //  console.log('functions inside.')
-        //}));
       },
-      setExtentOrCenter: function () {
-        var currentMapCenter = this.map.extent.getCenter();
+      _setInitExtent: function () {
         if (this.currentOptions['extent']) {
           this.map.setExtent(this.currentOptions.extent);
         }
+      },
+      /**
+       * @description setInitCenter
+       * @method
+       * @memberOf module:extras/MapInitObject#
+       *
+       * @example
+       * <caption>Usage of setInitCenter</caption>
+       * require(['extras/MapInitObject'],function(MapInitObject){
+       *   var instance = new MapInitObject(divId,options);
+       *   instance.setInitCenter(x,y,zoom);
+       * })
+       */
+      _setInitCenter: function () {
+        var currentMapCenter = this.map.extent.getCenter();
         if (this.mapCenter && (currentMapCenter.x !== this.mapCenter.x || currentMapCenter.y !== this.mapCenter.y)) {
           this.map.centerAndZoom(this.mapCenter, this.currentOptions.zoom);
         }
       },
+      _init: function () {
+        if (!this.map) {
+          this.map = new Map(this.mapId, this.currentOptions);
+          this.map.spatialReference = this.spatialReference;
+          var mapLoadHandler = this.map.on('load', dojo.hitch(this, function () {
+            this._setInitExtent();
+            this._setInitCenter();
+            dojo.publish('mapLoadedEvent', [this.map]);
+            mapLoadHandler.remove();
+          }));
+        }
+        this.removeCurLayers();
+        this.currentOptions['loadDefaultLayer'] !== false && this.addDefaultLayers();
+      },
+      /**
+       * @description loadMapCompelete
+       * @method
+       * @memberOf module:extras/MapInitObject#
+       * @param {string} map
+       *
+       * @example
+       * <caption>Usage of loadMapCompelete</caption>
+       * require(['extras/MapInitObject'],function(MapInitObject){
+       *   var instance = new MapInitObject(divId,options);
+       *   instance.loadMapCompelete(map);
+       * })
+       *
+       */
+      loadMapCompelete: function (map) {
+        var theDiv = document.createElement("div");
+        var mapDiv = dojo.byId(this.map.id);
+        mapDiv.appendChild(theDiv);
+      },
+
       initBasicTools: function () {
         this.createLayerManager();
         this.createLayerDraw();
@@ -383,21 +432,18 @@ define([
         if (!(layers instanceof Array)) {
           layers = [layers];
         }
-
-        dojo.forEach(layers, dojo.hitch(this,
-          function (layerObj, index) {
-            var layer = this.createLayer(layerObj);
-            if (layer) {
-              this.map.addLayer(layer);
-
-              if (layerObj.featureType == "7") {
-                this.imageLayer.push(layer);
-              } else {
-                this.baseLayer.push(layer);
-              }
-              this.curLayer[layerObj.name + "_" + layerObj.id] = layer;
+        dojo.forEach(layers, dojo.hitch(this,function (layerObj, index) {
+          var layer = this.createLayer(layerObj);
+          if (layer) {
+            this.map.addLayer(layer);
+            if (layerObj.featureType == "7") {
+              this.imageLayer.push(layer);
+            } else {
+              this.baseLayer.push(layer);
             }
-          }));
+            this.curLayer[layerObj.name + "_" + layerObj.id] = layer;
+          }
+        }));
       },
       /**
        * @description createLayer
@@ -470,26 +516,7 @@ define([
             layer.setVisibility(true);
         });
       },
-      /**
-       * @description setInitCenter
-       * @method
-       * @memberOf module:extras/MapInitObject#
-       * @param {number} x
-       * @param {number} y
-       * @param {number} zoom
-       *
-       * @example
-       * <caption>Usage of setInitCenter</caption>
-       * require(['extras/MapInitObject'],function(MapInitObject){
-       *   var instance = new MapInitObject(divId,options);
-       *   instance.setInitCenter(x,y,zoom);
-       * })
-       */
-      setInitCenter: function (x, y, zoom) {
-        var xys = webMercatorUtils.lngLatToXY(x, y);
-        var centerPt = new Point(xys[0], xys[1], this.spatialReference);
-        this.map && this.map.centerAndZoom(centerPt,+zoom || this.currentOptions.zoom);
-      },
+
 
       /**
        * @description addZoomBar
@@ -549,26 +576,7 @@ define([
 
       },
 
-      /**
-       * @description loadMapCompelete
-       * @method
-       * @memberOf module:extras/MapInitObject#
-       * @param {string} map
-       *
-       * @example
-       * <caption>Usage of loadMapCompelete</caption>
-       * require(['extras/MapInitObject'],function(MapInitObject){
-       *   var instance = new MapInitObject(divId,options);
-       *   instance.loadMapCompelete(map);
-       * })
-       *
-       */
-      loadMapCompelete: function (map) {
-        //dojo.require("extras.widget.ToolPanelWidget");
-        var theDiv = document.createElement("div");
-        var mapDiv = dojo.byId(this.map.id);
-        mapDiv.appendChild(theDiv);
-      },
+
 
       /**
        * @description addToolPanel

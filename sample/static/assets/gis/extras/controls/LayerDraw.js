@@ -48,7 +48,7 @@ define([
             TextSymbol,
             draw,
             SymbolUtils) {
-    return declare([SymbolUtils], /**  @lends module:extras/control/LayerDraw */ {
+    return declare(null, /**  @lends module:extras/control/LayerDraw */ {
         /**
          * @constructs
          * @param {object} map

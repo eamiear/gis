@@ -66,6 +66,7 @@ gulp.task('compact-js', function () {
     return gulp.src(['./src/**/*.js'])
         //.pipe(concat('gis.js'))
         .pipe(gulp.dest('./sample/static/assets/gis'))
+        .pipe(gulp.dest('./test/libs/gis'))
         .pipe(uglify())
         .pipe(gulp.dest('./build/'));
         //.pipe(gulp.dest('./sample/static/assets/gis'));

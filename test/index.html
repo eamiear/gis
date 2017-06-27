@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Jasmine Spec</title>
+  <link rel="stylesheet" type="text/css" href="libs/jasmine-1.3.1/jasmine.css">
+  <script type="text/javascript" src="libs/jasmine-1.3.1/jasmine.js"></script>
+  <script type="text/javascript" src="libs/jasmine-1.3.1/jasmine-html.js"></script>
+
+  <script type="text/javascript" src="./libs/gis/config/config.js"></script>
+  <script src="http://172.16.16.109:8088/jsapi/3.14/init.js"></script>
+  <script src="./units/MapUtils.unit.js"></script>
+
+  <script type="text/javascript">
+    require(["dojo/ready", "extras/MapInitObject"], function (ready, MapInitObject) {
+      ready(function () {
+        var GisObject = new MapInitObject("mapDiv");
+      })
+    });
+  </script>
+  <script type="text/javascript">
+
+    var jasmineEnv = jasmine.getEnv();
+    var htmlReporter = new jasmine.HtmlReporter();
+
+    jasmineEnv.addReporter(htmlReporter);
+
+    jasmineEnv.specFilter = function(spec) {
+      return htmlReporter.specFilter(spec);
+    };
+
+    window.onload = function() {
+      jasmineEnv.execute();
+    };
+  </script>
+</head>
+<body>
+<div id="mapDiv" style="display: none;"></div>
+</body>
+</html>

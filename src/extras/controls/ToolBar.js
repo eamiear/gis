@@ -25,6 +25,8 @@ define([
     "esri/toolbars/navigation",
     "esri/toolbars/draw",
     "extras/tools/MeasureDrawTool",
+    "extras/utils/SymbolUtils",
+    "extras/utils/MapUtil",
     "esri/symbols/SimpleFillSymbol",
     "esri/symbols/SimpleLineSymbol",
     "esri/symbols/SimpleMarkerSymbol",
@@ -36,13 +38,15 @@ define([
             Navigation,
             Draw,
             MeasureDrawTool,
+            SymbolUtils,
+            MapUtil,
             SimpleFillSymbol,
             SimpleLineSymbol,
             SimpleMarkerSymbol,
             PictureMarkerSymbol,
             Font,
             TextSymbol) {
-    return declare(null, /**  @lends module:extras/control/ToolBar */ {
+    return declare(MapUtil, /**  @lends module:extras/control/ToolBar */ {
 
         /** @member gisObject */
         gisObject: null,
@@ -73,6 +77,7 @@ define([
          */
         initToolbar: function (map) {
           this.map = map;
+          this.mapUtil = new MapUtil();
           try {
             this.navToolbar = new Navigation(this.map);
             this.drawToolbar = new Draw(this.map);
@@ -94,9 +99,12 @@ define([
           } catch (e) {
 
           }
-
           dojo.publish("toolBarLoadedEvent", [this]);
         },
+      getSymbols: function () {
+        console.log('symbols ----- ',SymbolUtils);
+        console.log('path ----- ',this.mapUtil.getImageAbsPath('dd','rrr','ggg'));
+      },
 
         /**
          * @description setMouseCursor
@@ -184,51 +192,94 @@ define([
          *   instance.draw(type, symbol, handler, handler_before,idKey);
          * })
          */
-        draw: function (type, symbol, handler, handler_before, idKey) {
+        //draw: function (type, symbol, handler, handler_before, idKey) {
+        //  this.deactivateToolbar();
+        //  switch (type) {
+        //    case esri.toolbars.draw.POINT:
+        //    case esri.toolbars.draw.MULTI_POINT:
+        //      this.drawToolbar.setMarkerSymbol(symbol || extras.control.ToolBar.POINT);
+        //      break;
+        //    case esri.toolbars.draw.POLYLINE:
+        //      this.drawToolbar.setLineSymbol(symbol || extras.control.ToolBar.POLYLINE);
+        //      break;
+        //    case esri.toolbars.draw.ARROW:
+        //      this.drawToolbar.setFillSymbol(symbol || extras.control.ToolBar.POLYGON);
+        //      break;
+        //    case esri.toolbars.draw.POLYGON:
+        //      this.drawToolbar.setFillSymbol(symbol || extras.control.ToolBar.POLYGON);
+        //      break;
+        //    case esri.toolbars.draw.CIRCLE:
+        //      this.drawToolbar.setFillSymbol(symbol || extras.control.ToolBar.POLYGON);
+        //      break;
+        //    case esri.toolbars.draw.EXTENT:
+        //      this.drawToolbar.setFillSymbol(symbol || extras.control.ToolBar.POLYGON);
+        //      break;
+        //    default:
+        //      this.drawToolbar.setFillSymbol(symbol || extras.control.ToolBar.POLYGON);
+        //      break;
+        //  }
+        //  var onDrawEndHandler = dojo.connect(this.drawToolbar, "onDrawEnd", dojo.hitch(this,
+        //    function (geometry) {
+        //      this.drawToolbar.deactivate();
+        //
+        //      var graphic = new esri.Graphic(geometry, symbol);
+        //      idKey && (graphic.id = idKey);
+        //      this.drawLayer.add(graphic);
+        //
+        //      if (onDrawEndHandler) {
+        //        dojo.disconnect(onDrawEndHandler);
+        //      }
+        //      if (handler) {
+        //        handler(graphic);
+        //      }
+        //    }));
+        //
+        //  this.drawToolbar.activate(type);
+        //},
+        draw: function(type, symbol, handler, handler_before,idKey){
+          var that=this;
+          type = type.toLowerCase().replace(/_/g, "");
+
           this.deactivateToolbar();
-          switch (type) {
-            case esri.toolbars.draw.POINT:
-            case esri.toolbars.draw.MULTI_POINT:
-              this.drawToolbar.setMarkerSymbol(symbol || extras.control.ToolBar.POINT);
-              break;
-            case esri.toolbars.draw.POLYLINE:
-              this.drawToolbar.setLineSymbol(symbol || extras.control.ToolBar.POLYLINE);
-              break;
-            case esri.toolbars.draw.ARROW:
-              this.drawToolbar.setFillSymbol(symbol || extras.control.ToolBar.POLYGON);
-              break;
-            case esri.toolbars.draw.POLYGON:
-              this.drawToolbar.setFillSymbol(symbol || extras.control.ToolBar.POLYGON);
-              break;
-            case esri.toolbars.draw.CIRCLE:
-              this.drawToolbar.setFillSymbol(symbol || extras.control.ToolBar.POLYGON);
-              break;
-            case esri.toolbars.draw.EXTENT:
-              this.drawToolbar.setFillSymbol(symbol || extras.control.ToolBar.POLYGON);
-              break;
-            default:
-              this.drawToolbar.setFillSymbol(symbol || extras.control.ToolBar.POLYGON);
-              break;
-          }
-          var onDrawEndHandler = dojo.connect(this.drawToolbar, "onDrawEnd", dojo.hitch(this,
-            function (geometry) {
-              this.drawToolbar.deactivate();
-
-              var graphic = new esri.Graphic(geometry, symbol);
-              idKey && (graphic.id = idKey);
-              this.drawLayer.add(graphic);
-
-              if (onDrawEndHandler) {
-                dojo.disconnect(onDrawEndHandler);
-              }
-              if (handler) {
-                handler(graphic);
-              }
-            }));
+          this.map && this.map.disableMapNavigation();
 
           this.drawToolbar.activate(type);
-        },
+          var renderSymbol = symbol;
+          switch(type){
+            case "point":
+            case "multipoint":
+              renderSymbol = symbol || extras.control.ToolBar.POINT;
+              this.drawToolbar.setMarkerSymbol(renderSymbol);
+              break;
+            case "polyline":
+            case "freehandpolyline":
+              renderSymbol = symbol || extras.control.ToolBar.POLYLINE;
+              this.drawToolbar.setLineSymbol(renderSymbol);
+              break;
+            default:
+              renderSymbol = symbol || extras.control.ToolBar.POLYGON;
+              this.drawToolbar.setFillSymbol(renderSymbol);
+              break;
+          }
 
+
+          var onDrawEndHandler = dojo.connect(this.drawToolbar, "onDrawEnd", dojo.hitch(this,function(geometry) {
+            this.drawToolbar.deactivate();
+            this.map && this.map.enableMapNavigation();
+            handler_before && handler_before();
+            var graphic = new esri.Graphic(geometry,renderSymbol);
+            idKey && (graphic.id = idKey);
+            this.drawLayer.add(graphic);
+            if(onDrawEndHandler){
+              dojo.disconnect(onDrawEndHandler);
+            }
+            if(handler){
+              handler(graphic);
+            }
+          }));
+
+
+        },
         /**
          * @description indraw
          * @method
@@ -838,7 +889,7 @@ define([
         }
       });
 
-    dojo.mixin(extras.control.ToolBar, {
+    dojo.mixin(ToolBar, {
       "PAN": "1",
       "ZOOMIN": "2",
       "ZOOMOUT": "3",
@@ -851,7 +902,7 @@ define([
       "POSITION": "10"
     });
     dojo.mixin(extras.control.ToolBar, {
-      "POINT": new esri.symbols.SimpleMarkerSymbol({
+      "POINT": new SimpleMarkerSymbol({
         "color": [255, 255, 255, 64],
         "size": 24,
         "angle": -30,
@@ -866,13 +917,13 @@ define([
           "style": "esriSLSSolid"
         }
       }),
-      "POLYLINE": new esri.symbols.SimpleLineSymbol({
+      "POLYLINE": new SimpleLineSymbol({
         type: "esriSLS",
         style: "esriSLSSolid",
         width: 2,
         color: [255, 0, 0, 255]
       }),
-      "POLYGON": new esri.symbols.SimpleFillSymbol({
+      "POLYGON": new SimpleFillSymbol({
         type: "esriSFS",
         style: "esriSFSSolid",
         color: [0, 0, 0, 64],

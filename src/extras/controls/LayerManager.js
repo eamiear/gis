@@ -18,7 +18,6 @@
  * @requires esri.layers.GraphicsLayer
  * @requires esri.dijit.PopupTemplate
  * @requires extras.graphics.InfoGraphicLayer
- * @requires extras.utils.GPSConvertor
  */
 define([
     "dojo/_base/declare",
@@ -31,8 +30,7 @@ define([
     "esri/symbols/PictureMarkerSymbol",
     "esri/layers/GraphicsLayer",
     "esri/dijit/PopupTemplate",
-    "extras/graphics/InfoGraphicLayer",
-    "extras/utils/GPSConvertor"
+    "extras/graphics/InfoGraphicLayer"
   ],
   function (declare,
             graphic,
@@ -44,15 +42,10 @@ define([
             PictureMarkerSymbol,
             GraphicsLayer,
             PopupTemplate,
-            InfoGraphicLayer,
-            GPSConvertor) {
-    return declare(null,
-      /**  @lends module:extras/control/LayerManager */
-      {
-
+            InfoGraphicLayer) {
+    return declare(null,  /**  @lends module:extras/control/LayerManager */ {
         /**
          * @constructs
-         *
          */
         constructor: function () {
 

@@ -5,15 +5,15 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"/>
 	<link rel="stylesheet" href="http://172.16.16.109:8088/jsapi/3.14/dijit/themes/claro/claro.css">
-  <!--<link rel="stylesheet" href="http://172.16.16.109:8088/jsapi/3.14/esri/css/esri.css">-->
-  <link rel="stylesheet" href="https://js.arcgis.com/3.17/esri/css/esri.css">
+  <link rel="stylesheet" href="http://172.16.16.109:8088/jsapi/3.14/esri/css/esri.css">
+  <!--<link rel="stylesheet" href="https://js.arcgis.com/3.17/esri/css/esri.css">-->
 
 	<style type="text/css">
 		body, html,#mapDiv {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}
 	</style>
 	<script type="text/javascript" src="../../static/assets/gis/config/config.js"></script>
-	<!--<script src="http://172.16.16.109:8088/jsapi/3.14/init.js"></script>-->
-  <script src="https://js.arcgis.com/3.17/"></script>
+	<script src="http://172.16.16.109:8088/jsapi/3.14/init.js"></script>
+  <!--<script src="https://js.arcgis.com/3.17/"></script>-->
 </head>
 <body>
 	<div id="mapDiv"></div>
@@ -21,20 +21,10 @@
 <script type="text/javascript">
   require(["dojo/ready", "extras/MapInitObject"], function (ready, MapInitObject) {
     ready(function () {
-      var GisObject = new MapInitObject("mapDiv");
-      GisObject.setMapOptions({
-        loadDefaultLayer: false
-//        logo:false,
+      var GisObject = new MapInitObject("mapDiv",{
+        logo:true//,
 //        center:"12615151.657772028, 2945790.939302407"
       });
-//      GisObject.addDefaultLayers();
-      GisObject.loadLayers();
-//      var l = GisObject.createDynamicLayer({
-//        url: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Census/MapServer",
-//        "opacity" : 0.5
-//      });
-//      console.log('layer --- ',l)
-      console.log('toolbar -- ',GisObject.createLayerQuery());
     })
   });
 </script>
