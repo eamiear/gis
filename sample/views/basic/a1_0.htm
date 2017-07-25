@@ -4,27 +4,128 @@
 	<title>地图展示</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"/>
-	<link rel="stylesheet" href="http://172.16.16.109:8088/jsapi/3.14/dijit/themes/claro/claro.css">
-  <link rel="stylesheet" href="http://172.16.16.109:8088/jsapi/3.14/esri/css/esri.css">
+	<link rel="stylesheet" href="http://127.0.0.1/map/jsapi/3.14/dijit/themes/claro/claro.css">
+  <link rel="stylesheet" href="http://127.0.0.1/map/jsapi/3.14/esri/css/esri.css">
   <!--<link rel="stylesheet" href="https://js.arcgis.com/3.17/esri/css/esri.css">-->
 
 	<style type="text/css">
 		body, html,#mapDiv {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}
 	</style>
 	<script type="text/javascript" src="../../static/assets/gis/config/config.js"></script>
-	<script src="http://172.16.16.109:8088/jsapi/3.14/init.js"></script>
+	<script src="http://127.0.0.1/map/jsapi/3.14/init.js"></script>
   <!--<script src="https://js.arcgis.com/3.17/"></script>-->
 </head>
 <body>
 	<div id="mapDiv"></div>
 </body>
 <script type="text/javascript">
-  require(["dojo/ready", "extras/MapInitObject"], function (ready, MapInitObject) {
+  require(["dojo/ready", "extras/MapInitObject","esri/config"], function (ready, MapInitObject,esriConfig) {
     ready(function () {
+//      esriConfig.defaults.io.proxyUrl = "172.16.16.109:8088";
+//      esriConfig.defaults.io.alwaysUseProxy = false;
       var GisObject = new MapInitObject("mapDiv",{
-        logo:true//,
-//        center:"12615151.657772028, 2945790.939302407"
+//        loadDefaultLayer: false
+//        logo:true//,
+        zoom: 9,
+        center:"8440901.690136591, 4780028.566943722"
       });
+//      var layer = GisObject.createLayer({
+//        "id": "100",
+//        "layerId": "GXX_XXXXX",
+//        "online": false,
+//        "name": "谷歌电子地图",
+//        "suffix": "png",
+//        "tileSize": "256",
+//        "tileType": "tianditu",
+//        "mapStyle": "roadmap",
+//        "tile_url": gisConfig.maptiledCacheUrl
+//      });
+//      console.log('layer-------> ',layer)
+
+//      var d = GisObject.toolbar.draw({
+//        type: 'ARROW',
+//        hideZoomSlider: true,
+//        graphicAttr: {
+//          id: 1111
+//        },
+//        drawTips: {
+//          addShape: 'tst'
+//        }
+//      });
+//      d.then(function(graphic){
+//        console.log('graphic-------> ',graphic);
+//      })
+      /*GisObject.toolbar.addCircle({
+        x: 113.28,
+        y: 23.130
+      });
+      GisObject.toolbar.addText({
+        x: 113.128,
+        y: 23.030
+      });
+      GisObject.toolbar.addImage({
+        x: 113.1328,
+        y: 23.1230
+      });
+      GisObject.toolbar.addPolygon({
+        "rings": [
+          [
+            [-4226661, 8496372],
+            [-3835304, 8731187],
+            [-2269873, 9005137],
+            [-1213208, 8613780],
+            [-1017529, 8065879],
+            [-1213208, 7478843],
+            [-2230738, 6891806],
+            [-2935181, 6735263],
+            [-3522218, 6891806],
+            [-3952711, 7165757],
+            [-4265797, 7283164],
+            [-4304933, 7635386],
+            [-4304933, 7674521],
+            [-4226661, 8496372]
+          ]
+        ],
+        "wkid": 102100
+      });
+
+      GisObject.toolbar.addPolyline({
+        "paths":[
+          [
+            [-12484306,7244028],
+            [-7318386,10061803],
+            [-3013453,10727111]
+          ]
+        ],
+        "wkid":102100
+      });
+
+      GisObject.toolbar.addExtent({
+        xmin: 113.0112,
+        ymin: 23.23,
+        xmax: 113.45,
+        ymax: 23.76,
+        "wkid":102100
+      });*/
+//      console.log('GisObject-------> ',GisObject.map.getLayer('skz'));
+//      console.log('basicpath ---> ',GisObject.toolbar.getSymbols())
+//      console.log('createlayer',GisObject.toolbar.createLayer({
+//        "layerId": "skz_"
+//       }));
+//      var amazing = 'amazing god';
+//      console.log('logger',GisObject.toolbar.logger(GisObject.toolbar.logger('skz(%s)',amazing)))
+
+      GisObject.toolbar.drawPoint().then(function(graphic){
+        //GisObject.toolbar.edit('MOVE',graphic)
+       // GisObject.layerLocate.hightlightOnMap(graphic.geometry)
+
+      });
+//      GisObject.toolbar.drawImage();
+//      GisObject.toolbar.drawText();
+//      GisObject.toolbar.drawCircle();
+//      GisObject.toolbar.drawPolyline();
+//      GisObject.toolbar.drawPolygon();
+//      GisObject.toolbar.drawExtent();
     })
   });
 </script>

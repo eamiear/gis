@@ -151,9 +151,8 @@ define([
         };
         this.mapId = divId;
         this.spatialReference = new SpatialReference({wkid: 102100});
-        this.mapCenter = new Point(12615151.657772028, 2645790.939302407, this.spatialReference);
-
-        this.spatialReference = new esri.SpatialReference({ wkid: 102100 });
+        this.gisConfig = gisConfig;
+        this.mapCenter = new Point((this.gisConfig.x || 12615151.657772028), (this.gisConfig.y || 2645790.939302407), this.spatialReference);
 
         // TODO
         //图层树控制类
@@ -401,6 +400,7 @@ define([
           "tile_url": gisConfig.maptiledCacheUrl
         }]);
       },
+      // test
       loadLayers: function () {
         require(["esri/layers/ArcGISDynamicMapServiceLayer", "esri/layers/ImageParameters"], dojo.hitch(this,function (ArcGISDynamicMapServiceLayer,ImageParameters) {
           var imageParameters = new ImageParameters();
@@ -433,7 +433,7 @@ define([
           layers = [layers];
         }
         dojo.forEach(layers, dojo.hitch(this,function (layerObj, index) {
-          var layer = this.createLayer(layerObj);
+          var layer = this.createLayerContainer(layerObj);
           if (layer) {
             this.map.addLayer(layer);
             if (layerObj.featureType == "7") {
@@ -446,20 +446,20 @@ define([
         }));
       },
       /**
-       * @description createLayer
+       * @description createLayerContainer
        * @method
        * @memberOf module:extras/MapInitObject#
        * @param {object} layerObj
        *
        * @example
-       * <caption>Usage of createLayer</caption>
+       * <caption>Usage of createLayerContainer</caption>
        * require(['extras/MapInitObject'],function(MapInitObject){
        *   var instance = new MapInitObject(divId,options);
-       *   instance.createLayer(layerObj);
+       *   instance.createLayerContainer(layerObj);
        * })
        * @returns string
        */
-      createLayer: function (layerObj) {
+      createLayerContainer: function (layerObj) {
         var layerType = layerObj.tileType.toLowerCase();
         var layers = {
           'tiled': this.createTiledLayer,
@@ -575,8 +575,6 @@ define([
       showOverViewerMap: function () {
 
       },
-
-
 
       /**
        * @description addToolPanel

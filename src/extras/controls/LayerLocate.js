@@ -11,36 +11,44 @@
  * @requires dojo._base.declare
  * @requires esri.graphic
  * @requires esri.symbols.PictureMarkerSymbol
- * @requires esri.symbols.SimpleMarkerSymbol
  * @requires esri.SpatialReference
  * @requires esri.layers.GraphicsLayer
  * @requires dojo.fx
  */
 define([
     "dojo/_base/declare",
+    "dojo/_base/lang",
+    "dojo/fx",
     "esri/graphic",
     "esri/symbols/PictureMarkerSymbol",
-    "esri/symbols/SimpleMarkerSymbol",
     "esri/SpatialReference",
     "esri/layers/GraphicsLayer",
-    "dojo/fx"],
-  function (declare,
-            graphic,
-            PictureMarkerSymbol,
-            SimpleMarkerSymbol,
-            SpatialReference,
-            GraphicsLayer,
-            fx) {
-    return declare(null,
-      /**  @lends module:extras/control/LayerLocate */
-      {
-
-        /** @member
-          setIntervalhandler */
+    "esri/geometry/webMercatorUtils",
+    "esri/geometry/Geometry",
+    "esri/geometry/Point",
+    "esri/geometry/Polyline",
+    "esri/geometry/Polygon",
+    "extras/basic/Radical"],
+  function (
+    declare,
+    lang,
+    fx,
+    Graphic,
+    PictureMarkerSymbol,
+    SpatialReference,
+    GraphicsLayer,
+    WebMercatorUtils,
+    Geometry,
+    Point,
+    Polyline,
+    Polygon,
+    Radical
+  ) {
+    return declare(Radical, /**  @lends module:extras/control/LayerLocate */{
+        /** @member setIntervalhandler */
         setIntervalhandler: null,
 
-        /** @member
-          locateLayer */
+        /** @member  locateLayer */
         locateLayer: null,
 
         /**
@@ -51,9 +59,7 @@ define([
 
           dojo.subscribe("mapLoadedEvent", this, "initLayerLocate");
 
-          this.spatialReference = new SpatialReference({
-            wkid: 102100
-          });
+          this.spatialReference = new SpatialReference({wkid: 102100});
           this.duration = 1000;
           this.rate = 50;
           this.indexFill = 0;
@@ -62,11 +68,11 @@ define([
             "Point": {
               "type": "esriPMS",
               "angle": 0,
-              "width": 20,
-              "height": 20,
+              "width": 30,
+              "height": 30,
               "xoffset": 0,
               "yoffset": 0,
-              "url": selfUrl + "/themes/default/img/info.gif"
+              "url": gisConfig.mapImagesUrl + "/marker/default/circle.png"
             },
             "Line": {
               strokeWeight: 3,
@@ -101,67 +107,125 @@ define([
          */
         initLayerLocate: function (map) {
           this.map = map;
-          if (!this.locateLayer) {
-            this.locateLayer = new GraphicsLayer({
-              id: "GXX_GIS_LAYER_LOCATE"
-            });
-            this.map.addLayer(this.locateLayer);
-          }
+          this.locateLayer = this.createLayer({layerId: this.defaultLayerIds.locateLayerId});
+          //if (!this.locateLayer) {
+          //  this.locateLayer = new GraphicsLayer({id: this.defaultLayerIds.locateLayerId});
+          //  this.map.addLayer(this.locateLayer);
+          //}
 
-          if (this.line_1 == null || this.line_2 == null || this.line_3 == null || this.line_4 == null) {
-            this.line_1 = this.createImg("line_1.png");
-            this.line_2 = this.createImg("line_1.png");
-            this.line_3 = this.createImg("line_2.png");
-            this.line_4 = this.createImg("line_2.png");
-          }
+          //if (this.line_1 == null || this.line_2 == null || this.line_3 == null || this.line_4 == null) {
+          //  this.line_1 = this.createImg("line_1.png");
+          //  this.line_2 = this.createImg("line_1.png");
+          //  this.line_3 = this.createImg("line_2.png");
+          //  this.line_4 = this.createImg("line_2.png");
+          //}
         },
 
-        /**
-         * @description unHightlightOnMap
-         * @method
-         * @memberOf module:extras/control/LayerLocate#
-         *
-         *
-         * @example
-         * <caption>Usage of unHightlightOnMap</caption>
-         * require(['extras/control/LayerLocate'],function(LayerLocate){
-     *   var instance = new LayerLocate();
-     *   instance.unHightlightOnMap();
-     * })
-         *
-         *
-         *
-         */
-        unHightlightOnMap: function () {
-          if (this.setIntervalhandler) {
-            window.clearInterval(this.setIntervalhandler);
-          }
-          this.locateLayer.clear();
-        },
+
 
         /**
          * @description locate
          * @method
          * @memberOf module:extras/control/LayerLocate#
-         * @param {number} geometry
-         * @param {boolean} isCenter
-         * @param {boolean} isEffect
-         * @param {number} zoom
-         * @param {number} style
-         * @param {function} fn
-         * @param {string} endStatic
+         * @param {object} options
+         * @param {array|object} options.geometry
+         * @param {boolean}   [options.isCenter]
+         * @param {boolean}   [options.isExtent]
+         * @param {number}    [options.zoom]
+         * @param {function}  [options.beforeLocate]
+         * @param {function}  [options.located]
          *
          * @example
          * <caption>Usage of locate</caption>
          * require(['extras/control/LayerLocate'],function(LayerLocate){
-     *   var instance = new LayerLocate();
-     *   instance.locate(geometry,isCenter,isEffect,zoom,style,fn,endStatic);
-     * })
+       *   var instance = new LayerLocate();
+       *   instance.locate(geometry,isCenter,isEffect,zoom,style,fn,endStatic);
+       * })
          *
          *
          *
          */
-        locate: function (geometry, isCenter, isEffect, zoom, style, fn, endStatic) {
+        locate: function (options) {
+          var geometry = options.geometry,
+            isCenter = options.isCenter,
+            isExtent = options.isExtent,
+            zoom = options.zoom,
+            beforeLocate = options.beforeLocate,
+            located = options.located,
+            centerPoint,
+            geometryExtent,
+            deferred;
+
+          if(geometry){
+            if(geometry instanceof Geometry){
+              centerPoint = this.getGeometryCenter(geometry);
+            }else if(geometry instanceof Array && geometry.length){
+              centerPoint = new Point(geometry[0],geometry[1],this.map.spatialReference);
+            }else if(geometry instanceof Object && geometry.x && geometry.y){
+              centerPoint = new Point(geometry.x,geometry.y,this.map.spatialReference);
+            }
+
+            if (!centerPoint.spatialReference.isWebMercator() || this.isGeometry(centerPoint)){
+              centerPoint = WebMercatorUtils.geographicToWebMercator(centerPoint);
+            }
+            beforeLocate && beforeLocate();
+            if((isCenter || !this.map.extent.contains(centerPoint)) && zoom && !isNaN(zoom)){
+              deferred = this.map.centerAndZoom(centerPoint,Number(zoom));
+            }else if(isCenter  || !this.map.extent.contains(centerPoint)){
+              deferred = this.map.centerAt(centerPoint);
+            }else if(isExtent){
+              geometryExtent = this.getGeometryExtent(geometry);
+              deferred = this.map.setExtent(geometryExtent);
+            }
+            located && located.call(null,centerPoint);
+            return deferred;
+          }else{
+            this.logger('geometry should not be empty!');
+            return false;
+          }
+        },
+        locateGeometry: function (geometry,isCenter,zoom) {
+          return this.locate({ geometry: geometry, isCenter: isCenter || true, zoom: zoom });
+        },
+        locateGeometryToExtent: function (geometry) {
+          if(geometry && geometry.type === 'point'){
+            this.logger('point without extent!');
+            return false;
+          }
+          return this.locate({ geometry: geometry, isExtent: true});
+        },
+        locatePoint: function (x,y,isCenter,zoom) {
+          return this.locate({ geometry: [x,y], isCenter: isCenter || true, zoom: zoom });
+        },
+        locatePolyline: function (geometry,isCenter,zoom) {
+          if(geometry && geometry.type !== 'polyline'){
+            this.logger('pass a polyline geometry!');
+            return false;
+          }
+          return this.locate({ geometry: geometry, isCenter: isCenter || true, zoom: zoom });
+        },
+        locatePolygon: function (geometry, isCenter, zoom) {
+          if(geometry && geometry.type !== 'polygon'){
+            this.logger('pass a polygon geometry!');
+            return false;
+          }
+          return this.locate({ geometry: geometry, isCenter: isCenter || true, zoom: zoom });
+        },
+        locateExtent: function (geometry, isCenter, zoom) {
+          if(geometry && geometry.type !== 'extent'){
+            this.logger('pass a extent geometry!');
+            return false;
+          }
+          return this.locate({ geometry: geometry, isCenter: isCenter || true, zoom: zoom });
+        },
+        locateCircle: function (geometry, isCenter, zoom) {
+          if(geometry && geometry.type !== 'circle'){
+            this.logger('pass a circle geometry!');
+            return false;
+          }
+          return this.locate({ geometry: geometry, isCenter: isCenter || true, zoom: zoom });
+        },
+       /* locate: function (geometry, isCenter, isEffect, zoom, style, fn, endStatic) {
           var center = null;
           if (geometry) {
             geometry = webMercatorUtils.geographicToWebMercator(geometry);
@@ -192,142 +256,7 @@ define([
 
           }
 
-        },
-
-        /**
-         * @description locateByPoint
-         * @method
-         * @memberOf module:extras/control/LayerLocate#
-         * @param {number} x
-         * @param {number} y
-         * @param {number} zoom
-         * @param {boolean} isCenter
-         * @param {boolean} isEffect
-         * @param {number} style
-         * @param {function} fn
-         * @param {string} endStatic
-         *
-         * @example
-         * <caption>Usage of locateByPoint</caption>
-         * require(['extras/control/LayerLocate'],function(LayerLocate){
-     *   var instance = new LayerLocate();
-     *   instance.locateByPoint(x,y,zoom,isCenter,isEffect,style,fn,endStatic);
-     * })
-         *
-         *
-         * @returns string
-         */
-        locateByPoint: function (x, y, zoom, isCenter, isEffect, style, fn, endStatic) {
-          var geometry = new Point(x, y, this.spatialReference);
-          if (endStatic == undefined) {
-            endStatic = true;
-          }
-          return this.locate(geometry, isCenter, isEffect, zoom, style, fn, endStatic);
-        },
-
-        /**
-         * @description locateByPolyline
-         * @method
-         * @memberOf module:extras/control/LayerLocate#
-         * @param {string} points
-         * @param {number} zoom
-         * @param {boolean} isCenter
-         * @param {boolean}  isEffect
-         * @param {number} style
-         * @param {function} fn
-         * @param {string} endStatic
-         *
-         * @example
-         * <caption>Usage of locateByPolyline</caption>
-         * require(['extras/control/LayerLocate'],function(LayerLocate){
-     *   var instance = new LayerLocate();
-     *   instance.locateByPolyline(points,zoom,isCenter, isEffect,style,fn,endStatic);
-     * })
-         *
-         *
-         * @returns string
-         */
-        locateByPolyline: function (points, zoom, isCenter, isEffect, style, fn, endStatic) {
-          var geometry = null;
-          if (endStatic == undefined) {
-            endStatic = true;
-          }
-          return this.locate(geometry, isCenter, isEffect, zoom.style, fn, endStatic);
-        },
-
-        /**
-         * @description locateByPolygon
-         * @method
-         * @memberOf module:extras/control/LayerLocate#
-         *
-         *
-         * @example
-         * <caption>Usage of locateByPolygon</caption>
-         * require(['extras/control/LayerLocate'],function(LayerLocate){
-     *   var instance = new LayerLocate();
-     *   instance.locateByPolygon();
-     * })
-         *
-         *
-         * @returns string
-         */
-        locateByPolygon: function () {
-          var geometry = null;
-          return this.locate(geometry, isCenter, isEffect, zoom);
-        },
-
-        /**
-         * @description locateByGeometry
-         * @method
-         * @memberOf module:extras/control/LayerLocate#
-         * @param {number} geometry
-         * @param {number} zoom
-         * @param {boolean} isCenter
-         * @param {boolean}  isEffect
-         * @param {function} fn
-         * @param {string} endStatic
-         *
-         * @example
-         * <caption>Usage of locateByGeometry</caption>
-         * require(['extras/control/LayerLocate'],function(LayerLocate){
-     *   var instance = new LayerLocate();
-     *   instance.locateByGeometry(geometry,zoom,isCenter, isEffect,fn,endStatic);
-     * })
-         *
-         *
-         * @returns string
-         */
-        locateByGeometry: function (geometry, zoom, isCenter, isEffect, fn, endStatic) {
-          if (endStatic == undefined) {
-            endStatic = true;
-          }
-          return this.locate(geometry, isCenter, isEffect, zoom, fn, endStatic);
-        },
-
-        /**
-         * @description locateMultiGeometry
-         * @method
-         * @memberOf module:extras/control/LayerLocate#
-         * @param {number} geometry
-         *
-         * @example
-         * <caption>Usage of locateMultiGeometry</caption>
-         * require(['extras/control/LayerLocate'],function(LayerLocate){
-     *   var instance = new LayerLocate();
-     *   instance.locateMultiGeometry(geometry);
-     * })
-         *
-         *
-         *
-         */
-        locateMultiGeometry: function (geometry) {
-          if (typeof(geometry) == "object") {
-            geometry = [geometry];
-          }
-
-          var exent = null;
-          this.map.zoomToExtent(extent);
-        },
+        },*/
 
         /**
          * @description hightlightOnMap
@@ -392,7 +321,28 @@ define([
               }
             }), 1000)
         },
-
+      /**
+       * @description unHightlightOnMap
+       * @method
+       * @memberOf module:extras/control/LayerLocate#
+       *
+       *
+       * @example
+       * <caption>Usage of unHightlightOnMap</caption>
+       * require(['extras/control/LayerLocate'],function(LayerLocate){
+     *   var instance = new LayerLocate();
+     *   instance.unHightlightOnMap();
+     * })
+       *
+       *
+       *
+       */
+      unHightlightOnMap: function () {
+        if (this.setIntervalhandler) {
+          window.clearInterval(this.setIntervalhandler);
+        }
+        this.locateLayer.clear();
+      },
         /**
          * @description startBoxEffect
          * @method

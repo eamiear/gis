@@ -96,12 +96,9 @@ define([
        * @example
        * <caption>Usage of getMouseEvent</caption>
        * require(['extras/utils/MapUtil'],function(MapUtil){
-     *   var instance = new MapUtil();
-     *   instance.getMouseEvent(e,d,c,a);
-     * })
-       *
-       *
-       *
+       *   var instance = new MapUtil();
+       *   instance.getMouseEvent(e,d,c,a);
+       * })
        */
       getMouseEvent: function (e, d, c, a) {
         if (dojo.isIE) {
@@ -161,9 +158,9 @@ define([
        * @example
        * <caption>Usage of getMouseEvents</caption>
        * require(['extras/utils/MapUtil'],function(MapUtil){
-     *   var instance = new MapUtil();
-     *   instance.getMouseEvents(d,c,a);
-     * })
+       *   var instance = new MapUtil();
+       *   instance.getMouseEvents(d,c,a);
+       * })
        *
        *
        *

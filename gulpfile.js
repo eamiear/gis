@@ -6,7 +6,8 @@ var gulp = require('gulp'),
     concat = require('gulp-concat'),
     livereload = require('gulp-livereload'),
     autoprefixer = require('gulp-autoprefixer'),
-    jsdoc = require('gulp-jsdoc3');
+    jsdoc = require('gulp-jsdoc3'),
+    Server = require('karma').Server;
 
 //gulp.task(name[, deps], fn) 定义任务  name：任务名称 deps：依赖任务名称 fn：回调函数
 //gulp.src(globs[, options]) 执行任务处理的文件  globs：处理的文件路径(字符串或者字符串数组)
@@ -72,6 +73,11 @@ gulp.task('compact-js', function () {
         //.pipe(gulp.dest('./sample/static/assets/gis'));
     //.pipe(notify({ message: 'compact-js task complete' }));
 });
+gulp.task('compact-img', function () {
+  return gulp.src('./src/**/*')
+        .pipe(gulp.dest('./sample/static/assets/gis'))
+        .pipe(gulp.dest('./test/libs/gis'))
+});
 
 gulp.task('doc', function (cb) {
     var config = require('./jsdocConfig');
@@ -89,7 +95,15 @@ gulp.task('watch', function () {
    // gulp.watch('src/less/**/*.less', ['less']);
     gulp.watch('./src/**/*.css', ['compact-css']);
     gulp.watch('./src/**/*.js', ['compact-js']);
+    gulp.watch('./src/images/**/*',['compact-img']);
    // gulp.watch(['./src/**/*.js','!./src/extras/test/**/*.js'], ['doc']);
+});
+
+// test
+gulp.task('test', function (done) {
+  new Server({
+    configFile: __dirname + '/test/karma.conf.js'
+  },done).start();
 });
 
 gulp.task('default', ["watch"]);
