@@ -59,6 +59,7 @@ define([
     "extras/controls/LayerDraw",
     "extras/controls/MapControl",
     "extras/controls/LayerManager",
+    "extras/controls/LayerControl",
     "extras/controls/LayerQuery",
     "extras/widgets/infowindow/InfoWindow",
     "extras/utils/MapUtil",
@@ -92,6 +93,7 @@ define([
             LayerDraw,
             MapControl,
             LayerManager,
+            LayerControl,
             LayerQuery,
             InfoWindow,
             MapUtil,
@@ -154,15 +156,21 @@ define([
         this.gisConfig = gisConfig;
         this.mapCenter = new Point((this.gisConfig.x || 12615151.657772028), (this.gisConfig.y || 2645790.939302407), this.spatialReference);
 
+        this._setMapOptions(options);
+        funcOptions && this._setFuncOptions(funcOptions);
+        this._init();
+
         // TODO
         //图层树控制类
         this.layerManager = new LayerManager();
+        //图层树控制类
+        this.layerControl = new LayerControl(this.map);
         //图层查询控制类
         this.layerQuery = new LayerQuery();
         //地图定位类
         this.layerLocate = new LayerLocate();
         //地图工具类
-        this.toolbar = new ToolBar(this);
+        this.toolbar = new ToolBar(this.map);
         //地图常用方法
         this.mapUtil = new MapUtil();
         //地图矢量图层操作
@@ -170,9 +178,6 @@ define([
         //地图控件操作
         this.mapcontrol = new MapControl(this);
 
-        this._setMapOptions(options);
-        funcOptions && this._setFuncOptions(funcOptions);
-        this._init();
         dojo.subscribe("mapLoadedEvent", this, "loadMapCompelete");
       },
       /**

@@ -26,8 +26,8 @@
       var GisObject = new MapInitObject("mapDiv",{
 //        loadDefaultLayer: false
 //        logo:true//,
-        zoom: 9,
-        center:"8440901.690136591, 4780028.566943722"
+        zoom: 9//,
+       // center:"8440901.690136591, 4780028.566943722"
       });
 //      var layer = GisObject.createLayer({
 //        "id": "100",
@@ -55,13 +55,17 @@
 //      d.then(function(graphic){
 //        console.log('graphic-------> ',graphic);
 //      })
-      /*GisObject.toolbar.addCircle({
-        x: 113.28,
-        y: 23.130
+      GisObject.toolbar.addCircle({
+        center: [113.28,23.130],
+        radius: 1000
       });
       GisObject.toolbar.addText({
         x: 113.128,
-        y: 23.030
+        y: 23.030,
+        extrasAttributes: {
+          id: 'sk_',
+          u: 'lll_'
+        }
       });
       GisObject.toolbar.addImage({
         x: 113.1328,
@@ -106,7 +110,8 @@
         xmax: 113.45,
         ymax: 23.76,
         "wkid":102100
-      });*/
+      });
+     console.log('getGraphic ',GisObject.layerControl.getGraphicById('smart_gis_add_layer','sk_')) ;
 //      console.log('GisObject-------> ',GisObject.map.getLayer('skz'));
 //      console.log('basicpath ---> ',GisObject.toolbar.getSymbols())
 //      console.log('createlayer',GisObject.toolbar.createLayer({
@@ -115,11 +120,11 @@
 //      var amazing = 'amazing god';
 //      console.log('logger',GisObject.toolbar.logger(GisObject.toolbar.logger('skz(%s)',amazing)))
 
-      GisObject.toolbar.drawPoint().then(function(graphic){
+      /*GisObject.toolbar.drawPoint().then(function(graphic){
         //GisObject.toolbar.edit('MOVE',graphic)
        // GisObject.layerLocate.hightlightOnMap(graphic.geometry)
 
-      });
+      });*/
 //      GisObject.toolbar.drawImage();
 //      GisObject.toolbar.drawText();
 //      GisObject.toolbar.drawCircle();

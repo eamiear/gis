@@ -28,6 +28,7 @@ define([
     "esri/geometry/Extent",
     "esri/geometry/Polyline",
     "esri/geometry/Polygon",
+    "esri/geometry/Circle",
     "extras/tools/MeasureDrawTool",
     "extras/basic/Radical"],
   function (declare,
@@ -44,6 +45,7 @@ define([
             Extent,
             Polyline,
             Polygon,
+            Circle,
             MeasureDrawTool,
             Radical) {
     return declare(Radical, /**  @lends module:extras/control/ToolBar */ {
@@ -56,7 +58,7 @@ define([
        * @constructs
        */
       constructor: function (map) {
-        /*this.map = map;
+        this.map = map;
         try {
           this.navToolbar = new Navigation(this.map);
           this.drawToolbar = new Draw(this.map);
@@ -69,10 +71,10 @@ define([
           this.map.addLayer(this.addLayer);
           //this.pan();
         } catch (e) {
-          this.logger(e);
-        }*/
+
+        }
         //dojo.publish("toolBarLoadedEvent", [this]);
-        dojo.subscribe("mapLoadedEvent", this, "initToolbar");
+        //dojo.subscribe("mapLoadedEvent", this, "initToolbar");
       },
       /**
        * @description initToolbar
@@ -127,11 +129,23 @@ define([
           this.logger('graphic and action should not be empty value!');
           return;
         }
-        layerId ? this.createLayer(layerId).add(graphic) : this[action].add(graphic);
+        layerId ? this.createLayer({layerId: layerId}).add(graphic) : this[action].add(graphic);
       },
+      /**
+       * add a graphic to drawLayer
+       * @param {object} graphic
+       * @param {object|string} layerId
+       * @private
+       */
       _drawToLayer: function (graphic,layerId) {
         this._addGraphicToLayer(graphic,layerId,'drawLayer');
       },
+      /**
+       * add a graphic to addLayer
+       * @param {object} graphic
+       * @param {object|string} layerId
+       * @private
+       */
       _addToLayer: function (graphic,layerId) {
         this._addGraphicToLayer(graphic,layerId,'addLayer');
       },
@@ -205,28 +219,126 @@ define([
       deactivateDraw: function () {
         this.drawToolbar.deactivate();
       },
+      /**
+       *
+       * @param spec     specialize options
+       * @param options
+       * @returns {*}
+       * @private
+       */
       _drawToMap: function (spec,options) {
-        lang.mixin(spec,options || {});
-        return this.draw(spec);
+        lang.mixin(options || {}, spec || {});
+        return this.draw(options);
       },
+      /**
+       * draw  a point to GraphicLayer
+       * @method
+       * @memberOf module:extras/control/ToolBar#
+       * @param {object} options
+       * @param {Symbol} [options.symbol]              绘制图形样式
+       * @param {function} [options.before]            绘制前的回调
+       * @param {function} [options.handler]           绘制完成的回调
+       * @param {object} [options.graphicAttr]         绘制的图元属性
+       * @param {boolean} [options.hideZoomSlider]     绘制时是否隐藏zoomSlider
+       * @param {object} [options.drawTips]            绘制时鼠标提示信息
+       * @returns {*}
+       */
       drawPoint: function (options) {
         return this._drawToMap({type: 'point'},options);
       },
+      /**
+       * draw  a Image to GraphicLayer
+       * @method
+       * @memberOf module:extras/control/ToolBar#
+       * @param {object} options
+       * @param {Symbol} [options.symbol]              绘制图形样式
+       * @param {function} [options.before]            绘制前的回调
+       * @param {function} [options.handler]           绘制完成的回调
+       * @param {object} [options.graphicAttr]         绘制的图元属性
+       * @param {boolean} [options.hideZoomSlider]     绘制时是否隐藏zoomSlider
+       * @param {object} [options.drawTips]            绘制时鼠标提示信息
+       * @returns {*}
+       */
       drawImage: function (options) {
         return this._drawToMap({type: 'point',symbol: this.dealDrawSymbol(this.symbols.PictureMarkerSimbol)},options);
       },
+      /**
+       * draw  a Text to GraphicLayer
+       * @method
+       * @memberOf module:extras/control/ToolBar#
+       * @param {object} options
+       * @param {Symbol} [options.symbol]              绘制图形样式
+       * @param {function} [options.before]            绘制前的回调
+       * @param {function} [options.handler]           绘制完成的回调
+       * @param {object} [options.graphicAttr]         绘制的图元属性
+       * @param {boolean} [options.hideZoomSlider]     绘制时是否隐藏zoomSlider
+       * @param {object} [options.drawTips]            绘制时鼠标提示信息
+       * @returns {*}
+       */
       drawText: function (options) {
         return this._drawToMap({type: 'point',symbol: this.dealDrawSymbol(this.symbols.TextSymbol)},options);
       },
+      /**
+       * draw  a circle to GraphicLayer
+       * @method
+       * @memberOf module:extras/control/ToolBar#
+       * @param {object} options
+       * @param {Symbol} [options.symbol]              绘制图形样式
+       * @param {function} [options.before]            绘制前的回调
+       * @param {function} [options.handler]           绘制完成的回调
+       * @param {object} [options.graphicAttr]         绘制的图元属性
+       * @param {boolean} [options.hideZoomSlider]     绘制时是否隐藏zoomSlider
+       * @param {object} [options.drawTips]            绘制时鼠标提示信息
+       * @returns {*}
+       */
       drawCircle: function (options) {
         return this._drawToMap({type: 'point',symbol: this.dealDrawSymbol(this.symbols.Circle)},options);
       },
+      /**
+       * draw  a polyline to GraphicLayer
+       * @method
+       * @memberOf module:extras/control/ToolBar#
+       * @param {object} options
+       * @param {Symbol} [options.symbol]              绘制图形样式
+       * @param {function} [options.before]            绘制前的回调
+       * @param {function} [options.handler]           绘制完成的回调
+       * @param {object} [options.graphicAttr]         绘制的图元属性
+       * @param {boolean} [options.hideZoomSlider]     绘制时是否隐藏zoomSlider
+       * @param {object} [options.drawTips]            绘制时鼠标提示信息
+       * @returns {*}
+       */
       drawPolyline: function (options) {
         return this._drawToMap({type: 'polyline',symbol: this.dealDrawSymbol(this.symbols.Polyline)},options);
       },
+      /**
+       * draw  a polygon to GraphicLayer
+       * @method
+       * @memberOf module:extras/control/ToolBar#
+       * @param {object} options
+       * @param {Symbol} [options.symbol]              绘制图形样式
+       * @param {function} [options.before]            绘制前的回调
+       * @param {function} [options.handler]           绘制完成的回调
+       * @param {object} [options.graphicAttr]         绘制的图元属性
+       * @param {boolean} [options.hideZoomSlider]     绘制时是否隐藏zoomSlider
+       * @param {object} [options.drawTips]            绘制时鼠标提示信息
+       * @returns {*}
+       */
       drawPolygon: function (options) {
         return this._drawToMap({type: 'polygon',symbol: this.dealDrawSymbol(this.symbols.Polygon)},options);
       },
+      /**
+       * draw  a extent to GraphicLayer
+       * @method
+       * @memberOf module:extras/control/ToolBar#
+       * @param {object} options
+       * @param {Symbol} [options.symbol]              绘制图形样式
+       * @param {function} [options.before]            绘制前的回调
+       * @param {function} [options.handler]           绘制完成的回调
+       * @param {object} [options.graphicAttr]         绘制的图元属性
+       * @param {boolean} [options.hideZoomSlider]     绘制时是否隐藏zoomSlider
+       * @param {object} [options.drawTips]            绘制时鼠标提示信息
+       * @returns {*}
+       */
       drawExtent: function (options) {
         return this._drawToMap({type: 'extent',symbol: this.dealDrawSymbol(this.symbols.Polygon)},options);
       },
@@ -260,12 +372,23 @@ define([
         this._addToLayer(graphic,layerId);
         return graphic;
       },
+      /**
+       * add a graphic to GraphicLayer
+       * @param {object} options
+       * @param {object} options.geometry
+       * @param {object} options.symbol
+       * @param {object} options.attributes
+       * @param {object|string} options.layerId
+       * @param {object} options.extras
+       * @returns {*}
+       * @private
+       */
       _addGeometry: function (options) {
         var geometry = options.geometry,
-          symbol = options.symbol,
-          attributes = options.attributes,
+          symbol = options.symbol || {},
+          attributes = options.attributes || {},
           layerId = options.layerId,
-          extrasAttributes = options.extrasAttributes,
+          extras = options.extras || {},
           graphic;
 
         if(!geometry || !(geometry instanceof Geometry)){
@@ -273,10 +396,22 @@ define([
           return false;
         }
         graphic = new Graphic(geometry, symbol, attributes);
-        extrasAttributes && dojo.isObject(extrasAttributes) && lang.mixin(graphic,extrasAttributes);
+        extras && dojo.isObject(extras) && lang.mixin(graphic,extras);
         this._addToLayer(graphic,layerId);
         return graphic;
       },
+      /**
+       * add a point to GraphicLayer
+       * @param {object} options
+       * @param {number} options.x
+       * @param {number} options.y
+       * @param {object} options.symbol
+       * @param {object} options.attributes
+       * @param {object|string} options.layerId
+       * @param {object} options.extras
+       * @returns {*}
+       * @private
+       */
       _addPoint: function (options) {
         var x = options.x,
           y = options.y,
@@ -293,61 +428,144 @@ define([
         return this._addGeometry(options);
       },
       /**
-       *
+       * add a text graphic to GraphicLayer
        * @param {object} options
        * @param {number} options.x
        * @param {number} options.y
        * @param {Symbol} [options.symbol]
        * @param {object} [options.attributes]
        * @param {string|object} [options.layerId]
+       * @param {object} [options.extras]
        * @returns {*}
        */
       addText: function (options) {
         return this._addPoint(this.dealAddSymbol(options,this.symbols.TextSymbol));
       },
+      /**
+       * add a picture graphic to GraphicLayer
+       * @param {object} options
+       * @param {number} options.x
+       * @param {number} options.y
+       * @param {Symbol} [options.symbol]
+       * @param {object} [options.attributes]
+       * @param {string|object} [options.layerId]
+       * @param {object} [options.extras]
+       * @returns {*}
+       */
       addImage: function (options) {
         return this._addPoint(this.dealAddSymbol(options,this.symbols.PictureMarkerSimbol));
       },
+      /**
+       * add a point graphic to GraphicLayer
+       * @param {object} options
+       * @param {number} options.x
+       * @param {number} options.y
+       * @param {Symbol} [options.symbol]
+       * @param {object} [options.attributes]
+       * @param {string|object} [options.layerId]
+       * @param {object} [options.extras]
+       * @returns {*}
+       */
       addPoint: function (options) {
         return this._addPoint(this.dealAddSymbol(options,this.symbols.Point));
       },
+      /**
+       * add a circle graphic to GraphicLayer
+       * @param {object} options
+       * @param {array} options.center
+       * @param {number} options.radius
+       * @param {Symbol} [options.symbol]
+       * @param {object} [options.attributes]
+       * @param {string|object} [options.layerId]
+       * @param {object} [options.extras]
+       * @returns {*}
+       */
       addCircle: function (options) {
-        return this._addPoint(this.dealAddSymbol(options,this.symbols.Circle));
+        var center = options.center,
+          radius = options.radius || 100,
+          circle,
+          isValid;
+
+        //isValid = center && radius;
+        if(!center || !lang.isArray(center) || !center.length){
+          this.logger('center can not be empty!');
+          return;
+        }
+        circle = new Circle({center: center,radius: radius});
+        options.geometry = circle;
+        return this._addGeometry(this.dealAddSymbol(options,this.symbols.Polygon));
       },
+      /**
+       * add a polygon to GraphicLayer
+       * @param {object} options
+       * @param {object} options.geometry
+       * @param {number} [options.wkid]
+       * @param {Symbol} [options.symbol]
+       * @param {object} [options.attributes]
+       * @param {string|object} [options.layerId]
+       * @param {object} [options.extras]
+       * @returns {*}
+       */
       addPolygon: function (options) {
-        var rings = options.rings,
-          points = options.points,
-          geometry = options.geometry,
+        var geometry = options.geometry,
           wkid = options.wkid || this.map.spatialReference.wkid,
-          polygon,
-          isValid;
+          polygon;
 
-        isValid = !!(rings || points || geometry);
-        if(!isValid){
-          this.logger('rings or points or geometry can not be empty');
+        if(!geometry){
+          this.logger('geometry can not be empty');
           return;
         }
-        polygon = rings ? new Polygon({"rings":rings,"spatialReference":{"wkid":wkid }}) : ( points ? new Polygon(points) : geometry);
+        if(geometry && geometry instanceof Geometry){
+          polygon = geometry;
+        }else if(lang.isArray(geometry) && geometry.length){
+          polygon = wkid ? new Polygon({"rings":geometry,"spatialReference":{"wkid":wkid }}) : new Polygon(geometry);
+        }
         options.geometry = polygon;
-        return this._addGeometry(options);
+        return this._addGeometry(this.dealAddSymbol(options,this.symbols.Polygon));
       },
+      /**
+       * add a polyline to GraphicLayer
+       * @param {object} options
+       * @param {object} options.geometry
+       * @param {number} [options.wkid]
+       * @param {Symbol} [options.symbol]
+       * @param {object} [options.attributes]
+       * @param {string|object} [options.layerId]
+       * @param {object} [options.extras]
+       * @returns {*}
+       */
       addPolyline: function (options) {
-        var paths = options.paths,
-          points = options.points,
-          geometry = options.geometry,
+        var geometry = options.geometry,
           wkid = options.wkid || this.map.spatialReference.wkid,
-          polyline,
-          isValid;
+          polyline;
 
-        isValid = !!(paths || points || geometry);
-        if(!isValid){
-          this.logger('paths or points or geometry can not be empty');
+        if(!geometry){
+          this.logger('geometry can not be empty');
           return;
         }
-        polyline = paths ? new Polyline({"paths":paths,"spatialReference":{"wkid":wkid }}) : (points ? new Polyline(points) : geometry);
+        if(geometry && geometry instanceof Geometry){
+          polyline = geometry;
+        }else if(lang.isArray(geometry) && geometry.length){
+          polyline = wkid ? new Polyline({"paths":geometry,"spatialReference":{"wkid":wkid }}) : new Polyline(geometry);
+        }
         options.geometry = polyline;
-        return this._addGeometry(options);
+        return this._addGeometry(this.dealAddSymbol(options,this.symbols.Polyline));
       },
+      /**
+       * add a extent to GraphicLayer
+       * @param {object} options
+       * @param {object} options.xmin
+       * @param {array} options.ymin
+       * @param {array} options.xmax
+       * @param {array} options.ymax
+       * @param {object} options.geometry
+       * @param {number} [options.wkid]
+       * @param {Symbol} [options.symbol]
+       * @param {object} [options.attributes]
+       * @param {string|object} [options.layerId]
+       * @param {object} [options.extras]
+       * @returns {*}
+       */
       addExtent: function (options) {
         var xmin = options.xmin,
           ymin = options.ymin,
@@ -357,7 +575,7 @@ define([
           wkid = options.wkid || this.map.spatialReference.wkid,
           extent;
 
-        if(!(xmin && ymin && xmax && ymax) || !geometry){
+        if(!((xmin && ymin && xmax && ymax) || geometry)){
           this.logger('xmin,ymin,xmax and ymax or geometry can not be empty');
           return;
         }
@@ -366,7 +584,7 @@ define([
           extent  = WebMercatorUtils.geographicToWebMercator(extent);
         }
         options.geometry = extent;
-        return this._addGeometry(options);
+        return this._addGeometry(this.dealAddSymbol(options,this.symbols.Extent));
       },
       addTriangle: function (options) {
 
@@ -376,7 +594,7 @@ define([
         if(defaultSymbol.type === "picturemarkersymbol") {
           defaultSymbol.url = this.getImageAbsPath('marker','default','marker.png');
         }
-        options.symbol = options.symbol ? options.symbol : defaultSymbol;
+        options.symbol = options.symbol || defaultSymbol;
         return options;
       },
       dealDrawSymbol: function (symbol,defaultSymbol) {
