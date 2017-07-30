@@ -107,11 +107,6 @@ define([
         }
         dojo.publish("toolBarLoadedEvent", [this]);
       },
-      // test
-      getSymbols: function () {
-        //console.log('getBasicPath ----- ', this.getResourceBasicPath());
-        //console.log('path ----- ', this.getImageAbsPath('dd', 'rrr', 'ggg'));
-      },
 
       /**
        *
@@ -125,11 +120,14 @@ define([
        * @private
        */
       _addGraphicToLayer: function (graphic,layerId,action) {
+        var layer;
         if(!graphic || !action){
           this.logger('graphic and action should not be empty value!');
           return;
         }
-        layerId ? this.createLayer({layerId: layerId}).add(graphic) : this[action].add(graphic);
+        layer = layerId ? this.createLayer({layerId: layerId}) : this[action];
+        layer.add(graphic);
+        return layer;
       },
       /**
        * add a graphic to drawLayer
@@ -138,7 +136,7 @@ define([
        * @private
        */
       _drawToLayer: function (graphic,layerId) {
-        this._addGraphicToLayer(graphic,layerId,'drawLayer');
+        return this._addGraphicToLayer(graphic,layerId,'drawLayer');
       },
       /**
        * add a graphic to addLayer
@@ -147,7 +145,7 @@ define([
        * @private
        */
       _addToLayer: function (graphic,layerId) {
-        this._addGraphicToLayer(graphic,layerId,'addLayer');
+        return this._addGraphicToLayer(graphic,layerId,'addLayer');
       },
 
       /**
@@ -159,7 +157,7 @@ define([
        * @param {Symbol} [params.symbol]              绘制图形样式
        * @param {function} [params.before]            绘制前的回调
        * @param {function} [params.handler]           绘制完成的回调
-       * @param {object} [params.graphicAttr]         绘制的图元属性
+       * @param {object} [params.extras]              绘制的图元属性
        * @param {boolean} [params.hideZoomSlider]     绘制时是否隐藏zoomSlider
        * @param {object} [params.drawTips]            绘制时鼠标提示信息
        *
@@ -172,7 +170,7 @@ define([
             symbol = params.symbol,
             before = params.before,
             handler = params.handler,
-            graphicAttr = params.graphicAttr,
+            extras = params.extras,
             hideZoomSlider = params.hideZoomSlider,
             layerId = params.layerId,
             renderSymbol,
@@ -204,15 +202,16 @@ define([
             break;
         }
         this.drawToolbar.on('draw-end',dojo.hitch(this, function (evt) {
+          var layer;
           hideZoomSlider && this.map.showZoomSlider();
           this.map && this.map.enableMapNavigation();
           this.drawToolbar.deactivate();
           before && before();
           var graphic = new Graphic(evt.geometry, renderSymbol);
-          graphicAttr && dojo.isObject(graphicAttr) && lang.mixin(graphic,graphicAttr);
-          this._drawToLayer(graphic,layerId);
-          handler && handler(graphic);
-          deferred.resolve(graphic);
+          extras && lang.isObject(extras) && lang.mixin(graphic,extras);
+          layer = this._drawToLayer(graphic,layerId);
+          handler && handler(graphic,layer);
+          deferred.resolve(graphic,layer);
         }));
         return deferred.promise;
       },
@@ -238,7 +237,7 @@ define([
        * @param {Symbol} [options.symbol]              绘制图形样式
        * @param {function} [options.before]            绘制前的回调
        * @param {function} [options.handler]           绘制完成的回调
-       * @param {object} [options.graphicAttr]         绘制的图元属性
+       * @param {object} [options.extras]         绘制的图元属性
        * @param {boolean} [options.hideZoomSlider]     绘制时是否隐藏zoomSlider
        * @param {object} [options.drawTips]            绘制时鼠标提示信息
        * @returns {*}
@@ -254,7 +253,7 @@ define([
        * @param {Symbol} [options.symbol]              绘制图形样式
        * @param {function} [options.before]            绘制前的回调
        * @param {function} [options.handler]           绘制完成的回调
-       * @param {object} [options.graphicAttr]         绘制的图元属性
+       * @param {object} [options.extras]             绘制的图元属性
        * @param {boolean} [options.hideZoomSlider]     绘制时是否隐藏zoomSlider
        * @param {object} [options.drawTips]            绘制时鼠标提示信息
        * @returns {*}
@@ -270,7 +269,7 @@ define([
        * @param {Symbol} [options.symbol]              绘制图形样式
        * @param {function} [options.before]            绘制前的回调
        * @param {function} [options.handler]           绘制完成的回调
-       * @param {object} [options.graphicAttr]         绘制的图元属性
+       * @param {object} [options.extras]              绘制的图元属性
        * @param {boolean} [options.hideZoomSlider]     绘制时是否隐藏zoomSlider
        * @param {object} [options.drawTips]            绘制时鼠标提示信息
        * @returns {*}
@@ -286,7 +285,7 @@ define([
        * @param {Symbol} [options.symbol]              绘制图形样式
        * @param {function} [options.before]            绘制前的回调
        * @param {function} [options.handler]           绘制完成的回调
-       * @param {object} [options.graphicAttr]         绘制的图元属性
+       * @param {object} [options.extras]              绘制的图元属性
        * @param {boolean} [options.hideZoomSlider]     绘制时是否隐藏zoomSlider
        * @param {object} [options.drawTips]            绘制时鼠标提示信息
        * @returns {*}
@@ -302,7 +301,7 @@ define([
        * @param {Symbol} [options.symbol]              绘制图形样式
        * @param {function} [options.before]            绘制前的回调
        * @param {function} [options.handler]           绘制完成的回调
-       * @param {object} [options.graphicAttr]         绘制的图元属性
+       * @param {object} [options.extras]               绘制的图元属性
        * @param {boolean} [options.hideZoomSlider]     绘制时是否隐藏zoomSlider
        * @param {object} [options.drawTips]            绘制时鼠标提示信息
        * @returns {*}
@@ -318,7 +317,7 @@ define([
        * @param {Symbol} [options.symbol]              绘制图形样式
        * @param {function} [options.before]            绘制前的回调
        * @param {function} [options.handler]           绘制完成的回调
-       * @param {object} [options.graphicAttr]         绘制的图元属性
+       * @param {object} [options.extras]              绘制的图元属性
        * @param {boolean} [options.hideZoomSlider]     绘制时是否隐藏zoomSlider
        * @param {object} [options.drawTips]            绘制时鼠标提示信息
        * @returns {*}
@@ -334,7 +333,7 @@ define([
        * @param {Symbol} [options.symbol]              绘制图形样式
        * @param {function} [options.before]            绘制前的回调
        * @param {function} [options.handler]           绘制完成的回调
-       * @param {object} [options.graphicAttr]         绘制的图元属性
+       * @param {object} [options.extras]               绘制的图元属性
        * @param {boolean} [options.hideZoomSlider]     绘制时是否隐藏zoomSlider
        * @param {object} [options.drawTips]            绘制时鼠标提示信息
        * @returns {*}

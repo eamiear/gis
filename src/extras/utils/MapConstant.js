@@ -111,6 +111,24 @@ define([
       },
 
       // concrete symbol
+      "Text": new TextSymbol({
+        type: "esriTS",
+        angle: 0,
+        color: [51, 51, 51, 255],
+        font: {
+          family: "微软雅黑",
+          size: 12,
+          style: "normal",
+          variant: "normal",
+          weight: "normal"
+        },
+        horizontalAlignment: "center",
+        kerning: true,
+        rotated: false,
+        text: "添加默认文本",
+        xoffset: 0,
+        yoffset: 0
+      }),
       "Circle": new SimpleMarkerSymbol({
         type: "esriSMS",
         style: "esriSMSCircle",
@@ -190,7 +208,7 @@ define([
     editSymbols: {
 
     },
-    hightSymbol: {
+    highlightSymbol: {
       "Point": {
         "type": "esriPMS",
         "angle": 0,
@@ -239,9 +257,23 @@ define([
       // 轨迹
       trackLayerId: 'smart_gis_track_layer',
 
-      locateLayerId: 'smart_gis_locate_layer'
+      locateLayerId: 'smart_gis_locate_layer',
+      // query layer
+      queryLayerId: 'smart_gis_query_layer',
+      // temporary draw layer id for query
+      queryDrawLayerId: 'smart_gis_query_draw_layer'
     },
 
+    graphicType: {
+      POINT: 'point',
+      POLYGON: 'polygon',
+      PLYLINE: 'polyline',
+      FREEHAND_POLYLINE: 'freehandpolyline',
+      EXTENT: 'extent',
+      CIRCLE: 'circle',
+      ELLIPSE: 'ellipse',
+      SECTOR: 'sector'
+    },
     mapProperty: {
       wkid: 102100
     }

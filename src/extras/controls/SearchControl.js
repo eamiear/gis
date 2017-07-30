@@ -18,8 +18,8 @@ define([
   Radical,
   ToolBar
 ) {
-  return declare(Radical, /**  @lends module:extras/controls/LayerQuery */{
-    className: 'LayerQuery',
+  return declare(Radical, /**  @lends module:extras/controls/SearchControl */{
+    className: 'SearchControl',
     /**
      * @constructs
      */
@@ -34,7 +34,7 @@ define([
     /**
      * @method
      * @private
-     * @memberOf module:extras/controls/LayerQuery#
+     * @memberOf module:extras/controls/SearchControl#
      *
      * @listens module:extras/controls/ToolBar~event:toolBarLoadedEvent
      */
@@ -47,7 +47,7 @@ define([
      * 绘制图形
      * @private
      * @method
-     * @memberOf module:extras/controls/LayerQuery#
+     * @memberOf module:extras/controls/SearchControl#
      *
      * @param {string} type          图形类型
      * @param {object} symbol      图形样式
@@ -64,9 +64,9 @@ define([
 
     /**
      * 绘制图形并发布消息绘制结束消息
-     * @memberOf module:extras/controls/LayerQuery#
-     * @see {@link module:extras/controls/LayerQuery#drawToSearch}
-     * @fires module:extras/controls/LayerQuery#subscribeHook
+     * @memberOf module:extras/controls/SearchControl#
+     * @see {@link module:extras/controls/SearchControl#drawToSearch}
+     * @fires module:extras/controls/SearchControl#subscribeHook
      *
      * @param {object} options
      * @param {string} options.type          图形类型
@@ -84,7 +84,7 @@ define([
      *   subscribeHook: 'pullCircleFinish'
      * }
      *
-     * GisObject.layerQuery.domainSearch(options);
+     * GisObject.searchControl.domainSearch(options);
      * var handler = dojo.subscribe('pullCircleFinish',function(graphics){
      *    // coding...
      *
@@ -95,7 +95,7 @@ define([
      * @example
      * <caption>Usage of domainSearch with <b><code>promise</code></b></caption>
      *
-     * GisObject.layerQuery.domainSearch(options).done(function(graphics){
+     * GisObject.searchControl.domainSearch(options).done(function(graphics){
      *    // coding....
      * })
      *
@@ -115,7 +115,7 @@ define([
         /**
         * subscribeHook - 'domain-search' event.
         *
-        * @event module:extras/controls/LayerQuery#subscribeHook
+        * @event module:extras/controls/SearchControl#subscribeHook
         * @param {eris.Graphic[]} graphics - 图元数组，更多详情请查看 [eris.Graphic](https://developers.arcgis.com/javascript/3/jsapi/graphic-amd.html)
         */
         dojo.publish(options.subscribeHook || 'domainsearch', [graphic]);
@@ -123,14 +123,14 @@ define([
     },
     /**
      * draw a extent graphic on the map and publish an event letting listeners know whether the action is completed.
-     * @memberOf module:extras/controls/LayerQuery#
-     * @see {@link module:extras/controls/LayerQuery#domainSearch}
-     * @fires module:extras/controls/LayerQuery#subscribeHook
+     * @memberOf module:extras/controls/SearchControl#
+     * @see {@link module:extras/controls/SearchControl#domainSearch}
+     * @fires module:extras/controls/SearchControl#subscribeHook
      *
      * @example
      * <caption>Usage of pullBoxSearch with <b><code>publish/subscribe</code></b></caption>
      *
-     * GisObject.layerQuery.pullBoxSearch();
+     * GisObject.searchControl.pullBoxSearch();
      * var handler = dojo.subscribe('pullBoxSearchFinish',function(graphics){
      *    // coding...
      *    dojo.unsubscribe(handler);
@@ -139,7 +139,7 @@ define([
      * @example
      * <caption>Usage of pullBoxSearch with <b><code>promise</code></b></caption>
      *
-     * GisObject.layerQuery.pullBoxSearch().done(function(graphics){
+     * GisObject.searchControl.pullBoxSearch().done(function(graphics){
      *    // coding....
      * })
      *
@@ -154,14 +154,14 @@ define([
     },
     /**
      * draw a polygon graphic on the map and publish an event letting listeners know whether the action is completed.
-     * @memberOf module:extras/controls/LayerQuery#
-     * @see {@link module:extras/controls/LayerQuery#domainSearch}
-     * @fires module:extras/controls/LayerQuery#subscribeHook
+     * @memberOf module:extras/controls/SearchControl#
+     * @see {@link module:extras/controls/SearchControl#domainSearch}
+     * @fires module:extras/controls/SearchControl#subscribeHook
      *
      * @example
      * <caption>Usage of polygonSearch with <b><code>publish/subscribe</code></b></caption>
      *
-     * GisObject.layerQuery.polygonSearch();
+     * GisObject.searchControl.polygonSearch();
      * var handler = dojo.subscribe('polygonSearchFinish',function(graphics){
      *    // coding...
      *    dojo.unsubscribe(handler);
@@ -170,7 +170,7 @@ define([
      * @example
      * <caption>Usage of polygonSearch with <b><code>promise</code></b></caption>
      *
-     * GisObject.layerQuery.polygonSearch().done(function(graphics){
+     * GisObject.searchControl.polygonSearch().done(function(graphics){
      *    // coding....
      * })
      *
@@ -185,14 +185,14 @@ define([
     },
     /**
      * draw a line graphic on the map and publish an event letting listeners know whether the action is completed.
-     * @memberOf module:extras/controls/LayerQuery#
-     * @see {@link module:extras/controls/LayerQuery#domainSearch}
-     * @fires module:extras/controls/LayerQuery#subscribeHook
+     * @memberOf module:extras/controls/SearchControl#
+     * @see {@link module:extras/controls/SearchControl#domainSearch}
+     * @fires module:extras/controls/SearchControl#subscribeHook
      *
      * @example
      * <caption>Usage of lineSearch with <b><code>publish/subscribe</code></b></caption>
      *
-     * GisObject.layerQuery.lineSearch();
+     * GisObject.searchControl.lineSearch();
      * var handler = dojo.subscribe('lineSearchFinish',function(graphics){
      *    // coding...
      *    dojo.unsubscribe(handler);
@@ -201,7 +201,7 @@ define([
      * @example
      * <caption>Usage of lineSearch with <b><code>promise</code></b></caption>
      *
-     * GisObject.layerQuery.lineSearch().done(function(graphics){
+     * GisObject.searchControl.lineSearch().done(function(graphics){
      *    // coding....
      * })
      *
@@ -216,14 +216,14 @@ define([
     },
     /**
      * draw a circle graphic on the map and publish an event letting listeners know whether the action is completed.
-     * @memberOf module:extras/controls/LayerQuery#
-     * @see {@link module:extras/controls/LayerQuery#domainSearch}
-     * @fires module:extras/controls/LayerQuery#subscribeHook
+     * @memberOf module:extras/controls/SearchControl#
+     * @see {@link module:extras/controls/SearchControl#domainSearch}
+     * @fires module:extras/controls/SearchControl#subscribeHook
      *
      * @example
      * <caption>Usage of circleSearch with <b><code>publish/subscribe</code></b></caption>
      *
-     * GisObject.layerQuery.circleSearch();
+     * GisObject.searchControl.circleSearch();
      * var handler = dojo.subscribe('circleSearchFinish',function(graphics){
      *    // coding...
      *    dojo.unsubscribe(handler);
@@ -231,7 +231,7 @@ define([
      *
      * @example
      * <caption>Usage of circleSearch with <b><code>promise</code></b></caption>
-     * GisObject.layerQuery.circleSearch().done(function(graphics){
+     * GisObject.searchControl.circleSearch().done(function(graphics){
      *    // coding....
      * })
      *
@@ -246,7 +246,7 @@ define([
     },
 
     /**
-     * @memberOf module:extras/controls/LayerQuery#
+     * @memberOf module:extras/controls/SearchControl#
      *
      * @param {esri.layer.GraphicLayer | string} layer
      * @param {string} property
@@ -268,7 +268,7 @@ define([
     /**
      * 属性查询
      *
-     * @memberOf module:extras/controls/LayerQuery#
+     * @memberOf module:extras/controls/SearchControl#
      *
      * @param {string} layerId
      * @param {string} attrName
@@ -286,7 +286,7 @@ define([
     },
     /**
      * 空间查询
-     * @memberOf module:extras/controls/LayerQuery#
+     * @memberOf module:extras/controls/SearchControl#
      *
      * @param {string} layerId
      * @param {Object} geometry
@@ -301,7 +301,7 @@ define([
     },
     /**
      * 综合查询
-     * @memberOf module:extras/controls/LayerQuery#
+     * @memberOf module:extras/controls/SearchControl#
      *
      * @param {string} layerId
      * @param {eris.geometry.Point} geometry
@@ -320,7 +320,7 @@ define([
     },
 
     /**
-     * @memberOf module:extras/controls/LayerQuery#
+     * @memberOf module:extras/controls/SearchControl#
      *
      * @param {esri.layer.GraphicLayer | string} layer
      * @returns {*}
@@ -330,7 +330,7 @@ define([
       return layer && layer.graphics;
     },
     /**
-     * @memberOf module:extras/controls/LayerQuery#
+     * @memberOf module:extras/controls/SearchControl#
      *
      * @param {esri.layer.GraphicLayer | string} layer
      * @param {esri.geometry.Point} geometry
@@ -346,7 +346,7 @@ define([
       });
     },
     /**
-     * @memberOf module:extras/controls/LayerQuery#
+     * @memberOf module:extras/controls/SearchControl#
      *
      * @param {esri.layer.GraphicLayer | string} layer
      * @param {esri.geometry.Point} geometry
@@ -363,7 +363,7 @@ define([
       });
     },
     /**
-     * @memberOf module:extras/controls/LayerQuery#
+     * @memberOf module:extras/controls/SearchControl#
      *
      * @param {esri.layer.GraphicLayer | string} layer
      * @param {string} attrName
@@ -380,7 +380,7 @@ define([
       });
     },
     /**
-     * @memberOf module:extras/controls/LayerQuery#
+     * @memberOf module:extras/controls/SearchControl#
      */
     clear: function () {
       this.clearLayer(this.queryLayer)

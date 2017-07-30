@@ -41,6 +41,8 @@
  */
 define([
     "dojo/_base/declare",
+    "dojo/_base/lang",
+    "dojo/_base/array",
     "dojo/on",
     "dojo/dom-construct",
     "esri/map",
@@ -55,14 +57,10 @@ define([
     "esri/symbols/PictureMarkerSymbol",
     "esri/symbols/SimpleLineSymbol",
     "extras/controls/ToolBar",
-    "extras/controls/LayerLocate",
-    "extras/controls/LayerDraw",
-    "extras/controls/MapControl",
-    "extras/controls/LayerManager",
+    "extras/controls/LocatorControl",
     "extras/controls/LayerControl",
-    "extras/controls/LayerQuery",
+    "extras/controls/SearchControl",
     "extras/widgets/infowindow/InfoWindow",
-    "extras/utils/MapUtil",
     "esri/dijit/OverviewMap",
     //"extras/utils/GPSConvertor",
     //"extras/layers/BaiduTiledMap",
@@ -75,6 +73,8 @@ define([
     "esri/layers/ArcGISTiledMapServiceLayer",
     "esri/layers/GraphicsLayer"*/],
   function (declare,
+            lang,
+            array,
             on,
             construct,
             Map,
@@ -89,14 +89,10 @@ define([
             PictureMarkerSymbol,
             SimpleLineSymbol,
             ToolBar,
-            LayerLocate,
-            LayerDraw,
-            MapControl,
-            LayerManager,
+            LocatorControl,
             LayerControl,
-            LayerQuery,
+            SearchControl,
             InfoWindow,
-            MapUtil,
             OverviewMap,
             //GPSConvertor,
             //BaiduTiledMap,
@@ -160,23 +156,14 @@ define([
         funcOptions && this._setFuncOptions(funcOptions);
         this._init();
 
-        // TODO
-        //图层树控制类
-        this.layerManager = new LayerManager();
-        //图层树控制类
+        //图层控制类
         this.layerControl = new LayerControl(this.map);
         //图层查询控制类
-        this.layerQuery = new LayerQuery();
+        this.searchControl = new SearchControl(this.map);
         //地图定位类
-        this.layerLocate = new LayerLocate();
+        this.locatorControl = new LocatorControl();
         //地图工具类
         this.toolbar = new ToolBar(this.map);
-        //地图常用方法
-        this.mapUtil = new MapUtil();
-        //地图矢量图层操作
-        this.layerDraw = new LayerDraw();
-        //地图控件操作
-        this.mapcontrol = new MapControl(this);
 
         dojo.subscribe("mapLoadedEvent", this, "loadMapCompelete");
       },
@@ -437,15 +424,11 @@ define([
         if (!(layers instanceof Array)) {
           layers = [layers];
         }
-        dojo.forEach(layers, dojo.hitch(this,function (layerObj, index) {
+        array.forEach(layers, dojo.hitch(this,function (layerObj, index) {
           var layer = this.createLayerContainer(layerObj);
           if (layer) {
             this.map.addLayer(layer);
-            if (layerObj.featureType == "7") {
-              this.imageLayer.push(layer);
-            } else {
-              this.baseLayer.push(layer);
-            }
+            layerObj.featureType == "7" ? this.imageLayer.push(layer) : this.baseLayer.push(layer);
             this.curLayer[layerObj.name + "_" + layerObj.id] = layer;
           }
         }));

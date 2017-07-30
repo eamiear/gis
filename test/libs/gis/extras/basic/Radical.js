@@ -11,13 +11,15 @@
  */
 define([
     "dojo/_base/declare",
+    "dojo/_base/lang",
+    "dojo/_base/array",
     "extras/utils/SymbolUtils",
     "extras/utils/MapConstant",
     "esri/layers/GraphicsLayer",
     "esri/geometry/Geometry",
     "extras/graphics/InfoGraphicLayer"
   ],
-  function (declare,SymbolUtils,MapConstant,GraphicsLayer,Geometry,InfoGraphicLayer) {
+  function (declare,lang,array,SymbolUtils,MapConstant,GraphicsLayer,Geometry,InfoGraphicLayer) {
     return declare([SymbolUtils,MapConstant], /**  @lends module:extras/basic/Radical */  {
       className: 'Radical',
       /**
@@ -201,6 +203,28 @@ define([
         isCleanLayer && layer.clear();
         isReorderLayer &&  this.map.reorderLayer(layer, this.map._layers.length - 1);
         return layer;
+      },
+      /**
+       * @param {string | object} layer
+       * @param {string | number} graphicId
+       * @returns {*}
+       */
+      getGraphicById: function (layer, graphicId) {
+        layer = this.getLayerById(layer);
+        if(!layer){
+          this.logger('layer doesn\'t exist');
+          return;
+        }
+        var graphics = layer.graphics || [];
+        return array.filter(graphics, function (graphic) {
+          return graphic.id == graphicId;
+        })[0];
+      },
+      getLayerById: function (layerId) {
+        return lang.isString(layerId) ? this.map.getLayer(layerId) : layerId;
+      },
+      clearLayer: function (layer) {
+        layer && layer.clear();
       },
       isGeometry: function (x,y) {
         var longitude,latitude,regexp;

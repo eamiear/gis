@@ -44,7 +44,8 @@ define([
     Polygon,
     Radical
   ) {
-    return declare(Radical, /**  @lends module:extras/control/LayerLocate */{
+    return declare(Radical, /**  @lends module:extras/control/LocatorControl */{
+      className: 'LocatorControl',
         /** @member setIntervalhandler */
         setIntervalhandler: null,
 
