@@ -56,9 +56,12 @@ define([
          * @constructs
          *
          */
-        constructor: function () {
+        constructor: function (map) {
 
-          dojo.subscribe("mapLoadedEvent", this, "initLayerLocate");
+          this.map = map;
+          this.locateLayer = this.createLayer({layerId: this.defaultLayerIds.locateLayerId});
+
+          //dojo.subscribe("mapLoadedEvent", this, "initLayerLocate");
 
           this.spatialReference = new SpatialReference({wkid: 102100});
           this.duration = 1000;
@@ -102,9 +105,9 @@ define([
          * @example
          * <caption>Usage of initLayerLocate</caption>
          * require(['extras/control/LayerLocate'],function(LayerLocate){
-     *   var instance = new LayerLocate();
-     *   instance.initLayerLocate(map);
-     * })
+         *   var instance = new LayerLocate();
+         *   instance.initLayerLocate(map);
+         * })
          */
         initLayerLocate: function (map) {
           this.map = map;
@@ -130,20 +133,32 @@ define([
          * @memberOf module:extras/control/LayerLocate#
          * @param {object} options
          * @param {array|object} options.geometry
-         * @param {boolean}   [options.isCenter]
-         * @param {boolean}   [options.isExtent]
-         * @param {number}    [options.zoom]
-         * @param {function}  [options.beforeLocate]
+         * @param {boolean}   [options.isCenter]          push graphic to center of the map
+         * @param {boolean}   [options.isExtent]          set map's extent with graphic's extent
+         * @param {number}    [options.zoom]              zoom in map to the specified number
+         * @param {function}  [options.beforeLocate]      callback before be located
          * @param {function}  [options.located]
          *
          * @example
          * <caption>Usage of locate</caption>
          * require(['extras/control/LayerLocate'],function(LayerLocate){
-       *   var instance = new LayerLocate();
-       *   instance.locate(geometry,isCenter,isEffect,zoom,style,fn,endStatic);
-       * })
+         *   new LayerLocate().locate({
+         *      geometry: [113.12,23.33],
+         *      isCenter: true
+         *   });
+         * })
          *
-         *
+         * @example
+         * <caption>Usage of locate</caption>
+         * require(['extras/control/LocatorControl'],function(LocatorControl){
+         *   new LocatorControl(map).locate({
+         *      geometry: [113.12,23.33],
+         *      isCenter: true,
+         *      beforeLocate: function(){
+         *        console.log('graphic is locating...')
+         *      }
+         *   });
+         * })
          *
          */
         locate: function (options) {
@@ -185,9 +200,41 @@ define([
             return false;
           }
         },
+      /**
+       * locate graphic by the geometry
+       * @param {Geometry} geometry    geometry of graphic
+       * @param {boolean} isCenter     locate graphic and place it in the middle
+       * @param {number} zoom
+       *
+       * @example
+       * <caption>Usage of locateGeometry</caption>
+       * require(['extras/control/LocatorControl'],function(LocatorControl){
+       *   new LocatorControl(map).locateGeometry({
+       *      geometry: [113.12,23.33],
+       *      isCenter: true,
+       *      beforeLocate: function(){
+       *        console.log('graphic is locating...')
+       *      }
+       *   });
+       * })
+       *
+       * @returns {*}
+       */
         locateGeometry: function (geometry,isCenter,zoom) {
           return this.locate({ geometry: geometry, isCenter: isCenter || true, zoom: zoom });
         },
+      /**
+       * locate graphic by the extent
+       * @param {Geometry} geometry    geometry of graphic
+       *
+       * @example
+       * <caption>Usage of locateGeometry</caption>
+       * require(['extras/control/LocatorControl'],function(LocatorControl){
+       *   new LocatorControl(map).locateGeometryToExtent(geometry);
+       * })
+       *
+       * @returns {*}
+       */
         locateGeometryToExtent: function (geometry) {
           if(geometry && geometry.type === 'point'){
             this.logger('point without extent!');
@@ -195,9 +242,38 @@ define([
           }
           return this.locate({ geometry: geometry, isExtent: true});
         },
+      /**
+       * locate a point
+       * @param {number} x            longitude of the graphic
+       * @param {number} y            latitude of the graphic
+       * @param {boolean} isCenter
+       * @param {number} zoom
+       *
+       * @example
+       * <caption>Usage of locateGeometry</caption>
+       * require(['extras/control/LocatorControl'],function(LocatorControl){
+       *   new LocatorControl(map).locatePoint(113.12,23.33,true,10);
+       * })
+       *
+       * @returns {*}
+       */
         locatePoint: function (x,y,isCenter,zoom) {
           return this.locate({ geometry: [x,y], isCenter: isCenter || true, zoom: zoom });
         },
+      /**
+       * locate polyline graphic
+       * @param {number} geometry            geometry of the graphic
+       * @param {boolean} isCenter
+       * @param {number} zoom
+       *
+       * @example
+       * <caption>Usage of locateGeometry</caption>
+       * require(['extras/control/LocatorControl'],function(LocatorControl){
+       *   new LocatorControl(map).locatePolyline(geometry,true);
+       * })
+       *
+       * @returns {*}
+       */
         locatePolyline: function (geometry,isCenter,zoom) {
           if(geometry && geometry.type !== 'polyline'){
             this.logger('pass a polyline geometry!');
@@ -205,6 +281,20 @@ define([
           }
           return this.locate({ geometry: geometry, isCenter: isCenter || true, zoom: zoom });
         },
+      /**
+       * locate polygon graphic
+       * @param {number} geometry            geometry of the graphic
+       * @param {boolean} isCenter
+       * @param {number} zoom
+       *
+       * @example
+       * <caption>Usage of locateGeometry</caption>
+       * require(['extras/control/LocatorControl'],function(LocatorControl){
+       *   new LocatorControl(map).locatePolygon(geometry,true);
+       * })
+       *
+       * @returns {*}
+       */
         locatePolygon: function (geometry, isCenter, zoom) {
           if(geometry && geometry.type !== 'polygon'){
             this.logger('pass a polygon geometry!');
@@ -212,6 +302,20 @@ define([
           }
           return this.locate({ geometry: geometry, isCenter: isCenter || true, zoom: zoom });
         },
+      /**
+       * locate Extent
+       * @param {number} geometry            geometry of the graphic
+       * @param {boolean} isCenter
+       * @param {number} zoom
+       *
+       * @example
+       * <caption>Usage of locateGeometry</caption>
+       * require(['extras/control/LocatorControl'],function(LocatorControl){
+       *   new LocatorControl(map).locateExtent(geometry,true);
+       * })
+       *
+       * @returns {*}
+       */
         locateExtent: function (geometry, isCenter, zoom) {
           if(geometry && geometry.type !== 'extent'){
             this.logger('pass a extent geometry!');
@@ -219,6 +323,20 @@ define([
           }
           return this.locate({ geometry: geometry, isCenter: isCenter || true, zoom: zoom });
         },
+      /**
+       * locate Circle
+       * @param {number} geometry            geometry of the graphic
+       * @param {boolean} isCenter
+       * @param {number} zoom
+       *
+       * @example
+       * <caption>Usage of locateGeometry</caption>
+       * require(['extras/control/LocatorControl'],function(LocatorControl){
+       *   new LocatorControl(map).locateCircle(geometry,true);
+       * })
+       *
+       * @returns {*}
+       */
         locateCircle: function (geometry, isCenter, zoom) {
           if(geometry && geometry.type !== 'circle'){
             this.logger('pass a circle geometry!');
@@ -226,38 +344,6 @@ define([
           }
           return this.locate({ geometry: geometry, isCenter: isCenter || true, zoom: zoom });
         },
-       /* locate: function (geometry, isCenter, isEffect, zoom, style, fn, endStatic) {
-          var center = null;
-          if (geometry) {
-            geometry = webMercatorUtils.geographicToWebMercator(geometry);
-            center = geometry;
-
-            if (isEffect || (zoom == null || this.map.getZoom() <= zoom || isNaN(zoom))) {
-              this.startBoxEffect(this.map.toScreen(center));
-            }
-
-            var me = this;
-            setTimeout(function () {
-                if (zoom == null && geometry.type != "point") {
-
-                } else {
-                  if (isCenter || !(me.map.extent.intersects(center) || me.map.extent.contains(center))) {
-
-                    me.map.centerAndZoom(center, zoom);
-                  }
-                }
-
-                me.hightlightOnMap(geometry, endStatic, style);
-
-                if (fn) {
-                  fn(center);
-                }
-              },
-              1000);
-
-          }
-
-        },*/
 
         /**
          * @description hightlightOnMap
@@ -270,9 +356,9 @@ define([
          * @example
          * <caption>Usage of hightlightOnMap</caption>
          * require(['extras/control/LayerLocate'],function(LayerLocate){
-     *   var instance = new LayerLocate();
-     *   instance.hightlightOnMap(geometry,endStatic,style);
-     * })
+         *   var instance = new LayerLocate();
+         *   instance.hightlightOnMap(geometry,endStatic,style);
+         * })
          *
          *
          *

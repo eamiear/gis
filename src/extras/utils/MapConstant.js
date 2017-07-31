@@ -233,6 +233,27 @@ define([
         strokeDashstyle: "longdashdotdot"
       }
     },
+    symbolFactory: function (graphicType,symbolAttr) {
+      var symbol = null;
+      switch (graphicType){
+        case 'point':
+          symbol = new SimpleMarkerSymbol(symbolAttr);
+          break;
+        case 'image':
+          symbol = new PictureMarkerSymbol(symbolAttr);
+          break;
+        case 'polyline':
+          symbol = new SimpleLineSymbol(symbolAttr);
+          break;
+        case 'text':
+          symbol = new TextSymbol(symbolAttr);
+          break;
+        default:
+          symbol = new SimpleFillSymbol(symbolAttr);
+          break;
+      }
+      return symbol;
+    },
 
     // mouse cursor style
     mouseCursor: {

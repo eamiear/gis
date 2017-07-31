@@ -4,10 +4,16 @@
 
 /**
  * @fileOverview This is base definition for all composed classes defined by the system
- * Module representing a MapUtil.
+ * Module representing a Radical.
  * @module extras/basic/Radical
  *
  * @requires dojo._base.declare
+ * @requires dojo._base.lang
+ * @requires dojo._base.array
+ * @requires extras/utils/MapConstant
+ * @requires esri/layers/GraphicsLayer
+ * @requires esri/geometry/Geometry
+ * @requires extras/graphics/InfoGraphicLayer
  */
 define([
     "dojo/_base/declare",
@@ -17,9 +23,10 @@ define([
     "extras/utils/MapConstant",
     "esri/layers/GraphicsLayer",
     "esri/geometry/Geometry",
+    "esri/symbols/Symbol",
     "extras/graphics/InfoGraphicLayer"
   ],
-  function (declare,lang,array,SymbolUtils,MapConstant,GraphicsLayer,Geometry,InfoGraphicLayer) {
+  function (declare,lang,array,SymbolUtils,MapConstant,GraphicsLayer,Geometry,Symbol,InfoGraphicLayer) {
     return declare([SymbolUtils,MapConstant], /**  @lends module:extras/basic/Radical */  {
       className: 'Radical',
       /**
@@ -29,16 +36,27 @@ define([
       constructor: function (map) {
         this.map = map;
       },
+      /**
+       * get current project's name
+       * @memberOf module:extras/basic/Radical#
+       * @returns {*}
+       */
       getProjectName: function () {
         return location.pathname.split('/')[1];
       },
+      /**
+       * get root path the project
+       * @memberOf module:extras/basic/Radical#
+       * @returns {string}
+       */
       getRootPath: function () {
         return [location.protocol, '//', location.host, '/', this.getProjectName()].join('');
       },
       /**
-       * @description 获取路径
+       * @description 获取调整后的路径
        * @method
-       * @memberOf module:extras/utils/MapUtil#
+       * @private
+       * @memberOf module:extras/basic/Radical#
        * @param basicPath
        * @example
        * <caption>Usage of getBasicPath without slash</caption>
@@ -72,9 +90,10 @@ define([
         return this.getBasicPath(arguments[0]) + path.slice(1);
       },
       /**
+       * @private
        * @description 路径最后是否包含斜杠'/',绝对路径也返回true
        * @method
-       * @memberOf module:extras/utils/MapUtil#
+       * @memberOf module:extras/basic/Radical#
        * @param {string} path
        * @returns {boolean}
        */
@@ -84,6 +103,8 @@ define([
         return !lastSeparator || !!(lastSeparator && lastSeparator.indexOf('.') != -1);
       },
       /**
+       * get paths of image relative to the project
+       * @memberOf module:extras/basic/Radical#
        * @example
        * <caption>Usage of getImageBasicPath</caption>
        *   this.getImageBasicPath();
@@ -95,6 +116,9 @@ define([
         return this.getBasicPath(gisConfig.mapImagesUrl);
       },
       /**
+       * get absolute path of image which combine the arguments you pass to
+       * @memberOf module:extras/basic/Radical#
+       *
        * @example
        * <caption>Usage of getImageAbsPath</caption>
        *   this.getImageAbsPath();
@@ -114,6 +138,8 @@ define([
         return this.getBasicAbsPath.apply(this, arguments);
       },
       /**
+       * get relative path of resource
+       * @memberOf module:extras/basic/Radical#
        * @example
        * <caption>Usage of getResourceBasicPath</caption>
        *   this.getResourceBasicPath();
@@ -124,6 +150,8 @@ define([
         return this.getBasicPath(gisConfig.mapResourcesUrl);
       },
       /**
+       * get absolute path of resource which combine the arguments you pass to
+       * @memberOf module:extras/basic/Radical#
        * @example
        * <caption>Usage of getResourceAbsPath</caption>
        *   this.getResourceAbsPath();
@@ -143,7 +171,8 @@ define([
         return this.getBasicAbsPath.apply(this, arguments);
       },
       /**
-       *
+       * a log method
+       * @memberOf module:extras/basic/Radical#
        * @example
        * <caption>Usage of logger</caption>
        *   this.logger('skz');
@@ -161,19 +190,26 @@ define([
       },
 
       /**
-       *
+       * create a layer for the map
+       * @memberOf module:extras/basic/Radical#
        * @param {object} layerOptions
-       * @param {object|string} layerOptions.layerId
-       * @param {boolean} [layerOptions.useCustomLayer]
-       * @param {boolean} [layerOptions.isCleanLayer]
-       * @param {boolean} [layerOptions.isReorderLayer]
-       * @param {object}  [layerOptions.eventBinder]
-       * @param {string}  [layerOptions.eventBinder.type]
-       * @param {function} [layerOptions.eventBinder.callback]
+       * @param {object|string} layerOptions.layerId              layer's id
+       * @param {boolean} [layerOptions.useCustomLayer]           true to use InfoGraphicLayer, otherwise GraphicLayer{default}
+       * @param {boolean} [layerOptions.isCleanLayer]             remove all graphics of layer exists before call createLayer
+       * @param {boolean} [layerOptions.isReorderLayer]           set true to reorder layer
+       * @param {object}  [layerOptions.eventBinder]              binding events to layer after being created
+       * @param {string}  [layerOptions.eventBinder.type]         type of the event.e.g. click
+       * @param {function} [layerOptions.eventBinder.callback]    callback function when the event being triggered
        *
        * @example
        * <caption>Usage of createLayer</caption>
        * var layer = GisObject.toolbar.createLayer({
+       *  "layerId": "skz_"
+       * });
+       *
+       * @example
+       * <caption>Usage of createLayer</caption>
+       * var layer = new Toolbar(map).createLayer({
        *  "layerId": "skz_"
        * });
        *
@@ -205,6 +241,7 @@ define([
         return layer;
       },
       /**
+       * @memberOf module:extras/basic/Radical#
        * @param {string | object} layer
        * @param {string | number} graphicId
        * @returns {*}
@@ -220,12 +257,38 @@ define([
           return graphic.id == graphicId;
         })[0];
       },
+      /**
+       * @memberOf module:extras/basic/Radical#
+       * @param {object|string} layerId
+       * @returns {*}
+       */
       getLayerById: function (layerId) {
         return lang.isString(layerId) ? this.map.getLayer(layerId) : layerId;
       },
+      /**
+       * clear layer
+       * @memberOf module:extras/basic/Radical#
+       * @param {object|string} layer
+       */
       clearLayer: function (layer) {
+        layer = this.getLayerById(layer);
         layer && layer.clear();
       },
+      /**
+       * @memberOf module:extras/basic/Radical#
+       * @param {number} x          longitude of the graphic's geometry
+       * @param {number} y          latitude of the graphic's geometry
+       *
+       * @example
+       * <caption>Usage of isGeometry</caption>
+       * var trueOrfalse = new Radical().isGeometry(1231323.23,3133134.1232);
+       *
+       * @example
+       * <caption>Usage of isGeometry</caption>
+       * var trueOrfalse = new Radical().isGeometry(geometry);
+       *
+       * @returns {*|boolean}
+       */
       isGeometry: function (x,y) {
         var longitude,latitude,regexp;
 
@@ -241,6 +304,16 @@ define([
         }
         return longitude && latitude && (longitude.length <= 3 || latitude.length <= 2);
       },
+      /**
+       * get center geometry of the graphic
+       * @memberOf module:extras/basic/Radical#
+       * @example
+       * <caption>Usage of getGeometryCenter</caption>
+       * var center = new Radical().getGeometryCenter(geometry);
+       *
+       * @param {object} geometry
+       * return {*}
+       */
       getGeometryCenter: function (geometry) {
         if(geometry && geometry instanceof Geometry){
           return (function (geometry) {
@@ -255,6 +328,16 @@ define([
           })(geometry)
         }
       },
+      /**
+       * get extent geometry of graphic, Point excepted.
+       * @memberOf module:extras/basic/Radical#
+       *
+       * @example
+       * <caption>Usage of getGeometryExtent</caption>
+       * var center = new Radical().getGeometryExtent(geometry);
+       * @param {object} geometry
+       * return {*}
+       */
       getGeometryExtent: function (geometry) {
         if(geometry && geometry instanceof Geometry){
           return (function (geometry) {
@@ -267,6 +350,72 @@ define([
             }[geometry.type];
           })(geometry)
         }
+      },
+      /**
+       * @memberOf module:extras/basic/Radical#
+       * @example
+       * <caption>Usage of getUUID</caption>
+       * var uuid = new Radical().getUUID();
+       * @returns {string}
+       */
+      getUUID: function () {
+        var s = [];
+        var hexDigits = "0123456789abcdef";
+        for (var i = 0; i < 36; i++) {
+          s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+        }
+        s[14] = "4"; // bits 12-15 of the time_hi_and_version field to 0010
+        s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1); // bits 6-7 of the clock_seq_hi_and_reserved to 01
+        s[8] = s[13] = s[18] = s[23] = "-";
+
+        return s.join("");
+      },
+      /**
+       * get a random number between min and max
+       * @memberOf module:extras/basic/Radical#
+       * @example
+       * <caption>Usage of getRandom</caption>
+       * var random = new Radical().getRandom(1,100);
+       * @param {number} min
+       * @param {number} max
+       * @returns {*}
+       */
+      getRandom: function (min, max) {
+        return min + Math.random() * (max - min);
+      },
+      /**
+       * create a symbol by the type of graphic
+       * @memberOf module:extras/basic/Radical#
+       * @param {string} graphicType
+       * @param {string|Symbol} symbolAttr
+       * <caption>Usage of getSymbolByGraphicType</caption>
+       * var random = new Radical().getSymbolByGraphicType('point',{
+       *     type: "esriSMS",
+       *     style: "esriSMSCircle",
+       *     angle: 0,
+       *     color: [255, 0, 0, 255],
+       *     outline: {
+       *       type: "esriSLS",
+       *       style: "esriSLSSolid",
+       *       width: 1.5,
+       *       color: [255, 255, 255]
+       *     },
+       *     size: 6.75,
+       *     xoffset: 0,
+       *     yoffset: 0
+       * });
+       * @returns {*}
+       */
+      getSymbolByGraphicType: function (graphicType, symbolAttr) {
+        //if(!(graphicType && symbolAttr)){
+        //  this.logger('graphicType and  symbolAttr should not be empty!');
+        //  return null;
+        //}
+        if(!graphicType) return null;
+        if(symbolAttr instanceof Symbol){
+          return symbolAttr;
+        }
+        return this.symbolFactory(graphicType,symbolAttr);
       }
     })
   });

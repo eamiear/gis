@@ -252,7 +252,7 @@ define([
             mapLoadHandler.remove();
           }));
         }
-        this.removeCurLayers();
+        this.removeCurrentLayers();
         this.currentOptions['loadDefaultLayer'] !== false && this.addDefaultLayers();
       },
       /**
@@ -897,19 +897,19 @@ define([
       },
 
       /**
-       * @description removeCurLayers
+       * @description removeCurrentLayers
        * @method
        * @memberOf module:extras/MapInitObject#
        *
        * @example
-       * <caption>Usage of removeCurLayers</caption>
+       * <caption>Usage of removeCurrentLayers</caption>
        * require(['extras/MapInitObject'],function(MapInitObject){
        *   var instance = new MapInitObject(divId,options);
-       *   instance.removeCurLayers();
+       *   instance.removeCurrentLayers();
        * })
        *
        */
-      removeCurLayers: function () {
+      removeCurrentLayers: function () {
         this.curLayer = {};
         this.baseLayer = [];
         this.imageLayer = [];
@@ -928,38 +928,7 @@ define([
        * })
        */
       destroy: function () {
-        if (this.mapcontrol) {
-          this.mapcontrol.destroy();
-        }
-
-        if (this.infoCloseHandle) {
-          dojo.disconnect(this._infoCloseHandle);
-        }
-        if (this.zoomBar) {
-          this.zoomBar.destroy();
-          this.zoomBar = null;
-        }
-        if (this.omap) {
-          this.omap.destroy();
-          this.omap = null;
-        }
-        if (this.scalebar) {
-          this.scalebar.destroy();
-          this.scalebar = null;
-        }
-        if (this.rightMenu) {
-          this.rightMenu.clearBufferResult();
-        }
-        if (this.label) {
-          this.label.destroy();
-          this.label = null;
-        }
-        if (this.toolbar) {
-          this.toolbar.destroy();
-        }
-
-        if (this.map != null) {
-
+        if (this.map) {
           this.map.destroy();
           this.map = null;
         }
@@ -1108,25 +1077,6 @@ define([
           });
         }
         clusterLayer.addData(data);
-      },
-
-      /**
-       * @description getRandom
-       * @method
-       * @memberOf module:extras/MapInitObject#
-       * @param {number} max
-       * @param {number} min
-       *
-       * @example
-       * <caption>Usage of getRandom</caption>
-       * require(['extras/MapInitObject'],function(MapInitObject){
-       *   var instance = new MapInitObject(divId,options);
-       *   instance.getRandom(max,min);
-       * })
-       * @returns number
-       */
-      getRandom: function (max, min) {
-        return min + Math.random() * (max - min);
       },
 
       /**

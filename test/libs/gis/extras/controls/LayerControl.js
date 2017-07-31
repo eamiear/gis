@@ -1,5 +1,19 @@
 /**
- * Created by K on 2017/7/17.
+ * Created by sk_ on 2017-6-10.
+ */
+
+/**
+ * @fileOverview This is base definition for all composed classes defined by the system
+ * Module representing a LayerControl.
+ * @module extras/controls/LayerControl
+ *
+ * @requires dojo._base.declare
+ * @requires dojo._base.lang
+ * @requires dojo._base.array
+ * @requires extras/utils/MapConstant
+ * @requires esri/layers/GraphicsLayer
+ * @requires esri/geometry/Geometry
+ * @requires extras/graphics/InfoGraphicLayer
  */
 
 define([
@@ -10,6 +24,7 @@ define([
   "esri/geometry/webMercatorUtils",
   "esri/layers/GraphicsLayer",
   "esri/dijit/PopupTemplate",
+  "esri/symbols/Symbol",
   "esri/geometry/Point",
   "esri/geometry/Polyline",
   "esri/geometry/Polygon",
@@ -23,6 +38,7 @@ define([
   WebMercatorUtils,
   GraphicsLayer,
   PopupTemplate,
+  Symbol,
   Point,
   Polyline,
   Polygon,
@@ -46,6 +62,7 @@ define([
     },
     /**
      * add a graphic to layer
+     * @memberOf module:extras/controls/LayerControl#
      * @param {string | object} layer                           layer or layer's id the graphic added to
      * @param {object} graphicObj                               the properties of graphic
      * @param {object} graphicObj.geometry                      geometry of graphic
@@ -56,6 +73,10 @@ define([
      * @param {object} graphicObj.infoWindows.infoTemplate
      * @param {string} graphicType
      * @param {object} infoTemplate
+     *
+     * @example
+     * <caption>Usage of _addGraphicToLayer</caption>
+     *  new LayerControl(map)._addGraphicToLayer()
      * @returns {*}
      * @private
      */
@@ -108,51 +129,144 @@ define([
       return graphic;
     },
     /**
-     * add a graphic to layer
+     * add a graphic to layer.
+     * Attention: what kind of geometry value you pass depends on the type of graphic you create.
+     * when creating a pint ,then pass graphicsData.x and graphicsData.y, creating a polyline,then pass graphicsData.path etc.
+     * @memberOf module:extras/controls/LayerControl#
      * @param {string | object} layer                           layer or layer's id the graphic added to
      * @param {object} graphicsData                               the properties of graphic
-     * @param {object} graphicsData.geometry                      geometry of graphic
-     * @param {object} graphicsData.attributes                    attributes of graphic
-     * @param {object} graphicsData.symbol                        symbol of graphic
-     * @param {object} graphicsData.infoWindows
-     * @param {number} graphicsData.infoWindows.showPopupType
-     * @param {object} graphicsData.infoWindows.infoTemplate
+     *
+     * @param {object} graphicsData.x
+     * @param {object} graphicsData.y
+     * @param {object} graphicsData.rings
+     * @param {object} graphicsData.paths
+     *
+     * @param {object} [graphicsData.extras]                        extra attributes of graphic
+     * @param {object} [graphicsData.infoWindows]
+     * @param {number} [graphicsData.infoWindows.showPopupType]
+     * @param {object} [graphicsData.infoWindows.infoTemplate]
      * @param {string} graphicType
-     * @param {object} infoTemplate
+     * @param {Symbol|object} [symbol]                            symbol of graphic
+     * @param {object} [infoTemplate]
+     *
+     * @example
+     * <caption>Usage of addGraphicToLayer</caption>
+     *  new LayerControl(map).addGraphicToLayer('smart_gis_control_layer',{
+     *     x: 113.12,
+     *     y: 23.33,
+     *     name: 'Imgraphic',
+     *     extra: {
+     *        id: 'graphic_122'
+     *     },
+     *     type: 'dev'
+     *  },'point');
+     *
      * @returns {*}
      */
-    addGraphicToLayer: function (layer,graphicsData,graphicType,infoTemplate) {
+    addGraphicToLayer: function (layer,graphicsData,graphicType,symbol,infoTemplate) {
       var graphicObj = this.buildGraphic(graphicsData,graphicType);
+      graphicObj.symbol = this.getSymbolByGraphicType(graphicType,symbol);
       return this._addGraphicToLayer(layer,graphicObj,graphicType,infoTemplate);
     },
     /**
      * add numbers of graphics to layer
+     * @memberOf module:extras/controls/LayerControl#
      * @param {string | object} layer                           layer or layer's id the graphic added to
-     * @param {array} graphicsArray                          an array of graphics
+     * @param {array} graphicsArray                             an array of graphics
      * @param {string} graphicType                              a graphic type for all graphics of the graphicsArray.
      *                                                          when the graphic in graphicArray has different graphic type ,the specified graphic type will be used
      *                                                          means that you can add different graphics at a time.
-     * @param {object} infoTemplate
+     * @param {Symbol|object} [symbol]                            symbol of graphic
+     * @param {object} [infoTemplate]
+     *
+     * @example
+     * <caption>Usage of addGraphicsToLayer</caption>
+     *  new LayerControl(map).addGraphicsToLayer('smart_gis_control_layer',[{
+     *     x: 113.12,
+     *     y: 23.33,
+     *     name: 'Imgraphic',
+     *     extra: {
+     *        id: 'graphic_122'
+     *     },
+     *     type: 'dev'
+     *  },{
+     *     x: 113.22,
+     *     y: 23.53,
+     *     name: 'I_am_graphic',
+     *     extra: {
+     *        id: 'graphic_123'
+     *     },
+     *     type: 'chn',
+     *     graphicType: 'image',
+     *     url: 'http://placehold.it/16x16'
+     *  }],'point');
+     *
      * @returns {*}
      */
-    addGraphicsToLayer: function (layer,graphicsArray,graphicType,infoTemplate) {
+    addGraphicsToLayer: function (layer,graphicsArray,graphicType,symbol,infoTemplate) {
       var graphicObj,pseudoGraphic, pseudoGraphics = [];
       if(!graphicsArray || !lang.isArray(graphicsArray)){
         this.logger('graphicsArray should be an array!');
         return;
       }
       array.forEach(graphicsArray, function (graphic) {
-        graphicObj = this.buildGraphic(graphic,graphic.graphicType || graphicType);
-        pseudoGraphic = this._addGraphicToLayer(layer,graphicObj,graphicType,infoTemplate);
+        pseudoGraphic = this.addGraphicToLayer(layer,graphicObj,graphic.graphicType || graphicType,symbol,infoTemplate);
         pseudoGraphics.push(pseudoGraphic);
       });
       return pseudoGraphics;
     },
+    /**
+     * add graphics to map and delegate an event
+     * @memberOf module:extras/controls/LayerControl#
+     * @param {object} options
+     * @param {string|object} options.layerId
+     * @param {array|object} options.graphics
+     * @param {string} options.graphicType
+     * @param {Symbol|object} options.symbol
+     * @param {boolean} options.isCleanLayer
+     * @param {object} [options.infoTemplate]
+     * @param {object} [options.eventBinder]
+     * @param {string} [options.eventBinder.type]
+     * @param {function} [options.eventBinder.callback]
+     *
+     * @example
+     * <caption>Usage of addGraphicsToMap</caption>
+     *  new LayerControl(map).addGraphicsToMap({
+     *    layerId: 'smart_gis_control_layer',
+     *    isCleanLayer: true,
+     *    graphicType: 'point',
+     *    graphics: [{
+     *      x: 113.12,
+     *      y: 23.33,
+     *      name: 'Imgraphic',
+     *      extra: {
+     *         id: 'graphic_122'
+     *      },
+     *      type: 'dev'
+     *    },{
+     *      x: 113.22,
+     *      y: 23.53,
+     *      name: 'I_am_graphic',
+     *      extra: {
+     *        id: 'graphic_123'
+     *      },
+     *      type: 'chn',
+     *      graphicType: 'image',
+     *      url: 'http://placehold.it/16x16'
+     *    }],
+     *    eventBinder: {
+     *      type: 'click',
+     *      callback: function(evt){}
+     *    }
+     *  });
+     *
+     */
     addGraphicsToMap: function (options) {
       var layerId = options.layerId,
         layer,
         graphics = options.graphics,
         graphicType = options.graphicType,
+        symbol = options.symbol,
         isCleanLayer = options.isCleanLayer,
         infoTemplate = options.infoTemplate,
         eventBinder = options.eventBinder;
@@ -167,7 +281,7 @@ define([
       if(!lang.isArray(graphics)){
         graphics = [graphics];
       }
-      this.addGraphicsToLayer(layerId,graphics,graphicType,infoTemplate);
+      this.addGraphicsToLayer(layerId,graphics,graphicType,symbol,infoTemplate);
 
       // we should get layer again which doesn't exist before adding graphics to
       layer = this.getLayerById(layerId);
@@ -182,6 +296,7 @@ define([
      * build a pseudo graphic for the passing attributes.
      * when building a point pseudo graphic you should pass graphic.x and graphic.y,
      * a polygon pseudo graphic passing graphic.rings or a polyline passing graphic.paths.
+     * @memberOf module:extras/controls/LayerControl#
      *
      * @param {object} graphic
      * @param {number} graphic.x                            longitude for a point
@@ -193,6 +308,19 @@ define([
      * @param {string} [graphic.layerId]                    an layer's id which the graphic belongs to
      * @param {object} [graphic.extras]                     extras attributes for graphic
      * @param {string} [graphicType]                        the type of pseudo graphic , e.g. point,polyline,polygon.
+     *
+     * @example
+     * <caption>Usage of buildGraphic</caption>
+     * new LayerControl(map).buildGraphic({
+     *     x: 113.12,
+     *     y: 23.33,
+     *     name: 'Imgraphic',
+     *     extra: {
+     *        id: 'graphic_122'
+     *     },
+     *     type: 'dev'
+     *  })
+     *
      * @returns {{}}
      */
     buildGraphic: function(graphic,graphicType){
@@ -262,8 +390,13 @@ define([
 
     /**
      * remove a specified graphic from layer
+     * @memberOf module:extras/controls/LayerControl#
      * @param {string | object} layer
      * @param {string | number} graphicId
+     *
+     * @example
+     * <caption>Usage of removeGraphic</caption>
+     * new LayerControl(map).removeGraphic('smart_gis_cotrol_layer','graphic_122');
      */
     removeGraphic: function (layer,graphicId) {
       var graphic;
@@ -283,14 +416,19 @@ define([
     },
     /**
      * remove all graphics from layer
+     * @memberOf module:extras/controls/LayerControl#
      * @param {string | object} layer
+     *
+     * @example
+     * <caption>Usage of removeAllGraphics</caption>
+     * new LayerControl(map).removeAllGraphics();
      */
-    removeEntireGraphics: function (layer) {
+    removeAllGraphics: function (layer) {
       if(lang.isString(layer)){
         layer = this.getLayerById(layer);
       }
       if(!layer){
-        this.logger('[removeEntireGraphics] ','layer doesn\'t exist!');
+        this.logger('[removeAllGraphics] ','layer doesn\'t exist!');
         return;
       }
       layer.clear();
@@ -298,8 +436,13 @@ define([
 
     /**
      * remove layer's events
+     * @memberOf module:extras/controls/LayerControl#
+     *
+     * @example
+     * <caption>Usage of destroyLayerEvents</caption>
+     * new LayerControl(map).destroyLayerEvents();
      */
-    destroyEvents: function () {
+    destroyLayerEvents: function () {
       if(this.eventHandlerTicket){
         array.forEach(function (signal) {
           signal && signal.remove();

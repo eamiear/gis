@@ -155,6 +155,7 @@ define([
        * @param {object} params
        * @param {string} params.type                  绘制图形类型
        * @param {Symbol} [params.symbol]              绘制图形样式
+       * @param {object} [params.attributes]          绘制图形属性
        * @param {function} [params.before]            绘制前的回调
        * @param {function} [params.handler]           绘制完成的回调
        * @param {object} [params.extras]              绘制的图元属性
@@ -170,6 +171,7 @@ define([
             symbol = params.symbol,
             before = params.before,
             handler = params.handler,
+            attributes = params.attributes || {},
             extras = params.extras,
             hideZoomSlider = params.hideZoomSlider,
             layerId = params.layerId,
@@ -207,7 +209,7 @@ define([
           this.map && this.map.enableMapNavigation();
           this.drawToolbar.deactivate();
           before && before();
-          var graphic = new Graphic(evt.geometry, renderSymbol);
+          var graphic = new Graphic(evt.geometry, renderSymbol,attributes);
           extras && lang.isObject(extras) && lang.mixin(graphic,extras);
           layer = this._drawToLayer(graphic,layerId);
           handler && handler(graphic,layer);

@@ -24,36 +24,26 @@ define([
      * @constructs
      */
     constructor: function (map) {
-      //发布toolBarLoadedEvent监听(用来获得MAP和Toolbar)
-      //dojo.subscribe("toolBarLoadedEvent", this, "initLayerQuery");
-
-      //this.layerQueryLayer = new extras.graphic.InfoGraphicLayer({id: "GXX_GIS_QUERYRESULT_LAYER"});
       this.queryLayer = this.createLayer({layerId: this.defaultLayerIds.queryLayerId});
       this.toolbar = new ToolBar(map);
     },
     /**
-     * @method
-     * @private
-     * @memberOf module:extras/controls/SearchControl#
-     *
-     * @listens module:extras/controls/ToolBar~event:toolBarLoadedEvent
-     */
-    initLayerQuery: function (toolbar) {
-      this.toolbar = toolbar;
-      this.map = this.toolbar.map;
-      this.map.addLayer(this.layerQueryLayer);
-    },
-    /**
      * 绘制图形
-     * @private
      * @method
      * @memberOf module:extras/controls/SearchControl#
      *
-     * @param {string} type          图形类型
-     * @param {object} symbol      图形样式
+     * @param {object} drawOptions
+     * @param {string} drawOptions.type                  绘制图形类型
+     * @param {Symbol} [drawOptions.symbol]              绘制图形样式
+     * @param {object} [drawOptions.attributes]           图元属性
+     * @param {function} [drawOptions.before]            绘制前的回调
+     * @param {function} [drawOptions.handler]           绘制完成的回调
+     * @param {object} [drawOptions.extras]              绘制的图元属性
+     * @param {boolean} [drawOptions.hideZoomSlider]     绘制时是否隐藏zoomSlider
+     * @param {object} [drawOptions.drawTips]            绘制时鼠标提示信息
      * @param {boolean} isClearLayer 是否清空图层(默认 false - 不清空)
      *
-     * @returns {dojo.Promise}
+     * @returns {Promise}
      * return a promise object. see the link [dojo.promise](http://dojotoolkit.org/reference-guide/1.10/dojo/promise.html) for more details.
      */
     drawToSearch: function (drawOptions, isClearLayer) {
@@ -71,10 +61,14 @@ define([
      * @param {object} options
      * @param {string} options.type          图形类型
      *                               <code>polygon, polyline, extent, circle... </code>
-     * @param {object} options.symbol        图元样式
-     * @param {object} options.attributes      图元属性
+     * @param {object} [options.symbol]        图元样式
+     * @param {object} [options.attributes]           图元属性
+     * @param {function} [options.before]            绘制前的回调
+     * @param {function} [options.handler]           绘制完成的回调
+     * @param {object} [options.extras]              绘制的图元属性
+     * @param {boolean} [options.hideZoomSlider]     绘制时是否隐藏zoomSlider
+     * @param {object} [options.drawTips]            绘制时鼠标提示信息
      * @param {string} options.subscribeHook    发布订阅监听钩子
-     *
      * @param {boolean} isClearLayer          是否清除图层  （默认清除）
      *
      * @example
@@ -95,11 +89,11 @@ define([
      * @example
      * <caption>Usage of domainSearch with <b><code>promise</code></b></caption>
      *
-     * GisObject.searchControl.domainSearch(options).done(function(graphics){
+     * GisObject.searchControl.domainSearch(options).then(function(graphics,layer){
      *    // coding....
      * })
      *
-     * @returns {dojo.Promise}
+     * @returns {Promise}
      * return a promise object. see the link [dojo.promise](http://dojotoolkit.org/reference-guide/1.10/dojo/promise.html) for more details.
      */
     domainSearch: function (options,isClearLayer) {
@@ -116,7 +110,7 @@ define([
         * subscribeHook - 'domain-search' event.
         *
         * @event module:extras/controls/SearchControl#subscribeHook
-        * @param {eris.Graphic[]} graphics - 图元数组，更多详情请查看 [eris.Graphic](https://developers.arcgis.com/javascript/3/jsapi/graphic-amd.html)
+        * @param {Graphic[]} graphics - 图元数组，更多详情请查看 [eris.Graphic](https://developers.arcgis.com/javascript/3/jsapi/graphic-amd.html)
         */
         dojo.publish(options.subscribeHook || 'domainsearch', [graphic]);
       }));
@@ -126,6 +120,19 @@ define([
      * @memberOf module:extras/controls/SearchControl#
      * @see {@link module:extras/controls/SearchControl#domainSearch}
      * @fires module:extras/controls/SearchControl#subscribeHook
+     *
+     * @param {object} options
+     * @param {string} options.type          图形类型
+     *                               <code>polygon, polyline, extent, circle... </code>
+     * @param {object} [options.symbol]        图元样式
+     * @param {object} [options.attributes]           图元属性
+     * @param {function} [options.before]            绘制前的回调
+     * @param {function} [options.handler]           绘制完成的回调
+     * @param {object} [options.extras]              绘制的图元属性
+     * @param {boolean} [options.hideZoomSlider]     绘制时是否隐藏zoomSlider
+     * @param {object} [options.drawTips]            绘制时鼠标提示信息
+     * @param {string} options.subscribeHook        发布订阅监听钩子
+     * @param {boolean} isClearLayer                是否清除图层  （默认清除）
      *
      * @example
      * <caption>Usage of pullBoxSearch with <b><code>publish/subscribe</code></b></caption>
@@ -139,24 +146,37 @@ define([
      * @example
      * <caption>Usage of pullBoxSearch with <b><code>promise</code></b></caption>
      *
-     * GisObject.searchControl.pullBoxSearch().done(function(graphics){
+     * GisObject.searchControl.pullBoxSearch().then(function(graphics,layer){
      *    // coding....
      * })
      *
-     * @returns {dojo.Promise}
+     * @returns {Promise}
      * return a promise object. see the link [dojo.promise](http://dojotoolkit.org/reference-guide/1.10/dojo/promise.html) for more details.
      */
-    pullBoxSearch: function (options) {
+    pullBoxSearch: function (options,isClearLayer) {
       return this.domainSearch(lang.mixin({
         type: esri.toolbars.draw.EXTENT,
         subscribeHook: 'pullBoxSearchFinish'
-      },options||{}));
+      },options||{}),isClearLayer);
     },
     /**
      * draw a polygon graphic on the map and publish an event letting listeners know whether the action is completed.
      * @memberOf module:extras/controls/SearchControl#
      * @see {@link module:extras/controls/SearchControl#domainSearch}
      * @fires module:extras/controls/SearchControl#subscribeHook
+     *
+     * @param {object} options
+     * @param {string} options.type          图形类型
+     *                               <code>polygon, polyline, extent, circle... </code>
+     * @param {object} [options.symbol]        图元样式
+     * @param {object} [options.attributes]           图元属性
+     * @param {function} [options.before]            绘制前的回调
+     * @param {function} [options.handler]           绘制完成的回调
+     * @param {object} [options.extras]              绘制的图元属性
+     * @param {boolean} [options.hideZoomSlider]     绘制时是否隐藏zoomSlider
+     * @param {object} [options.drawTips]            绘制时鼠标提示信息
+     * @param {string} options.subscribeHook        发布订阅监听钩子
+     * @param {boolean} isClearLayer                是否清除图层  （默认清除）
      *
      * @example
      * <caption>Usage of polygonSearch with <b><code>publish/subscribe</code></b></caption>
@@ -170,24 +190,37 @@ define([
      * @example
      * <caption>Usage of polygonSearch with <b><code>promise</code></b></caption>
      *
-     * GisObject.searchControl.polygonSearch().done(function(graphics){
+     * GisObject.searchControl.polygonSearch().then(function(graphics,layer){
      *    // coding....
      * })
      *
-     * @returns {dojo.Promise}
+     * @returns {Promise}
      * return a promise object. see the link [dojo.promise](http://dojotoolkit.org/reference-guide/1.10/dojo/promise.html) for more details.
      */
-    polygonSearch: function (options) {
+    polygonSearch: function (options,isClearLayer) {
       return this.domainSearch(lang.mixin({
         type: esri.toolbars.draw.POLYGON,
         subscribeHook: 'polygonSearchFinish'
-      },options||{}));
+      },options||{}),isClearLayer);
     },
     /**
      * draw a line graphic on the map and publish an event letting listeners know whether the action is completed.
      * @memberOf module:extras/controls/SearchControl#
      * @see {@link module:extras/controls/SearchControl#domainSearch}
      * @fires module:extras/controls/SearchControl#subscribeHook
+     *
+     * @param {object} options
+     * @param {string} options.type          图形类型
+     *                               <code>polygon, polyline, extent, circle... </code>
+     * @param {object} [options.symbol]        图元样式
+     * @param {object} [options.attributes]           图元属性
+     * @param {function} [options.before]            绘制前的回调
+     * @param {function} [options.handler]           绘制完成的回调
+     * @param {object} [options.extras]              绘制的图元属性
+     * @param {boolean} [options.hideZoomSlider]     绘制时是否隐藏zoomSlider
+     * @param {object} [options.drawTips]            绘制时鼠标提示信息
+     * @param {string} options.subscribeHook        发布订阅监听钩子
+     * @param {boolean} isClearLayer                是否清除图层  （默认清除）
      *
      * @example
      * <caption>Usage of lineSearch with <b><code>publish/subscribe</code></b></caption>
@@ -205,20 +238,33 @@ define([
      *    // coding....
      * })
      *
-     * @returns {dojo.Promise}
+     * @returns {Promise}
      * return a promise object. see the link [dojo.promise](http://dojotoolkit.org/reference-guide/1.10/dojo/promise.html) for more details.
      */
-    lineSearch: function (options) {
+    lineSearch: function (options,isClearLayer) {
       return this.domainSearch(lang.mixin({
         type: esri.toolbars.draw.FREEHAND_POLYLINE,
         subscribeHook: 'lineSearchFinish'
-      },options||{}));
+      },options||{}),isClearLayer);
     },
     /**
      * draw a circle graphic on the map and publish an event letting listeners know whether the action is completed.
      * @memberOf module:extras/controls/SearchControl#
      * @see {@link module:extras/controls/SearchControl#domainSearch}
      * @fires module:extras/controls/SearchControl#subscribeHook
+     *
+     * @param {object} options
+     * @param {string} options.type          图形类型
+     *                               <code>polygon, polyline, extent, circle... </code>
+     * @param {object} [options.symbol]        图元样式
+     * @param {object} [options.attributes]           图元属性
+     * @param {function} [options.before]            绘制前的回调
+     * @param {function} [options.handler]           绘制完成的回调
+     * @param {object} [options.extras]              绘制的图元属性
+     * @param {boolean} [options.hideZoomSlider]     绘制时是否隐藏zoomSlider
+     * @param {object} [options.drawTips]            绘制时鼠标提示信息
+     * @param {string} options.subscribeHook        发布订阅监听钩子
+     * @param {boolean} isClearLayer                是否清除图层  （默认清除）
      *
      * @example
      * <caption>Usage of circleSearch with <b><code>publish/subscribe</code></b></caption>
@@ -235,22 +281,27 @@ define([
      *    // coding....
      * })
      *
-     * @returns {dojo.Promise}
+     * @returns {Promise}
      * return a promise object. see the link [dojo.promise](http://dojotoolkit.org/reference-guide/1.10/dojo/promise.html) for more details.
      */
-    circleSearch: function () {
+    circleSearch: function (options,isClearLayer) {
       return this.domainSearch(lang.mixin({
         type: esri.toolbars.draw.CIRCLE,
         subscribeHook: 'circleSearchFinish'
-      },options||{}));
+      },options||{}),isClearLayer);
     },
 
     /**
+     * find graphic by property and value
      * @memberOf module:extras/controls/SearchControl#
+     * @param {GraphicLayer | string} layer     the object of Layer or layer's id
+     * @param {string} property                            layer's property name,e.g. id
+     * @param {string|number} value                        value of the property,e.g. id = 1
      *
-     * @param {esri.layer.GraphicLayer | string} layer
-     * @param {string} property
-     * @param {string} value
+     * @example
+     * <caption>Usage of getGraphicBy</caption>
+     * var graphic = new SearchControl(map).getGraphicBy('smart_gis_query_layer','id','graphic_1021');
+     *
      * @returns {*}
      */
     getGraphicBy: function (layer, property, value) {
@@ -267,13 +318,17 @@ define([
     },
     /**
      * 属性查询
-     *
      * @memberOf module:extras/controls/SearchControl#
      *
-     * @param {string} layerId
-     * @param {string} attrName
-     * @param {string} attrValue
-     * @param {boolean} isLike
+     * @param {string} layerId          layer's id
+     * @param {string} attrName         the name of graphic's property
+     * @param {string} attrValue        then value of graphic's property
+     * @param {boolean} isLike          set <b>true</b> to use fuzzy query
+     *
+     * @example
+     * <caption>Usage of queryByAttribute</caption>
+     * var graphic = new SearchControl(map).queryByAttribute('smart_gis_query_layer','id','graphic_1021',true);
+     *
      * @returns {*}
      */
     queryByAttribute: function (layerId, attrName, attrValue, isLike) {
@@ -289,7 +344,13 @@ define([
      * @memberOf module:extras/controls/SearchControl#
      *
      * @param {string} layerId
-     * @param {Object} geometry
+     * @param {object} geometry     geometry of the graphic queried
+     *
+     * @example
+     * <caption>Usage of queryByGeometry</caption>
+     * var graphic = new SearchControl(map).queryByGeometry('smart_gis_query_layer',geometry);
+     *
+     * @returns {*}
      */
     queryByGeometry: function (layerId, geometry) {
       var layer = this.getLayerById(layerId);
@@ -300,14 +361,19 @@ define([
       return this._getGraphicByGeometry(layer, geometry);
     },
     /**
-     * 综合查询
+     * 组合查询
      * @memberOf module:extras/controls/SearchControl#
      *
      * @param {string} layerId
-     * @param {eris.geometry.Point} geometry
+     * @param {Point} geometry      geometry of the graphic queried
      * @param {string} attrName
      * @param {string} attrValue
      * @param {boolean} isLike
+     *
+     * @example
+     * <caption>Usage of queryByAttributeAndGeometry</caption>
+     * var graphic = new SearchControl(map).queryByGeometry('smart_gis_query_layer',geometry,'id','graphic_1022',true);
+     *
      * @returns {*}
      */
     queryByAttributeAndGeometry: function (layerId, geometry, attrName, attrValue, isLike) {
@@ -320,9 +386,13 @@ define([
     },
 
     /**
+     * find all graphics of the layer
      * @memberOf module:extras/controls/SearchControl#
+     * @example
+     * <caption>Usage of getAllGraphics</caption>
+     * var graphic = new SearchControl(map).getAllGraphics('smart_gis_query_layer');
      *
-     * @param {esri.layer.GraphicLayer | string} layer
+     * @param {object | string} layer        a layer object or layer's id
      * @returns {*}
      */
     getAllGraphics: function (layer) {
@@ -330,10 +400,11 @@ define([
       return layer && layer.graphics;
     },
     /**
+     * @private
      * @memberOf module:extras/controls/SearchControl#
      *
-     * @param {esri.layer.GraphicLayer | string} layer
-     * @param {esri.geometry.Point} geometry
+     * @param {GraphicLayer | string} layer
+     * @param {Point} geometry
      * @param {string} attrName
      * @param {string} attrValue
      * @param {boolean} isLike
@@ -346,10 +417,11 @@ define([
       });
     },
     /**
+     * @private
      * @memberOf module:extras/controls/SearchControl#
      *
-     * @param {esri.layer.GraphicLayer | string} layer
-     * @param {esri.geometry.Point} geometry
+     * @param {GraphicLayer | string} layer
+     * @param {Point} geometry
      * @returns {*}
      */
     _getGraphicByGeometry: function (layer, geometry) {
@@ -363,9 +435,10 @@ define([
       });
     },
     /**
+     * @private
      * @memberOf module:extras/controls/SearchControl#
      *
-     * @param {esri.layer.GraphicLayer | string} layer
+     * @param {GraphicLayer | string} layer
      * @param {string} attrName
      * @param {string} attrValue
      * @param {boolean} isLike
@@ -380,7 +453,12 @@ define([
       });
     },
     /**
+     * remove all graphics of the query layer.
      * @memberOf module:extras/controls/SearchControl#
+     *
+     * @example
+     * <caption>Usage of queryByAttributeAndGeometry</caption>
+     * new SearchControl(map).clear();
      */
     clear: function () {
       this.clearLayer(this.queryLayer)
