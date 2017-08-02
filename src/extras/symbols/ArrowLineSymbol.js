@@ -5,7 +5,7 @@
 /**
  * @fileOverview This is base definition for all composed classes defined by the system
  * Module representing a ArrowLineSymbol.
- * @module extras/symbol/ArrowLineSymbol
+ * @module extras/symbols/ArrowLineSymbol
  *
  *
  * @requires dojo._base.declare
@@ -24,20 +24,52 @@
  * @requires esri.geometry.ScreenPoint
  * @requires dojo._base.fx
  * @requires dojo.fx
- * @requires dojox.gfx.fx
  * @requires dojo.on
  */
-define(["dojo/_base/declare", "dojo/_base/lang", "dojo/query", "dojo/dom", "dojo/dom-construct", "dojo/dom-style", "dojox/gfx", "esri/geometry/screenUtils", "esri/symbols/SimpleLineSymbol", "esri/symbols/SimpleMarkerSymbol", "esri/symbols/PictureMarkerSymbol", "esri/graphic", "esri/geometry/Point", "esri/geometry/ScreenPoint", "dojo/_base/fx", "dojo/fx", "dojox/gfx/fx", "dojo/on"],
-  function (declare, lang, query, dom, construct, style, gfx, screenUtils, SimpleLineSymbol, SimpleMarkerSymbol, PictureMarkerSymbol, graphic, Point, ScreenPoint, bfx, dfx, xfx, on) {
-    return declare([SimpleLineSymbol],
-      /**  @lends module:extras/symbol/ArrowLineSymbol */
-      {
-
+define([
+  "dojo/_base/declare",
+  "dojo/_base/lang",
+  "dojo/query",
+  "dojo/dom",
+  "dojo/dom-construct",
+  "dojo/dom-style",
+  "dojox/gfx",
+  "esri/geometry/screenUtils",
+  "esri/symbols/SimpleLineSymbol",
+  "esri/symbols/SimpleMarkerSymbol",
+  "esri/symbols/PictureMarkerSymbol",
+  "esri/graphic",
+  "esri/geometry/Point",
+  "esri/geometry/ScreenPoint",
+  "dojo/_base/fx",
+  "dojo/fx",
+  "dojo/on"
+],
+  function (
+    declare,
+    lang,
+    query,
+    dom,
+    construct,
+    style,
+    gfx,
+    screenUtils,
+    SimpleLineSymbol,
+    SimpleMarkerSymbol,
+    PictureMarkerSymbol,
+    graphic,
+    Point,
+    ScreenPoint,
+    basefx,
+    dojofx,
+    on
+  ) {
+    return declare([SimpleLineSymbol], /**  @lends module:extras/symbols/ArrowLineSymbol */ {
         /**
          * @constructs
          *
          */
-        constructor: function () {
+        constructor: function (options) {
 
           this.inherited(arguments);
 
@@ -65,14 +97,12 @@ define(["dojo/_base/declare", "dojo/_base/lang", "dojo/query", "dojo/dom", "dojo
 
           this.drawGraphicDirection = this._drawDirection;
           this.type = "ArrowLineSymbol";
-
         },
 
         /**
          * @description getStroke
          * @method
-         * @memberOf module:extras/symbol/ArrowLineSymbol#
-         *
+         * @memberOf module:extras/symbols/ArrowLineSymbol#
          *
          * @example
          * <caption>Usage of getStroke</caption>
@@ -102,11 +132,9 @@ define(["dojo/_base/declare", "dojo/_base/lang", "dojo/query", "dojo/dom", "dojo
           this._drawDirection(graphic, layer, map);
 
           if (!layer.dlsGraphicRemove) {
-            layer.dlsGraphicRemove = layer.on("graphic-remove",
-              function (e) {
+            layer.dlsGraphicRemove = layer.on("graphic-remove",function (e) {
                 if (e.graphic.dlsSymbolGroup) {
-
-                  dojo.query(".dls-symbol", e.graphic.dlsSymbolGroup.rawNode).forEach(dojo.destroy);
+                  query(".dls-symbol", e.graphic.dlsSymbolGroup.rawNode).forEach(dojo.destroy);
                   dojo.destroy(e.graphic.dlsSymbolGroup.rawNode);
                   e.graphic.dlsSymbolGroup = null;
                 }
@@ -114,8 +142,7 @@ define(["dojo/_base/declare", "dojo/_base/lang", "dojo/query", "dojo/dom", "dojo
           }
 
           if (!map.graphics.dlsGraphicDraw) {
-            map.graphics.dlsGraphicDraw = map.graphics.on("graphic-draw",
-              function (e) {
+            map.graphics.dlsGraphicDraw = map.graphics.on("graphic-draw", function (e) {
                 if (e.graphic.dlsSymbolGroup) {
                   var g = e.graphic;
                   var sym = g.symbol.type === "ArrowLineSymbol" ? g.symbol : g.symbol.outline && g.symbol.outline.type === "ArrowLineSymbol" ? g.symbol.outline : null;
@@ -127,11 +154,8 @@ define(["dojo/_base/declare", "dojo/_base/lang", "dojo/query", "dojo/dom", "dojo
           }
 
           if (!map.dlsExtChanged) {
-            map.dlsExtChanged = map.on("extent-change",
-              function (e) {
-
-                for (var i = 0,
-                       len = this.graphics.graphics.length; i < len; i++) {
+            map.dlsExtChanged = map.on("extent-change", function (e) {
+                for (var i = 0, len = this.graphics.graphics.length; i < len; i++) {
                   var g = this.graphics.graphics[i];
                   if (!g.symbol) continue;
 
@@ -141,23 +165,18 @@ define(["dojo/_base/declare", "dojo/_base/lang", "dojo/query", "dojo/dom", "dojo
                     jLen--;
                     continue;
                   }
-
                   var sym = g.symbol.type === "ArrowLineSymbol" ? g.symbol : g.symbol.outline && g.symbol.outline.type === "ArrowLineSymbol" ? g.symbol.outline : null;
                   if (sym) {
                     sym.drawGraphicDirection(g, layer, this);
                   }
-
                 }
 
-                for (var i = 0,
-                       len = this.graphicsLayerIds.length; i < len; i++) {
+                for (var i = 0, len = this.graphicsLayerIds.length; i < len; i++) {
                   var layer = this.getLayer(this.graphicsLayerIds[i]);
                   if (!layer.dlsGraphicRemove) continue;
-                  for (var j = 0,
-                         jLen = layer.graphics.length; j < jLen; j++) {
+                  for (var j = 0, jLen = layer.graphics.length; j < jLen; j++) {
                     var g = layer.graphics[j];
                     if (!g.symbol) continue;
-
                     if (g.attributes && g.attributes.isDirectionalGraphic) {
                       layer.remove(g);
                       j--;
@@ -169,7 +188,6 @@ define(["dojo/_base/declare", "dojo/_base/lang", "dojo/query", "dojo/dom", "dojo
                     if (sym) {
                       sym.drawGraphicDirection(g, layer, this);
                     }
-
                   }
                 }
               });
@@ -178,10 +196,10 @@ define(["dojo/_base/declare", "dojo/_base/lang", "dojo/query", "dojo/dom", "dojo
         },
 
         /**
+         * @private
          * @description _drawDirection
          * @method
-         * @memberOf module:extras/symbol/ArrowLineSymbol#
-         *
+         * @memberOf module:extras/symbols/ArrowLineSymbol#
          *
          * @example
          * <caption>Usage of _drawDirection</caption>
@@ -209,7 +227,7 @@ define(["dojo/_base/declare", "dojo/_base/lang", "dojo/query", "dojo/dom", "dojo
           }
 
           graphic.directions = [];
-          dojo.query(".dls-symbol", graphic.dlsSymbolGroup.rawNode).forEach(dojo.destroy);
+          query(".dls-symbol", graphic.dlsSymbolGroup.rawNode).forEach(dojo.destroy);
 
           var screenGeo = screenUtils.toScreenGeometry(map.extent, map.width, map.height, geometry);
           var screenExtent = screenUtils.toScreenGeometry(map.extent, map.width, map.height, map.extent);
@@ -221,11 +239,9 @@ define(["dojo/_base/declare", "dojo/_base/lang", "dojo/query", "dojo/dom", "dojo
             return;
           }
 
-          for (var i = 0,
-                 iLen = outerArray.length; i < iLen; i++) {
+          for (var i = 0, iLen = outerArray.length; i < iLen; i++) {
             var line = outerArray[i];
-            for (var j = 0,
-                   jLen = line.length - 1; j < jLen; j++) {
+            for (var j = 0, jLen = line.length - 1; j < jLen; j++) {
               if (j === line.length) {
                 continue;
               }
@@ -236,20 +252,14 @@ define(["dojo/_base/declare", "dojo/_base/lang", "dojo/query", "dojo/dom", "dojo
               var angle = ((180 / Math.PI) * Math.atan2(pt2[1] - pt1[1], pt2[0] - pt1[0])) - 180;
               var directionPoints = this._getDirectionPoints(pt1, pt2, screenExtent);
 
-              for (var x = 0,
-                     xLen = directionPoints.length; x < xLen; x++) {
-
+              for (var x = 0, xLen = directionPoints.length; x < xLen; x++) {
                 var sym;
-
                 if (this.directionSymbol.type === "simplemarkersymbol" || this.directionSymbol.type === "picturemarkersymbol") {
                   sym = lang.clone(this.directionSymbol);
-                }
-                else if (typeof this.directionSymbol === "string") {
-
+                } else if (typeof this.directionSymbol === "string") {
                   sym = new SimpleMarkerSymbol();
                   sym.setSize(this.directionSize).setPath(this.directionSymbols[this.directionSymbol] ? this.directionSymbols[this.directionSymbol] : this.directionSymbol).setOutline(null).setColor(this.directionColor)
-                }
-                else {
+                } else {
                   console.error("directionSymbol must be set to one of the pre-defined strings {'arrow1', 'arrow2', 'arrow3', 'arrow4'}, or a SimpleMarkerSymbol or PictureMarkerSymbol.");
                 }
 
@@ -272,7 +282,6 @@ define(["dojo/_base/declare", "dojo/_base/lang", "dojo/query", "dojo/dom", "dojo
 
                 g.origJson = g.toJson();
                 g.toJson = this.directionGraphicToJson;
-
               }
             }
           }
@@ -284,10 +293,10 @@ define(["dojo/_base/declare", "dojo/_base/lang", "dojo/query", "dojo/dom", "dojo
         },
 
         /**
+         * @private
          * @description _getDirectionPoints
          * @method
-         * @memberOf module:extras/symbol/ArrowLineSymbol#
-         *
+         * @memberOf module:extras/symbols/ArrowLineSymbol#
          *
          * @example
          * <caption>Usage of _getDirectionPoints</caption>
@@ -336,7 +345,7 @@ define(["dojo/_base/declare", "dojo/_base/lang", "dojo/query", "dojo/dom", "dojo
         /**
          * @description get
          * @method
-         * @memberOf module:extras/symbol/ArrowLineSymbol#
+         * @memberOf module:extras/symbols/ArrowLineSymbol#
          *
          *
          * @example
@@ -356,15 +365,13 @@ define(["dojo/_base/declare", "dojo/_base/lang", "dojo/query", "dojo/dom", "dojo
         /**
          * @description setDirectionSymbol
          * @method
-         * @memberOf module:extras/symbol/ArrowLineSymbol#
+         * @memberOf module:extras/symbols/ArrowLineSymbol#
          *
          *
          * @example
          * <caption>Usage of setDirectionSymbol</caption>
          * var instance = new ArrowLineSymbol();
          * instance.setDirectionSymbol();
-         *
-         *
          */
         setDirectionSymbol: function (symbol) {
           this.directionSymbol = symbol;
@@ -374,7 +381,7 @@ define(["dojo/_base/declare", "dojo/_base/lang", "dojo/query", "dojo/dom", "dojo
         /**
          * @description animateDirection
          * @method
-         * @memberOf module:extras/symbol/ArrowLineSymbol#
+         * @memberOf module:extras/symbols/ArrowLineSymbol#
          *
          *
          * @example
@@ -407,8 +414,7 @@ define(["dojo/_base/declare", "dojo/_base/lang", "dojo/query", "dojo/dom", "dojo
           }
 
           var dur = this.animationDuration;
-          for (var i = 0,
-                 len = this.graphics.length; i < len; i++) {
+          for (var i = 0, len = this.graphics.length; i < len; i++) {
             var g = this.graphics[i];
             if (!g.dlsSymbolGroup) continue;
             this._animateGraphic(g, this.animationRepeat);
@@ -416,17 +422,15 @@ define(["dojo/_base/declare", "dojo/_base/lang", "dojo/query", "dojo/dom", "dojo
         },
 
         /**
+         * @private
          * @description _animateGraphic
          * @method
-         * @memberOf module:extras/symbol/ArrowLineSymbol#
-         *
+         * @memberOf module:extras/symbols/ArrowLineSymbol#
          *
          * @example
          * <caption>Usage of _animateGraphic</caption>
          * var instance = new ArrowLineSymbol();
          * instance._animateGraphic();
-         *
-         *
          */
         _animateGraphic: function (g, repeat) {
           var anims = [];
@@ -436,12 +440,12 @@ define(["dojo/_base/declare", "dojo/_base/lang", "dojo/query", "dojo/dom", "dojo
             g.dlsAnimationChain.stop();
           }
 
-          dojo.query(".dls-symbol", g.dlsSymbolGroup.rawNode).forEach(function (path) {
-            dojo._base.fx.fadeOut({
+          query(".dls-symbol", g.dlsSymbolGroup.rawNode).forEach(function (path) {
+            basefx.fadeOut({
               node: path,
               duration: 10
             }).play();
-            var fi = dojo._base.fx.fadeIn({
+            var fi = basefx.fadeIn({
               node: path,
               duration: dur
             });
@@ -449,7 +453,7 @@ define(["dojo/_base/declare", "dojo/_base/lang", "dojo/query", "dojo/dom", "dojo
           });
 
           g.dlsAnimationRepeat = repeat;
-          g.dlsAnimationChain = dojo.fx.chain(anims);
+          g.dlsAnimationChain = dojofx.chain(anims);
           g.dlsAnimationEnd = dojo.on(g.dlsAnimationChain, "End", dojo._base.lang.hitch(this,
             function () {
               if (!isNaN(repeat) && repeat > 1) {
@@ -471,24 +475,20 @@ define(["dojo/_base/declare", "dojo/_base/lang", "dojo/query", "dojo/dom", "dojo
         /**
          * @description stopAnimation
          * @method
-         * @memberOf module:extras/symbol/ArrowLineSymbol#
-         *
+         * @memberOf module:extras/symbols/ArrowLineSymbol#
          *
          * @example
          * <caption>Usage of stopAnimation</caption>
          * var instance = new ArrowLineSymbol();
          * instance.stopAnimation();
-         *
-         *
          */
         stopAnimation: function () {
 
-          for (var i = 0,
-                 len = this.graphics.length; i < len; i++) {
+          for (var i = 0, len = this.graphics.length; i < len; i++) {
             var g = this.graphics[i];
             if (g.dlsSymbolGroup) {
-              dojo.query(".dls-symbol", g.dlsSymbolGroup.rawNode).forEach(function (path) {
-                dojo._base.fx.fadeIn({
+              query(".dls-symbol", g.dlsSymbolGroup.rawNode).forEach(function (path) {
+                basefx.fadeIn({
                   node: path,
                   duration: 10
                 }).play();
@@ -505,8 +505,7 @@ define(["dojo/_base/declare", "dojo/_base/lang", "dojo/query", "dojo/dom", "dojo
         /**
          * @description toJson
          * @method
-         * @memberOf module:extras/symbol/ArrowLineSymbol#
-         *
+         * @memberOf module:extras/symbols/ArrowLineSymbol#
          *
          * @example
          * <caption>Usage of toJson</caption>
@@ -526,8 +525,7 @@ define(["dojo/_base/declare", "dojo/_base/lang", "dojo/query", "dojo/dom", "dojo
         /**
          * @description directionGraphicToJson
          * @method
-         * @memberOf module:extras/symbol/ArrowLineSymbol#
-         *
+         * @memberOf module:extras/symbols/ArrowLineSymbol#
          *
          * @example
          * <caption>Usage of directionGraphicToJson</caption>

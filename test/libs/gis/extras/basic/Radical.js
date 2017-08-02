@@ -305,6 +305,24 @@ define([
         return longitude && latitude && (longitude.length <= 3 || latitude.length <= 2);
       },
       /**
+       * @description isWebMercator
+       * @method
+       * @memberOf module:extras/basic/Radical#
+       * @param {SpatialReference | object} reference
+       * @returns {boolean}
+       */
+      isWebMercator: function (reference) {
+        return !!{
+          100112: true,
+          102113: true,
+          102100: true,
+          3857: true,
+          3785: true,
+          54004: true,
+          41001: true
+        }[reference.wkid];
+      },
+      /**
        * get center geometry of the graphic
        * @memberOf module:extras/basic/Radical#
        * @example

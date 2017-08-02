@@ -3,6 +3,7 @@
  */
 
 /**
+ * TODO move to widgets
  * @fileOverview This is base definition for all composed classes defined by the system
  * Module representing a MeasureDrawTool.
  * @module extras/tools/MeasureDrawTool
@@ -25,7 +26,9 @@
  */
 define([
     "dojo/_base/declare",
+    "dojo/_base/connect",
     "dojo/_base/event",
+    "dojo/_base/color",
     "esri/toolbars/draw",
     "esri/symbols/SimpleMarkerSymbol",
     "esri/symbols/SimpleLineSymbol",
@@ -40,92 +43,83 @@ define([
     "esri/geometry/geodesicUtils",
     "esri/geometry/webMercatorUtils"
   ],
-  function (declare,
-            event,
-            draw,
-            SimpleMarkerSymbol,
-            SimpleLineSymbol,
-            SimpleFillSymbol,
-            PictureMarkerSymbol,
-            Font,
-            TextSymbol,
-            GraphicsLayer,
-            graphic,
-            Color,
-            units,
-            geodesicUtils,
-            webMercatorUtils) {
-    return declare([draw],
-      /**  @lends module:extras/tools/MeasureDrawTool */
-      {
+  function (
+    declare,
+    connect,
+    event,
+    dojoColor,
+    draw,
+    SimpleMarkerSymbol,
+    SimpleLineSymbol,
+    SimpleFillSymbol,
+    PictureMarkerSymbol,
+    Font,
+    TextSymbol,
+    GraphicsLayer,
+    Graphic,
+    Color,
+    units,
+    geodesicUtils,
+    webMercatorUtils
+  ) {
+    return declare([draw], /**  @lends module:extras/tools/MeasureDrawTool */ {
 
-        /** @member
-          DISTANCE */
+        /** @member  DISTANCE */
         DISTANCE: "distance",
 
-        /** @member
-          AREA */
+        /** @member AREA */
         AREA: "area",
 
-        /** @member
-          AREARPRE */
+        /** @member AREARPRE */
         AREARPRE: "measure_area_",
 
-        /** @member
-          DISTANCEPRE */
+        /** @member DISTANCEPRE */
         DISTANCEPRE: "measure_distance_",
 
         /** @member
           drawType */
         drawType: null,
 
-        /** @member
-          points */
+        /** @member points */
         points: [],
 
-        /** @member
-          latestEndPoint */
+        /** @member latestEndPoint */
         latestEndPoint: null,
 
-        /** @member
-          lastClickPoint */
+        /** @member lastClickPoint */
         lastClickPoint: null,
 
-        /** @member
-          isRunning */
+        /** @member isRunning */
         isRunning: false,
 
-        /** @member
-          lineSymbol */
+        /** @member lineSymbol */
         lineSymbol: null,
 
-        /** @member
-          fillSymbol */
+        /** @member fillSymbol */
         fillSymbol: null,
 
-        /** @member
-          measureLayer */
+        /** @member measureLayer */
         measureLayer: null,
 
         /**
          * @constructs
          *
          */
-        constructor: function () {
-
+        constructor: function (args) {
           this.inherited(arguments);
+          this.map = args.map;
+          this.measureTotal = 0;
+          declare.safeMixin(this, args);
+
           this.points = [];
           this._onMapClickHandler = dojo.hitch(this, this._onMapClickHandler);
 
           this._onDrawEndHandler = dojo.hitch(this, this._onDrawEndHandler);
           this._closeGraphicHandler = dojo.hitch(this, this._closeGraphicHandler);
-          this.measureLayer = new esri.layers.GraphicsLayer({
-            id: "GXX_GIS_MEAREALAYER_RESULT"
-          });
+          this.measureLayer = new GraphicsLayer({ id: "smart_gis_measure_layer" });
           if (this.map) {
             this.map.addLayer(this.measureLayer);
           }
-
         },
 
         /**
@@ -138,12 +132,9 @@ define([
          * @example
          * <caption>Usage of activate</caption>
          * require(['extras/tools/MeasureDrawTool'],function(MeasureDrawTool){
-     *   var instance = new MeasureDrawTool();
-     *   instance.activate(geometryType,options);
-     * })
-         *
-         *
-         *
+         *   var instance = new MeasureDrawTool();
+         *   instance.activate(geometryType,options);
+         * })
          */
         activate: function (geometryType, options) {
           this.inherited(arguments);
@@ -152,9 +143,9 @@ define([
 
           map.reorderLayer(this.measureLayer, map._layers.length - 1);
 
-          this._onMapClickHandler_connect = dojo.connect(map, "onClick", this._onMapClickHandler);
+          this._onMapClickHandler_connect = connect(map, "onClick", this._onMapClickHandler);
 
-          this._onDrawEndHandler_connect = dojo.connect(this, "onDrawEnd", this._onDrawEndHandler);
+          this._onDrawEndHandler_connect = connect(this, "onDrawEnd", this._onDrawEndHandler);
           this.points = [];
           this.isRunning = true;
           this.setTipsText("单击开始测量");
@@ -165,16 +156,12 @@ define([
          * @method
          * @memberOf module:extras/tools/MeasureDrawTool#
          *
-         *
          * @example
          * <caption>Usage of deactivate</caption>
          * require(['extras/tools/MeasureDrawTool'],function(MeasureDrawTool){
-     *   var instance = new MeasureDrawTool();
-     *   instance.deactivate();
-     * })
-         *
-         *
-         *
+         *   var instance = new MeasureDrawTool();
+         *   instance.deactivate();
+         * })
          */
         deactivate: function () {
           this.inherited(arguments);
@@ -184,14 +171,15 @@ define([
           dojo.disconnect(this._onDrawEndHandler_connect);
 
           if (this.isRunning) {
-            suffix = this.drawType = esri.toolbars.draw.POLYGON ? this.AREARPRE : this.DISTANCEPRE;
-            tmpId = suffix + djConfig.measureTotal;
+            suffix = this.drawType = draw.POLYGON ? this.AREARPRE : this.DISTANCEPRE;
+            tmpId = suffix + this.measureTotal;
             this.deleteGraphicById(tmpId);
             this.isRunning = false;
           }
         },
 
         /**
+         * @private
          * @description _onMapClickHandler
          * @method
          * @memberOf module:extras/tools/MeasureDrawTool#
@@ -200,12 +188,9 @@ define([
          * @example
          * <caption>Usage of _onMapClickHandler</caption>
          * require(['extras/tools/MeasureDrawTool'],function(MeasureDrawTool){
-     *   var instance = new MeasureDrawTool();
-     *   instance._onMapClickHandler(evt);
-     * })
-         *
-         *
-         *
+         *   var instance = new MeasureDrawTool();
+         *   instance._onMapClickHandler(evt);
+         * })
          */
         _onMapClickHandler: function (evt) {
           var endPoint = evt.mapPoint;
@@ -213,10 +198,10 @@ define([
           this.points.push(this.lastClickPoint);
 
           var num = 0;
-          if (this.drawType == esri.toolbars.draw.POLYGON) {
+          if (this.drawType == draw.POLYGON) {
             this.updateMeasureArea();
             num = 2;
-          } else if (this.drawType == esri.toolbars.draw.POLYLINE) {
+          } else if (this.drawType == draw.POLYLINE) {
             this.updateMeasureDistance();
             num = 1;
           }
@@ -229,6 +214,7 @@ define([
         },
 
         /**
+         * @private
          * @description _onMapDoubleClickHandler
          * @method
          * @memberOf module:extras/tools/MeasureDrawTool#
@@ -237,21 +223,19 @@ define([
          * @example
          * <caption>Usage of _onMapDoubleClickHandler</caption>
          * require(['extras/tools/MeasureDrawTool'],function(MeasureDrawTool){
-     *   var instance = new MeasureDrawTool();
-     *   instance._onMapDoubleClickHandler(evt);
-     * })
-         *
-         *
-         *
+         *   var instance = new MeasureDrawTool();
+         *   instance._onMapDoubleClickHandler(evt);
+         * })
          */
         _onMapDoubleClickHandler: function (evt) {
           this.points.pop();
-          if (this.drawType == esri.toolbars.draw.POLYGON && this.points.length < 3) {
+          if (this.drawType == draw.POLYGON && this.points.length < 3) {
             this.onDrawEnd();
           }
         },
 
         /**
+         * @private
          * @description _onDrawEndHandler
          * @method
          * @memberOf module:extras/tools/MeasureDrawTool#
@@ -260,21 +244,18 @@ define([
          * @example
          * <caption>Usage of _onDrawEndHandler</caption>
          * require(['extras/tools/MeasureDrawTool'],function(MeasureDrawTool){
-     *   var instance = new MeasureDrawTool();
-     *   instance._onDrawEndHandler(geometry);
-     * })
-         *
-         *
+         *   var instance = new MeasureDrawTool();
+         *   instance._onDrawEndHandler(geometry);
+         * })
          * @returns {*}
          */
         _onDrawEndHandler: function (geometry) {
           var deleteTimer = null;
           var deleftTimerEndHandler = null;
-          if (this.drawType == esri.toolbars.draw.POLYGON) {
+          if (this.drawType == draw.POLYGON) {
             if (this.points.length < 3) {
-              deleftTimerEndHandler = dojo.hitch(this,
-                function () {
-                  var tmpId = this.AREARPRE + djConfig.measureTotal;
+              deleftTimerEndHandler = dojo.hitch(this, function () {
+                  var tmpId = this.AREARPRE + this.measureTotal;
                   this.deleteGraphicById(tmpId);
                   clearInterval(deleteTimer);
                   deleteTimer = null;
@@ -284,10 +265,10 @@ define([
               deleteTimer = setInterval(deleftTimerEndHandler, 200);
               return;
             }
-            this.finishMeasureArea(new esri.Graphic(geometry));
+            this.finishMeasureArea(new Graphic(geometry));
             dojo.disconnect(this._onMapClickHandler_connect);
-          } else if (this.drawType == esri.toolbars.draw.POLYLINE) {
-            this.finishMeasureDistance(new esri.Graphic(geometry));
+          } else if (this.drawType == draw.POLYLINE) {
+            this.finishMeasureDistance(new Graphic(geometry));
             dojo.disconnect(this._onMapClickHandler_connect);
           }
           this.points = [];
@@ -298,16 +279,12 @@ define([
          * @method
          * @memberOf module:extras/tools/MeasureDrawTool#
          *
-         *
          * @example
          * <caption>Usage of updateMeasureArea</caption>
          * require(['extras/tools/MeasureDrawTool'],function(MeasureDrawTool){
-     *   var instance = new MeasureDrawTool();
-     *   instance.updateMeasureArea();
-     * })
-         *
-         *
-         *
+         *   var instance = new MeasureDrawTool();
+         *   instance.updateMeasureArea();
+         * })
          */
         updateMeasureArea: function () {
           var point = this.points[this.points.length - 1];
@@ -323,24 +300,21 @@ define([
          * @example
          * <caption>Usage of updateMeasureDistance</caption>
          * require(['extras/tools/MeasureDrawTool'],function(MeasureDrawTool){
-     *   var instance = new MeasureDrawTool();
-     *   instance.updateMeasureDistance();
-     * })
-         *
-         *
-         *
+         *   var instance = new MeasureDrawTool();
+         *   instance.updateMeasureDistance();
+         * })
          */
         updateMeasureDistance: function () {
           var pt = null;
           var tmpGraphic = null;
           var atrributes = {};
-          atrributes.id = this.DISTANCEPRE + djConfig.measureTotal;
-          var textsym = new esri.symbols.TextSymbol();
-          var font = new esri.symbols.Font();
+          atrributes.id = this.DISTANCEPRE + this.measureTotal;
+          var textsym = new TextSymbol();
+          var font = new Font();
           font.setSize("12px");
           font.setFamily("微软雅黑");
           textsym.setFont(font);
-          textsym.setColor(new esri.Color("#000000"));
+          textsym.setColor(new Color("#000000"));
           textsym.setOffset(40, -5);
 
           if (this.points.length == 1) {
@@ -348,7 +322,7 @@ define([
             this.drawCircle(pt, this.DISTANCE);
             textsym.setOffset(20, -10);
             textsym.setText("起点");
-            tmpGraphic = new esri.Graphic(pt, textsym, atrributes);
+            tmpGraphic = new Graphic(pt, textsym, atrributes);
             this.measureLayer.add(tmpGraphic)
           } else {
             pt = this.points[this.points.length - 1];
@@ -360,20 +334,17 @@ define([
          * @description finishMeasureArea
          * @method
          * @memberOf module:extras/tools/MeasureDrawTool#
-         * @param {string} graphic
+         * @param {Graphic | object} graphic
          *
          * @example
          * <caption>Usage of finishMeasureArea</caption>
          * require(['extras/tools/MeasureDrawTool'],function(MeasureDrawTool){
-     *   var instance = new MeasureDrawTool();
-     *   instance.finishMeasureArea(graphic);
-     * })
-         *
-         *
-         *
+         *   var instance = new MeasureDrawTool();
+         *   instance.finishMeasureArea(graphic);
+         * })
          */
         finishMeasureArea: function (graphic) {
-          var tmpId = this.AREARPRE + djConfig.measureTotal;
+          var tmpId = this.AREARPRE + this.measureTotal;
           var attributes = {};
           attributes.id = tmpId;
           graphic.attributes = attributes;
@@ -385,10 +356,10 @@ define([
           var polygon = graphic.geometry;
 
           if (!this.isWebMercator(polygon.spatialReference)) {
-            resultArray = esri.geometry.geodesicUtils.geodesicAreas([polygon], esri.units.SQUARE_METERS);
+            resultArray = geodesicUtils.geodesicAreas([polygon], units.SQUARE_METERS);
           } else {
-            transferPolygon = esri.geometry.webMercatorUtils.webMercatorToGeographic(polygon);
-            resultArray = esri.geometry.geodesicUtils.geodesicAreas([transferPolygon], esri.units.SQUARE_METERS);
+            transferPolygon = webMercatorUtils.webMercatorToGeographic(polygon);
+            resultArray = geodesicUtils.geodesicAreas([transferPolygon], units.SQUARE_METERS);
           }
 
           var resultTxt = resultArray[0];
@@ -400,22 +371,19 @@ define([
          * @description finishMeasureDistance
          * @method
          * @memberOf module:extras/tools/MeasureDrawTool#
-         * @param {string} graphic
+         * @param {Graphic | object} graphic
          *
          * @example
          * <caption>Usage of finishMeasureDistance</caption>
          * require(['extras/tools/MeasureDrawTool'],function(MeasureDrawTool){
-     *   var instance = new MeasureDrawTool();
-     *   instance.finishMeasureDistance(graphic);
-     * })
-         *
-         *
-         *
+         *   var instance = new MeasureDrawTool();
+         *   instance.finishMeasureDistance(graphic);
+         * })
          */
         finishMeasureDistance: function (graphic) {
           var transferPolyline = null;
-          var tmpId = this.DISTANCEPRE + djConfig.measureTotal;
-          var attr = {}
+          var tmpId = this.DISTANCEPRE + this.measureTotal;
+          var attr = {};
           attr.id = tmpId;
           graphic.attributes = attr;
 
@@ -425,10 +393,10 @@ define([
           var resultArray = null;
           var polyline = graphic.geometry;
           if (!this.isWebMercator(polyline.spatialReference)) {
-            resultArray = esri.geometry.geodesicUtils.geodesicLengths([polyline], esri.units.METERS);
+            resultArray = geodesicUtils.geodesicLengths([polyline], units.METERS);
           } else {
-            transferPolyline = esri.geometry.webMercatorUtils.webMercatorToGeographic(polyline);
-            resultArray = esri.geometry.geodesicUtils.geodesicLengths([transferPolyline], esri.units.METERS);
+            transferPolyline = webMercatorUtils.webMercatorToGeographic(polyline);
+            resultArray = geodesicUtils.geodesicLengths([transferPolyline], units.METERS);
           }
 
           var resultTxt = resultArray[0];
@@ -447,44 +415,22 @@ define([
          * @example
          * <caption>Usage of isWebMercator</caption>
          * require(['extras/tools/MeasureDrawTool'],function(MeasureDrawTool){
-     *   var instance = new MeasureDrawTool();
-     *   instance.isWebMercator(reference);
-     * })
-         *
-         *
+         *   var instance = new MeasureDrawTool();
+         *   instance.isWebMercator(reference);
+         * })
          * @returns {*}
          */
         isWebMercator: function (reference) {
-          var resultFlag = false;
-
-          switch (reference.wkid) {
-            case 100112:
-            {
-              resultFlag = true;
-              break;
-            }
-            case 102113:
-            {
-              resultFlag = true;
-              break;
-            }
-            case 102100:
-            {
-              resultFlag = true;
-              break;
-            }
-            case 3857:
-            {
-              resultFlag = true;
-              break;
-            }
-            case 3785:
-            {
-              resultFlag = true;
-              break;
-            }
-          }
-          return resultFlag;
+          var refs = {
+            100112: true,
+            102113: true,
+            102100: true,
+            3857: true,
+            3785: true,
+            54004: true,
+            41001: true
+          };
+          return !!refs[reference.wkid];
         },
 
         /**
@@ -497,12 +443,9 @@ define([
          * @example
          * <caption>Usage of drawCircle</caption>
          * require(['extras/tools/MeasureDrawTool'],function(MeasureDrawTool){
-     *   var instance = new MeasureDrawTool();
-     *   instance.drawCircle(centerPt,type);
-     * })
-         *
-         *
-         *
+         *   var instance = new MeasureDrawTool();
+         *   instance.drawCircle(centerPt,type);
+         * })
          */
         drawCircle: function (centerPt, type) {
           var circle = null;
@@ -510,22 +453,21 @@ define([
           var timerEndHandler = null;
           var point = centerPt;
 
-          var circleSymbol = new esri.symbols.SimpleMarkerSymbol(esri.symbols.SimpleMarkerSymbol.STYLE_CIRCLE, 9, new esri.symbols.SimpleLineSymbol(esri.symbols.SimpleLineSymbol.STYLE_SOLID, new esri.Color([255, 0, 0]), 2), new dojo.Color([255, 255, 255, 1]));
+          var circleSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 9, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255, 0, 0]), 2), new dojoColor([255, 255, 255, 1]));
 
-          circle = new esri.Graphic(point, circleSymbol);
-          var attr = new Object();
+          circle = new Graphic(point, circleSymbol);
+          var attr = {};
           if (type == this.DISTANCE) {
-            attr.id = this.DISTANCEPRE + djConfig.measureTotal;
+            attr.id = this.DISTANCEPRE + this.measureTotal;
             circle.attributes = attr;
             this.measureLayer.add(circle);
           } else {
-            timerEndHandler = dojo.hitch(this,
-              function () {
+            timerEndHandler = dojo.hitch(this, function () {
                 this.measureLayer.add(circle);
                 clearInterval(timer);
                 timer = null;
               });
-            attr.id = this.AREARPRE + djConfig.measureTotal;
+            attr.id = this.AREARPRE + this.measureTotal;
             dojo.hitch(this, timerEndHandler);
             timer = setInterval(timerEndHandler, 200);
             circle.attributes = attr;
@@ -543,42 +485,39 @@ define([
          * @example
          * <caption>Usage of drawResult</caption>
          * require(['extras/tools/MeasureDrawTool'],function(MeasureDrawTool){
-     *   var instance = new MeasureDrawTool();
-     *   instance.drawResult(pt,result,type);
-     * })
-         *
-         *
-         *
+         *   var instance = new MeasureDrawTool();
+         *   instance.drawResult(pt,result,type);
+         * })
          */
         drawResult: function (pt, result, type) {
           var resultText = this.getResultText(result, type);
-          var textSymbol = new esri.symbols.TextSymbol();
-          var p_close = selfUrl + "/themes/default/img/close-btn.png"
-          var closeMarkSymbol = new esri.symbols.PictureMarkerSymbol(p_close, 12, 12);
+          var textSymbol = new TextSymbol();
+          var p_close = gisConfig.mapImagesUrl + "/measure/close-btn.png";
+          var closeMarkSymbol = new PictureMarkerSymbol(p_close, 12, 12);
           closeMarkSymbol.setOffset(13, 0);
-          var textsym = new esri.symbols.TextSymbol();
-          var font = new esri.symbols.Font();
+          var textsym = new TextSymbol();
+          var font = new Font();
           font.setSize("12px");
           font.setFamily("微软雅黑");
           textsym.setFont(font);
-          textsym.setColor(new esri.Color("#333333"));
+          textsym.setColor(new Color("#333333"));
           textsym.setOffset(50, -20);
           textsym.setText(resultText);
 
-          var txtGraphic = new esri.Graphic(pt, textsym);
-          var closeGraphic = new esri.Graphic(pt, closeMarkSymbol);
+          var txtGraphic = new Graphic(pt, textsym);
+          var closeGraphic = new Graphic(pt, closeMarkSymbol);
 
           var attr = {};
           if (type == this.DISTANCE) {
-            attr.id = this.DISTANCEPRE + djConfig.measureTotal;
+            attr.id = this.DISTANCEPRE + this.measureTotal;
           } else {
-            attr.id = this.AREARPRE + djConfig.measureTotal;
+            attr.id = this.AREARPRE + this.measureTotal;
           }
           txtGraphic.attributes = attr;
           closeGraphic.attributes = attr;
           closeGraphic.close = true;
 
-          dojo.connect(this.measureLayer, "onClick", this._closeGraphicHandler);
+          connect(this.measureLayer, "onClick", this._closeGraphicHandler);
 
           this.measureLayer.add(txtGraphic);
           this.measureLayer.add(closeGraphic);
@@ -586,12 +525,13 @@ define([
           var node = txtGraphic.getNode();
           console.log(node);
 
-          djConfig.measureTotal++;
+          this.measureTotal++;
           this.isRunning = false;
           this.deactivate();
         },
 
         /**
+         * @private
          * @description _closeGraphicHandler
          * @method
          * @memberOf module:extras/tools/MeasureDrawTool#
@@ -600,20 +540,17 @@ define([
          * @example
          * <caption>Usage of _closeGraphicHandler</caption>
          * require(['extras/tools/MeasureDrawTool'],function(MeasureDrawTool){
-     *   var instance = new MeasureDrawTool();
-     *   instance._closeGraphicHandler(evt);
-     * })
-         *
-         *
-         *
+         *   var instance = new MeasureDrawTool();
+         *   instance._closeGraphicHandler(evt);
+         * })
          */
         _closeGraphicHandler: function (evt) {
-          dojo._base.event.stop(evt);
+          event.stop(evt);
           var closeGraphic = evt.graphic;
           if (closeGraphic && closeGraphic.close) {
             var id = closeGraphic.attributes.id;
             this.deleteGraphicById(id);
-            djConfig.measureTotal--;
+            this.measureTotal--;
           }
         },
 
@@ -626,12 +563,9 @@ define([
          * @example
          * <caption>Usage of deleteGraphicById</caption>
          * require(['extras/tools/MeasureDrawTool'],function(MeasureDrawTool){
-     *   var instance = new MeasureDrawTool();
-     *   instance.deleteGraphicById(id);
-     * })
-         *
-         *
-         *
+         *   var instance = new MeasureDrawTool();
+         *   instance.deleteGraphicById(id);
+         * })
          */
         deleteGraphicById: function (id) {
           var graphicProvider = this.measureLayer.graphics;
@@ -655,40 +589,41 @@ define([
          * @example
          * <caption>Usage of getResultText</caption>
          * require(['extras/tools/MeasureDrawTool'],function(MeasureDrawTool){
-     *   var instance = new MeasureDrawTool();
-     *   instance.getResultText(result,type);
-     * })
-         *
-         *
+         *   var instance = new MeasureDrawTool();
+         *   instance.getResultText(result,type);
+         * })
          * @returns {*}
          */
         getResultText: function (result, type) {
-          var resultTxt = "";
-          var allTxt = "";
-          var unitTxt = "";
+          var scopes = {
+            distance: '总长：',
+            area: '面积： '
+          },
+          units = {
+            meter: ' 米',
+            kilometer: ' 公里',
+            squaremeter: ' 平方米',
+            squareKilometer: ' 平方公里'
+          },
+          unitText = '';
+
           if (type == this.DISTANCE) {
-            allTxt = "总长：";
-            unitTxt = " 米";
+            unitText = units['meter'];
             if (result > 1000) {
-              unitTxt = " 公里";
+              unitText = units['kilometer'];
               result = result / 1000;
             }
             result = Math.floor(result * 100) / 100;
           } else {
-            allTxt = "面积： ";
-            unitTxt = "平方米";
+            unitText = units['squaremeter'];
             if (result > 1000000) {
+              unitText = units['squareKilometer'];
               result = result / 1000000;
-              unitTxt = " 平方公里";
             }
             result = Math.floor(result * 100) / 100;
           }
-
-          result = result < 0 ? (0) : result;
-          resultTxt = result.toFixed(2);
-
-          resultTxt = allTxt + resultTxt + unitTxt;
-          return resultTxt;
+          result = result < 0 ? 0 : result;
+          return scopes[type] + result.toFixed(2) + unitText;
         },
 
         /**
@@ -696,16 +631,12 @@ define([
          * @method
          * @memberOf module:extras/tools/MeasureDrawTool#
          *
-         *
          * @example
          * <caption>Usage of clearAll</caption>
          * require(['extras/tools/MeasureDrawTool'],function(MeasureDrawTool){
-     *   var instance = new MeasureDrawTool();
-     *   instance.clearAll();
-     * })
-         *
-         *
-         *
+         *   var instance = new MeasureDrawTool();
+         *   instance.clearAll();
+         * })
          */
         clearAll: function () {
           var keyword = "measure_";
@@ -717,7 +648,7 @@ define([
               }
             }
           }
-          djConfig.measureTotal = 0;
+          this.measureTotal = 0;
         },
 
         /**
@@ -729,10 +660,9 @@ define([
          * @example
          * <caption>Usage of setTipsText</caption>
          * require(['extras/tools/MeasureDrawTool'],function(MeasureDrawTool){
-     *   var instance = new MeasureDrawTool();
-     *   instance.setTipsText(message);
-     * })
-         *
+         *   var instance = new MeasureDrawTool();
+         *   instance.setTipsText(message);
+         * })
          *
          * @returns {*}
          */
@@ -743,6 +673,5 @@ define([
           }
           tooltip.innerHTML = message;
         }
-
       })
   });

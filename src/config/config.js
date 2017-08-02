@@ -6,7 +6,6 @@ var selfUrl = baseUrl.substring(0,baseUrl.lastIndexOf("/"));
 var url = [location.protocol,'//',location.host,'/'].join('');
 dojoConfig = {
   parseOnLoad: true,
-  measureTotal:0,
   modulePaths: {
     "extras": url +"static/assets/gis/extras"
   }
