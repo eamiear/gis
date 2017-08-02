@@ -5,7 +5,7 @@
 /**
  * @fileOverview This is base definition for all composed classes defined by the system
  * Module representing a GoogleTiledMap.
- * @module extras/layer/GoogleTiledMap
+ * @module extras/layers/GoogleTiledMap
  *
  * @requires dojo._base.declare
  * @requires esri.SpatialReference
@@ -21,35 +21,28 @@ define([
     "esri/geometry/webMercatorUtils",
     "esri/geometry/Extent",
     "esri/layers/TileInfo"],
-  function (declare,
-            SpatialReference,
-            TiledMapServiceLayer,
-            webMercatorUtils,
-            Extent,
-            TileInfo) {
-    return declare([TiledMapServiceLayer],
-      /**  @lends module:extras/layer/GoogleTiledMap */
-      {
-
-        /** @member online */
-        online: false,
-
-        /** @member mapStyle */
-        mapStyle: "roadmap",
-
+  function (
+    declare,
+    SpatialReference,
+    TiledMapServiceLayer,
+    webMercatorUtils,
+    Extent,
+    TileInfo
+  ) {
+    return declare([TiledMapServiceLayer], /**  @lends module:extras/layers/GoogleTiledMap */ {
         /**
          * @constructs
-         * @param {string} a
+         * @param {object} args
          */
-        constructor: function (a) {
+        constructor: function (args) {
           this.spatialReference = new SpatialReference({
             wkid: 102113
           });
-          this.online = a.online || false;
-          this.mapStyle = a.mapStyle || "roadmap";
-          this.layerId = a.layerId;
-          this.suffix = a.suffix || ".png";
-          this.tile_url = a.tile_url;
+          this.online = false;
+          this.mapStyle = "roadmap";
+          this.suffix = ".png";
+          //this.tile_url = args.tile_url;
+          declare.safeMixin(this, args);
           this.fullExtent = new Extent(-20037508.342787, -20037508.342787, 20037508.342787, 20037508.342787, this.spatialReference);
           this.initialExtent = new Extent(12557877.595482401, 2596928.9267310356, 12723134.450635016, 2688653.360673282);
           this.tileInfo = new TileInfo({
@@ -156,44 +149,36 @@ define([
         /**
          * @description getTileUrl
          * @method
-         * @memberOf module:extras/layer/GoogleTiledMap#
-         * @param {string} a
-         * @param {string} b
-         * @param {string} c
+         * @memberOf module:extras/layers/GoogleTiledMap#
+         * @param {number} level
+         * @param {number} row
+         * @param {number} col
          *
          * @example
          * <caption>Usage of getTileUrl</caption>
          * require(['extras/layer/GoogleTiledMap'],function(GoogleTiledMap){
-     *   var instance = new GoogleTiledMap(a);
-     *   instance.getTileUrl(a,b,c);
-     * })
-         *
-         *
+         *   var instance = new GoogleTiledMap(a);
+         *   instance.getTileUrl(a,b,c);
+         * })
          * @returns {*}
          */
-        getTileUrl: function (a, b, c) {
-          var d = a - 1;
-          var e = parseInt(Math.pow(2, d));
-          var f = e - 1;
-          var g = c - e,
-            numY = ( -b) + f;
-          var h = (c + b) % 8 + 1;
+        getTileUrl: function (level, row, col) {
           var i;
           if (this.online) {
             if (this.mapStyle === "roadmap") {
-              i = "http://mt" + (c % 4) + ".google.cn/vt/lyrs=m@226000000&hl=zh-CN&gl=cn&x=" + c + "&y=" + b + "&z=" + a + "&s=Gali"
+              i = "http://mt" + (col % 4) + ".google.cn/vt/lyrs=m@226000000&hl=zh-CN&gl=cn&x=" + col + "&y=" + row + "&z=" + level + "&s=Gali"
             } else if (this.mapStyle === "Image") {
-              i = "http://mt" + (c % 4) + ".google.cn/vt/lyrs=s@157&hl=zh-CN&gl=cn&x=" + c + "&y=" + b + "&z=" + a + "&s="
+              i = "http://mt" + (col % 4) + ".google.cn/vt/lyrs=s@157&hl=zh-CN&gl=cn&x=" + col + "&y=" + row + "&z=" + level + "&s="
             } else if (this.mapStyle === "POI") {
-              i = "http://mt" + (c % 4) + ".google.cn/vt/lyrs=s@157&hl=zh-CN&gl=cn&x=" + c + "&y=" + b + "&z=" + a + "&s="
+              i = "http://mt" + (col % 4) + ".google.cn/vt/lyrs=s@157&hl=zh-CN&gl=cn&x=" + col + "&y=" + row + "&z=" + level + "&s="
             }
           } else {
             if (this.mapStyle === "roadmap") {
-              i = this.tile_url + "/roadmap/" + a + "/" + c + "/" + b + "." + this.suffix
+              i = this.tile_url + "/roadmap/" + level + "/" + col + "/" + row + "." + this.suffix
             } else if (this.mapStyle === "Image") {
-              i = this.tile_url + "/satellite/" + a + "/" + c + "/" + b + "." + this.suffix
+              i = this.tile_url + "/satellite/" + level + "/" + col + "/" + row + "." + this.suffix
             } else if (this.mapStyle === "POI") {
-              i = this.tile_url + "/overlay/" + a + "/" + c + "/" + b + "." + this.suffix
+              i = this.tile_url + "/overlay/" + level + "/" + col + "/" + row + "." + this.suffix
             }
           }
           return i

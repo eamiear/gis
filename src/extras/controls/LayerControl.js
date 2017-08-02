@@ -10,10 +10,14 @@
  * @requires dojo._base.declare
  * @requires dojo._base.lang
  * @requires dojo._base.array
- * @requires extras/utils/MapConstant
- * @requires esri/layers/GraphicsLayer
- * @requires esri/geometry/Geometry
- * @requires extras/graphics/InfoGraphicLayer
+ * @requires esri.SpatialReference
+ * @requires esri.geometry.webMercatorUtils
+ * @requires esri.dijit.PopupTemplate
+ * @requires esri.geometry.Point
+ * @requires esri.geometry.Polyline
+ * @requires esri.geometry.Polygon
+ * @requires extras.basic.Radical
+ * @requires extras.controls.ToolBar
  */
 
 define([
@@ -22,9 +26,7 @@ define([
   "dojo/_base/array",
   "esri/SpatialReference",
   "esri/geometry/webMercatorUtils",
-  "esri/layers/GraphicsLayer",
   "esri/dijit/PopupTemplate",
-  "esri/symbols/Symbol",
   "esri/geometry/Point",
   "esri/geometry/Polyline",
   "esri/geometry/Polygon",
@@ -36,9 +38,7 @@ define([
   array,
   SpatialReference,
   WebMercatorUtils,
-  GraphicsLayer,
   PopupTemplate,
-  Symbol,
   Point,
   Polyline,
   Polygon,
@@ -54,11 +54,6 @@ define([
     constructor: function (map) {
       this.map = map;
       this.eventHandlerTicket = [];
-     // dojo.subscribe("mapLoadedEvent", this, "_init");
-    },
-    _init: function (map) {
-      this.map = map;
-      this.toolbar = new ToolBar(map);
     },
     /**
      * add a graphic to layer
@@ -76,7 +71,9 @@ define([
      *
      * @example
      * <caption>Usage of _addGraphicToLayer</caption>
+     * require(['extras/controls/LayerControl'],function(LayerControl){
      *  new LayerControl(map)._addGraphicToLayer()
+     *  })
      * @returns {*}
      * @private
      */
@@ -151,6 +148,7 @@ define([
      *
      * @example
      * <caption>Usage of addGraphicToLayer</caption>
+     * require(['extras/controls/LayerControl'],function(LayerControl){
      *  new LayerControl(map).addGraphicToLayer('smart_gis_control_layer',{
      *     x: 113.12,
      *     y: 23.33,
@@ -160,7 +158,7 @@ define([
      *     },
      *     type: 'dev'
      *  },'point');
-     *
+     *})
      * @returns {*}
      */
     addGraphicToLayer: function (layer,graphicsData,graphicType,symbol,infoTemplate) {
@@ -181,6 +179,7 @@ define([
      *
      * @example
      * <caption>Usage of addGraphicsToLayer</caption>
+     * require(['extras/controls/LayerControl'],function(LayerControl){
      *  new LayerControl(map).addGraphicsToLayer('smart_gis_control_layer',[{
      *     x: 113.12,
      *     y: 23.33,
@@ -200,7 +199,7 @@ define([
      *     graphicType: 'image',
      *     url: 'http://placehold.it/16x16'
      *  }],'point');
-     *
+     *})
      * @returns {*}
      */
     addGraphicsToLayer: function (layer,graphicsArray,graphicType,symbol,infoTemplate) {
@@ -231,6 +230,7 @@ define([
      *
      * @example
      * <caption>Usage of addGraphicsToMap</caption>
+     * require(['extras/controls/LayerControl'],function(LayerControl){
      *  new LayerControl(map).addGraphicsToMap({
      *    layerId: 'smart_gis_control_layer',
      *    isCleanLayer: true,
@@ -259,7 +259,7 @@ define([
      *      callback: function(evt){}
      *    }
      *  });
-     *
+     *})
      */
     addGraphicsToMap: function (options) {
       var layerId = options.layerId,
@@ -311,6 +311,7 @@ define([
      *
      * @example
      * <caption>Usage of buildGraphic</caption>
+     * require(['extras/controls/LayerControl'],function(LayerControl){
      * new LayerControl(map).buildGraphic({
      *     x: 113.12,
      *     y: 23.33,
@@ -320,7 +321,7 @@ define([
      *     },
      *     type: 'dev'
      *  })
-     *
+     *})
      * @returns {{}}
      */
     buildGraphic: function(graphic,graphicType){
@@ -396,7 +397,9 @@ define([
      *
      * @example
      * <caption>Usage of removeGraphic</caption>
-     * new LayerControl(map).removeGraphic('smart_gis_cotrol_layer','graphic_122');
+     * require(['extras/controls/LayerControl'],function(LayerControl){
+     *     new LayerControl(map).removeGraphic('smart_gis_cotrol_layer','graphic_122');
+     * })
      */
     removeGraphic: function (layer,graphicId) {
       var graphic;
@@ -421,7 +424,9 @@ define([
      *
      * @example
      * <caption>Usage of removeAllGraphics</caption>
-     * new LayerControl(map).removeAllGraphics();
+     * require(['extras/controls/LayerControl'],function(LayerControl){
+     *   new LayerControl(map).removeAllGraphics();
+     * })
      */
     removeAllGraphics: function (layer) {
       if(lang.isString(layer)){
@@ -440,7 +445,9 @@ define([
      *
      * @example
      * <caption>Usage of destroyLayerEvents</caption>
-     * new LayerControl(map).destroyLayerEvents();
+     * require(['extras/controls/LayerControl'],function(LayerControl){
+     *  new LayerControl(map).destroyLayerEvents();
+     *  })
      */
     destroyLayerEvents: function () {
       if(this.eventHandlerTicket){

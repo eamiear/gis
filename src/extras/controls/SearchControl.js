@@ -1,9 +1,13 @@
 /**
  * @fileOverview This is base definition for all composed classes defined by the system
- * Module representing a LayerQuery.
- * @module extras/controls/LayerQuery
+ * Module representing a SearchControl.
+ * @module extras/controls/SearchControl
  *
  * @requires dojo/_base/declare
+ * @requires dojo/_base/lang
+ * @requires dojo/_base/array
+ * @requires extras/basic/Radical
+ * @requires extras/controls/ToolBar
  */
 define([
   "dojo/_base/declare",
@@ -88,11 +92,11 @@ define([
      *
      * @example
      * <caption>Usage of domainSearch with <b><code>promise</code></b></caption>
-     *
-     * GisObject.searchControl.domainSearch(options).then(function(graphics,layer){
+     *require(['extras/controls/SearchControl'],function(SearchControl){
+     *  new SearchControl(map).domainSearch(options).then(function(graphics,layer){
      *    // coding....
      * })
-     *
+     *})
      * @returns {Promise}
      * return a promise object. see the link [dojo.promise](http://dojotoolkit.org/reference-guide/1.10/dojo/promise.html) for more details.
      */

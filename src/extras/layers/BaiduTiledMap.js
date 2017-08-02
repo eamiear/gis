@@ -5,12 +5,13 @@
 /**
  * @fileOverview This is base definition for all composed classes defined by the system
  * Module representing a BaiduTiledMap.
- * @module extras/layer/BaiduTiledMap
+ * @module extras/layers/BaiduTiledMap
  *
  * @requires dojo._base.declare
  * @requires esri.SpatialReference
  * @requires esri.layers.TiledMapServiceLayer
  * @requires esri.geometry.webMercatorUtils
+ * @requires esri.geometry.Extent
  * @requires esri.layers.TileInfo
  */
 define([
@@ -18,36 +19,32 @@ define([
     "esri/SpatialReference",
     "esri/layers/TiledMapServiceLayer",
     "esri/geometry/webMercatorUtils",
+    "esri/geometry/Extent",
     "esri/layers/TileInfo"],
-  function (declare,
-            SpatialReference,
-            TiledMapServiceLayer,
-            webMercatorUtils,
-            TileInfo) {
-    return declare([TiledMapServiceLayer],
-      /**  @lends module:extras/layer/BaiduTiledMap */
-      {
-
-        /** @member online */
-        online: false,
-
-        /** @member mapStyle */
-        mapStyle: "roadmap",
-
+  function (
+    declare,
+    SpatialReference,
+    TiledMapServiceLayer,
+    webMercatorUtils,
+    Extent,
+    TileInfo
+  ) {
+    return declare([TiledMapServiceLayer], /**  @lends module:extras/layers/BaiduTiledMap */  {
         /**
          * @constructs
-         * @param {string} a
+         * @param {object} args
          */
-        constructor: function (a) {
+        constructor: function (args) {
           this.spatialReference = new SpatialReference({
             wkid: 102113
           });
-          this.online = a.online || false;
-          this.mapStyle = a.mapStyle || "roadmap";
-          this.layerId = a.layerId;
-          this.suffix = a.suffix || ".png";
-          this.tile_url = a.tile_url;
-          this.initialExtent = (this.fullExtent = new esri.geometry.Extent(-2.0037508342787E7, -2.003750834278E7, 2.003750834278E7, 2.0037508342787E7, this.spatialReference));
+          this.online = false;
+          this.mapStyle = "roadmap";
+          this.suffix = ".png";
+          //this.tile_url = a.tile_url;
+
+          declare.safeMixin(this, args);
+          this.initialExtent = (this.fullExtent = new Extent(-2.0037508342787E7, -2.003750834278E7, 2.003750834278E7, 2.0037508342787E7, this.spatialReference));
           this.scale = [591657527.591555, 295828763.795777, 147914381.897889, 73957190.948944, 36978595.474472, 18489297.737236, 9244648.868618, 4622324.434309, 2311162.217155, 1155581.108577, 577790.554289, 288895.277144, 144447.638572, 72223.819286, 36111.9096437, 18055.9548224, 9027.977411, 4513.988705, 2256.994353, 1128.497176];
           this.resolution = [156543.033928, 78271.5169639999, 39135.7584820001, 19567.8792409999, 9783.93962049996, 4891.96981024998, 2445.98490512499, 1222.99245256249, 611.49622628138, 305.748113140558, 152.874056570411, 76.4370282850732, 38.2185141425366, 19.1092570712683, 9.55462853563415, 4.77731426794937, 2.38865713397468, 1.19432856685505, 0.597164283559817, 0.298582141647617];
           this.tileInfo = new TileInfo({
@@ -168,43 +165,41 @@ define([
          * @description getTileUrl
          * @method
          * @memberOf module:extras/layer/BaiduTiledMap#
-         * @param {string} a
-         * @param {string} b
-         * @param {string} c
+         * @param {number} level
+         * @param {number} row
+         * @param {number} col
          *
          * @example
          * <caption>Usage of getTileUrl</caption>
          * require(['extras/layer/BaiduTiledMap'],function(BaiduTiledMap){
-     *   var instance = new BaiduTiledMap(a);
-     *   instance.getTileUrl(a,b,c);
-     * })
-         *
-         *
+         *   var instance = new BaiduTiledMap(a);
+         *   instance.getTileUrl(a,b,c);
+         * })
          * @returns {*}
          */
-        getTileUrl: function (a, b, c) {
-          var d = a - 1;
-          var e = parseInt(Math.pow(2, d));
-          var f = e - 1;
-          var g = c - e,
-            numY = ( -b) + f;
-          var h = (c + b) % 8 + 1;
+        getTileUrl: function (level, row, col) {
+          var zoom = level - 1;
+          var offsetX = parseInt(Math.pow(2, zoom));
+          var offsetY = offsetX - 1;
+          var numX = col - offsetX,
+            numY = ( -row) + offsetY;
+          var num = (col + row) % 8 + 1;
           var i;
           if (this.online) {
             if (this.mapStyle === "roadmap") {
-              i = "http://online" + h + ".map.bdimg.com/tile/?qt=tile&x=" + g + "&y=" + numY + "&z=" + a + "&styles=pl&udt=20150928&scaler=1"
+              i = "http://online" + num + ".map.bdimg.com/tile/?qt=tile&x=" + numX + "&y=" + numY + "&z=" + level + "&styles=pl&udt=20150928&scaler=1"
             } else if (this.mapStyle === "Image") {
-              i = "http://shangetu" + h + ".map.bdimg.com/it/u=x=" + g + ";y=" + numY + ";z=" + a + ";v=009;type=sate&fm=46&udt=20150601"
+              i = "http://shangetu" + num + ".map.bdimg.com/it/u=x=" + numX + ";y=" + numY + ";z=" + level + ";v=009;type=sate&fm=46&udt=20150601"
             } else if (this.mapStyle === "POI") {
-              i = "http://online" + h + ".map.bdimg.com/tile/?qt=tile&x=" + g + "&y=" + numY + "&z=" + a + "&styles=sl&v=083&udt=20150815"
+              i = "http://online" + num + ".map.bdimg.com/tile/?qt=tile&x=" + numX + "&y=" + numY + "&z=" + level + "&styles=sl&v=083&udt=20150815"
             }
           } else {
             if (this.mapStyle === "roadmap") {
-              i = this.tile_url + "/" + a + "/" + g + "/" + numY + this.suffix
+              i = this.tile_url + "/" + level + "/" + numX + "/" + numY + this.suffix
             } else if (this.mapStyle === "Image") {
-              i = this.tile_url + "/" + a + "/" + g + "/" + numY + this.suffix
+              i = this.tile_url + "/" + level + "/" + numX + "/" + numY + this.suffix
             } else if (this.mapStyle === "POI") {
-              i = this.tile_url + "/" + a + "/" + g + "/" + numY + this.suffix
+              i = this.tile_url + "/" + level + "/" + numX + "/" + numY + this.suffix
             }
           }
           return i

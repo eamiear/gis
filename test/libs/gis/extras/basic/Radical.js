@@ -416,6 +416,52 @@ define([
           return symbolAttr;
         }
         return this.symbolFactory(graphicType,symbolAttr);
+      },
+      /**
+       * deal with default symbol
+       * @memberOf module:extras/basic/Radical#
+       * @param symbol
+       * @returns {*}
+       */
+      dealWithDefaultSymbol: function (symbol) {
+        if(lang.isObject(symbol)){
+          if(/picture/i.test(symbol.type) &&  !symbol.url){
+            symbol.url = this.getImageAbsPath('marker','default','circle.png');
+          }
+        }
+        return symbol;
+      },
+      /**
+       * get center geometry of the map
+       * @memberOf module:extras/basic/Radical#
+       * @returns {*}
+       */
+      getCenter: function () {
+        return this.map.getCenter();
+      },
+      /**
+       * get extent of the map
+       * @memberOf module:extras/basic/Radical#
+       * @returns {*}
+         */
+      getExtent: function () {
+        return this.map.getExtent();
+      },
+      /**
+       * get scale of the map
+       * @memberOf module:extras/basic/Radical#
+       * @returns {*|string}
+         */
+      getScale: function () {
+        return this.map.getScale();
+      },
+      /**
+       * get current level of the map
+       * @memberOf module:extras/basic/Radical#
+       * @returns {*}
+         */
+      getLevel: function () {
+        return this.map.getLevel();
       }
     })
   });

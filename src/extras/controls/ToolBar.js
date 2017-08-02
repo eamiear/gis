@@ -5,13 +5,25 @@
 /**
  * @fileOverview This is base definition for all composed classes defined by the system
  * Module representing a ToolBar.
- * @module extras/control/ToolBar
+ * @module extras/controls/ToolBar
  *
  * @requires dojo._base.declare
+ * @requires dojo._base.lang
+ * @requires dojo._base.Deferred
  * @requires esri.layers.GraphicsLayer
  * @requires esri.toolbars.navigation
  * @requires esri.toolbars.draw
+ * @requires esri.toolbars.edit
+ * @requires esri.graphic
+ * @requires esri.geometry.webMercatorUtils
+ * @requires esri.geometry.Geometry
+ * @requires esri.geometry.Point
+ * @requires esri.geometry.Extent
+ * @requires esri.geometry.Polyline
+ * @requires esri.geometry.Polygon
+ * @requires esri.geometry.Circle
  * @requires extras.tools.MeasureDrawTool
+ * @requires extras.basic.Radical
  */
 define([
     "dojo/_base/declare",
@@ -51,9 +63,6 @@ define([
     return declare(Radical, /**  @lends module:extras/control/ToolBar */ {
       className: 'ToolBar',
 
-      /** @member map */
-      map: null,
-
       /**
        * @constructs
        */
@@ -69,54 +78,18 @@ define([
           this.addLayer = new GraphicsLayer({id: this.defaultLayerIds.addLayerId});
           this.map.addLayer(this.drawLayer);
           this.map.addLayer(this.addLayer);
-          //this.pan();
         } catch (e) {
 
         }
-        //dojo.publish("toolBarLoadedEvent", [this]);
-        //dojo.subscribe("mapLoadedEvent", this, "initToolbar");
-      },
-      /**
-       * @description initToolbar
-       * @method
-       * @memberOf module:extras/control/ToolBar#
-       * @param {string} map
-       *
-       * @example
-       * <caption>Usage of initToolbar</caption>
-       * require(['extras/control/ToolBar'],function(ToolBar){
-       *   var instance = new ToolBar(gisObject);
-       *   instance.initToolbar(map);
-       * })
-       */
-      initToolbar: function (map) {
-        this.map = map;
-        try {
-          this.navToolbar = new Navigation(this.map);
-          this.drawToolbar = new Draw(this.map);
-          this.editToolbar = new Edit(this.map);
-          this.measureToolbar = new MeasureDrawTool(this.map);
-
-          this.drawLayer = new GraphicsLayer({ id: this.defaultLayerIds.drawLayerId});
-          this.addLayer = new GraphicsLayer({id: this.defaultLayerIds.addLayerId});
-          this.map.addLayer(this.drawLayer);
-          this.map.addLayer(this.addLayer);
-          //this.pan();
-        } catch (e) {
-
-        }
-        dojo.publish("toolBarLoadedEvent", [this]);
       },
 
       /**
-       *
        * @param {object} graphic    a graphic will be pushed in a custom layer or default layer
        * @param {string} [layerId]  an id to create a new layer when the layer doesn't exist.
        * @param {string} action     an attributes name of the Class
        *
        * @example
        * <caption>Usage of _addGraphicToLayer </caption>
-       *
        * @private
        */
       _addGraphicToLayer: function (graphic,layerId,action) {
@@ -151,20 +124,44 @@ define([
       /**
        * @description draw  TODO 集成plot
        * @method
-       * @memberOf module:extras/control/ToolBar#
+       * @memberOf module:extras/controls/ToolBar#
        * @param {object} params
-       * @param {string} params.type                  绘制图形类型
-       * @param {Symbol} [params.symbol]              绘制图形样式
-       * @param {object} [params.attributes]          绘制图形属性
-       * @param {function} [params.before]            绘制前的回调
-       * @param {function} [params.handler]           绘制完成的回调
-       * @param {object} [params.extras]              绘制的图元属性
-       * @param {boolean} [params.hideZoomSlider]     绘制时是否隐藏zoomSlider
-       * @param {object} [params.drawTips]            绘制时鼠标提示信息
+       * @param {string} params.type                              绘制图形类型
+       * @param {Symbol} [params.symbol]                          绘制图形样式
+       * @param {object} [params.attributes]                      绘制图形属性
+       * @param {function} [params.before]                        绘制前的回调
+       * @param {function} [params.handler]                       绘制完成的回调
+       * @param {object} [params.extras]                          绘制的图元属性
+       * @param {boolean} [params.hideZoomSlider]                 绘制时是否隐藏zoomSlider
+       * @param {object} [params.drawTips]                        绘制时鼠标提示信息
+       * @param {string} [params.drawTips.addMultipoint]          单击以开始添加点
+       * @param {string} [params.drawTips.addPoint]          单击以添加点
+       * @param {string} [params.drawTips.addShape]          "单击以添加几何形状，或按下鼠标以开始绘制并释放以完成绘制"
+       * @param {string} [params.drawTips.complete]          "双击完成操作"
+       * @param {string} [params.drawTips.convertAntiClockwisePolygon]    "以逆时针方向绘制的面将反转为顺时针方向。"
+       * @param {string} [params.drawTips.finish]          "双击完成操作"
+       * @param {string} [params.drawTips.freehand]        "按下鼠标以开始绘制并释放以完成绘制"
+       * @param {string} [params.drawTips.invalidType]     "不支持的几何类型"
+       * @param {string} [params.drawTips.resume]          "单击以继续绘制"
+       * @param {string} [params.drawTips.start]          "单击以开始绘制"
        *
        * @example
        * <caption>Usage of draw</caption>
-       *
+       * require(["extras/controls/ToolBar"],function(ToolBar){
+       *  new ToolBar(map).draw({
+       *     type: 'ARROW',
+       *     hideZoomSlider: true,
+       *     extras: {
+       *        id: 'arrow_graphic'
+       *     },
+       *     drawTips: {
+       *        addShape: '单击添加三角形，按下绘制，释放完成绘制'
+       *     }
+       *  }).then(function(graphic,layer){
+       *     console.log('graphic: ','the graphic you draw');
+       *     console.log('layer the graphic you draw to');
+       *  })
+       * })
        */
       draw: function (params) {
         var type = params.type,
@@ -217,6 +214,15 @@ define([
         }));
         return deferred.promise;
       },
+      /**
+       * deactivate draw action
+       * @memberOf module:extras/controls/ToolBar#
+       * @example
+       * <caption>Usage of deactivateDraw</caption>
+       * require(["extras/controls/ToolBar"],function(ToolBar){
+       *   new ToolBar(map).deactivateDraw();
+       * })
+       */
       deactivateDraw: function () {
         this.drawToolbar.deactivate();
       },
@@ -234,7 +240,8 @@ define([
       /**
        * draw  a point to GraphicLayer
        * @method
-       * @memberOf module:extras/control/ToolBar#
+       * @memberOf module:extras/controls/ToolBar#
+       * @see {@link module:extras/controls/ToolBar#draw}
        * @param {object} options
        * @param {Symbol} [options.symbol]              绘制图形样式
        * @param {function} [options.before]            绘制前的回调
@@ -242,6 +249,19 @@ define([
        * @param {object} [options.extras]         绘制的图元属性
        * @param {boolean} [options.hideZoomSlider]     绘制时是否隐藏zoomSlider
        * @param {object} [options.drawTips]            绘制时鼠标提示信息
+       *
+       * @example
+       * <caption>Usage of drawPoint</caption>
+       * require(["extras/controls/ToolBar"],function(ToolBar){
+       *  new ToolBar(map).drawPoint({
+       *     extras: {
+       *        id: 'I_am_a_point'
+       *     }
+       *  }).then(function(graphic,layer){
+       *     console.log('graphic: ','the graphic you draw');
+       *     console.log('layer the graphic you draw to');
+       *  })
+       *})
        * @returns {*}
        */
       drawPoint: function (options) {
@@ -250,7 +270,8 @@ define([
       /**
        * draw  a Image to GraphicLayer
        * @method
-       * @memberOf module:extras/control/ToolBar#
+       * @memberOf module:extras/controls/ToolBar#
+       * @see {@link module:extras/controls/ToolBar#draw}
        * @param {object} options
        * @param {Symbol} [options.symbol]              绘制图形样式
        * @param {function} [options.before]            绘制前的回调
@@ -258,6 +279,29 @@ define([
        * @param {object} [options.extras]             绘制的图元属性
        * @param {boolean} [options.hideZoomSlider]     绘制时是否隐藏zoomSlider
        * @param {object} [options.drawTips]            绘制时鼠标提示信息
+       *
+       * @example
+       * <caption>Usage of drawImage</caption>
+       * require(["extras/controls/ToolBar"],function(ToolBar){
+       * var imageSymbol = new PictureMarkerSymbol({
+       *   type: "esriPMS",
+       *   angle: 0,
+       *   width: 32,
+       *   height: 32,
+       *   xoffset: 0,
+       *   yoffset: 0,
+       *   url: "http://placehold.it/16x16"
+       *  })
+       *  new ToolBar(map).drawPoint({
+       *     extras: {
+       *        id: 'I_am_a_point'
+       *     },
+       *     symbol: imageSymbol
+       *  }).then(function(graphic,layer){
+       *     console.log('graphic: ','the graphic you draw');
+       *     console.log('layer the graphic you draw to');
+       *  })
+       *})
        * @returns {*}
        */
       drawImage: function (options) {
@@ -266,7 +310,8 @@ define([
       /**
        * draw  a Text to GraphicLayer
        * @method
-       * @memberOf module:extras/control/ToolBar#
+       * @memberOf module:extras/controls/ToolBar#
+       * @see {@link module:extras/controls/ToolBar#draw}
        * @param {object} options
        * @param {Symbol} [options.symbol]              绘制图形样式
        * @param {function} [options.before]            绘制前的回调
@@ -274,6 +319,19 @@ define([
        * @param {object} [options.extras]              绘制的图元属性
        * @param {boolean} [options.hideZoomSlider]     绘制时是否隐藏zoomSlider
        * @param {object} [options.drawTips]            绘制时鼠标提示信息
+       *
+       * @example
+       * <caption>Usage of drawText</caption>
+       * require(["extras/controls/ToolBar"],function(ToolBar){
+       *  new ToolBar(map).drawText({
+       *     extras: {
+       *        id: 'I_am_a_point'
+       *     }
+       *  }).then(function(graphic,layer){
+       *     console.log('graphic: ','the graphic you draw');
+       *     console.log('layer the graphic you draw to');
+       *  })
+       * })
        * @returns {*}
        */
       drawText: function (options) {
@@ -282,7 +340,8 @@ define([
       /**
        * draw  a circle to GraphicLayer
        * @method
-       * @memberOf module:extras/control/ToolBar#
+       * @memberOf module:extras/controls/ToolBar#
+       * @see {@link module:extras/controls/ToolBar#draw}
        * @param {object} options
        * @param {Symbol} [options.symbol]              绘制图形样式
        * @param {function} [options.before]            绘制前的回调
@@ -290,6 +349,16 @@ define([
        * @param {object} [options.extras]              绘制的图元属性
        * @param {boolean} [options.hideZoomSlider]     绘制时是否隐藏zoomSlider
        * @param {object} [options.drawTips]            绘制时鼠标提示信息
+       *
+       * @example
+       * <caption>Usage of drawCircle</caption>
+       * require(["extras/controls/ToolBar"],function(ToolBar){
+       *  new ToolBar(map).drawCircle().then(function(graphic,layer){
+       *     console.log('graphic: ','the graphic you draw');
+       *     console.log('layer the graphic you draw to');
+       *  })
+       * })
+       *
        * @returns {*}
        */
       drawCircle: function (options) {
@@ -298,7 +367,8 @@ define([
       /**
        * draw  a polyline to GraphicLayer
        * @method
-       * @memberOf module:extras/control/ToolBar#
+       * @memberOf module:extras/controls/ToolBar#
+       * @see {@link module:extras/controls/ToolBar#draw}
        * @param {object} options
        * @param {Symbol} [options.symbol]              绘制图形样式
        * @param {function} [options.before]            绘制前的回调
@@ -306,6 +376,15 @@ define([
        * @param {object} [options.extras]               绘制的图元属性
        * @param {boolean} [options.hideZoomSlider]     绘制时是否隐藏zoomSlider
        * @param {object} [options.drawTips]            绘制时鼠标提示信息
+       *
+       * @example
+       * <caption>Usage of drawPolyline</caption>
+       * require(["extras/controls/ToolBar"],function(ToolBar){
+       *  new ToolBar(map).drawPolyline().then(function(graphic,layer){
+       *     console.log('graphic: ','the graphic you draw');
+       *     console.log('layer the graphic you draw to');
+       *  })
+       * })
        * @returns {*}
        */
       drawPolyline: function (options) {
@@ -314,7 +393,8 @@ define([
       /**
        * draw  a polygon to GraphicLayer
        * @method
-       * @memberOf module:extras/control/ToolBar#
+       * @memberOf module:extras/controls/ToolBar#
+       * @see {@link module:extras/controls/ToolBar#draw}
        * @param {object} options
        * @param {Symbol} [options.symbol]              绘制图形样式
        * @param {function} [options.before]            绘制前的回调
@@ -322,6 +402,16 @@ define([
        * @param {object} [options.extras]              绘制的图元属性
        * @param {boolean} [options.hideZoomSlider]     绘制时是否隐藏zoomSlider
        * @param {object} [options.drawTips]            绘制时鼠标提示信息
+       *
+       * @example
+       * <caption>Usage of drawPolygon</caption>
+       * require(["extras/controls/ToolBar"],function(ToolBar){
+       *  new ToolBar(map).drawPolyline().then(function(graphic,layer){
+       *     console.log('graphic: ','the graphic you draw');
+       *     console.log('layer the graphic you draw to');
+       *  })
+       * })
+       *
        * @returns {*}
        */
       drawPolygon: function (options) {
@@ -330,7 +420,8 @@ define([
       /**
        * draw  a extent to GraphicLayer
        * @method
-       * @memberOf module:extras/control/ToolBar#
+       * @memberOf module:extras/controls/ToolBar#
+       * @see {@link module:extras/controls/ToolBar#draw}
        * @param {object} options
        * @param {Symbol} [options.symbol]              绘制图形样式
        * @param {function} [options.before]            绘制前的回调
@@ -338,6 +429,15 @@ define([
        * @param {object} [options.extras]               绘制的图元属性
        * @param {boolean} [options.hideZoomSlider]     绘制时是否隐藏zoomSlider
        * @param {object} [options.drawTips]            绘制时鼠标提示信息
+       *
+       *  @example
+       * <caption>Usage of drawExtent</caption>
+       * require(["extras/controls/ToolBar"],function(ToolBar){
+       *  new ToolBar(map).drawExtent().then(function(graphic,layer){
+       *     console.log('graphic: ','the graphic you draw');
+       *     console.log('layer the graphic you draw to');
+       *  })
+       * })
        * @returns {*}
        */
       drawExtent: function (options) {
@@ -375,6 +475,7 @@ define([
       },
       /**
        * add a graphic to GraphicLayer
+       * @memberOf module:extras/controls/ToolBar#
        * @param {object} options
        * @param {object} options.geometry
        * @param {object} options.symbol
@@ -397,12 +498,13 @@ define([
           return false;
         }
         graphic = new Graphic(geometry, symbol, attributes);
-        extras && dojo.isObject(extras) && lang.mixin(graphic,extras);
+        extras && lang.isObject(extras) && lang.mixin(graphic,extras);
         this._addToLayer(graphic,layerId);
         return graphic;
       },
       /**
        * add a point to GraphicLayer
+       * @memberOf module:extras/controls/ToolBar#
        * @param {object} options
        * @param {number} options.x
        * @param {number} options.y
@@ -430,6 +532,8 @@ define([
       },
       /**
        * add a text graphic to GraphicLayer
+       * @memberOf module:extras/controls/ToolBar#
+       * @see {@link module:extras/controls/ToolBar#_addGeometry}
        * @param {object} options
        * @param {number} options.x
        * @param {number} options.y
@@ -437,6 +541,18 @@ define([
        * @param {object} [options.attributes]
        * @param {string|object} [options.layerId]
        * @param {object} [options.extras]
+       *
+       *  @example
+       * <caption>Usage of addText</caption>
+       * require(["extras/controls/ToolBar"],function(ToolBar){
+       *  new ToolBar(map).addText({
+       *    x: 113.128,
+       *    y: 23.030,
+       *    extras: {
+       *      id: 'sk_',
+       *      u: 'lll_'
+       *    }
+       *  })
        * @returns {*}
        */
       addText: function (options) {
@@ -444,6 +560,7 @@ define([
       },
       /**
        * add a picture graphic to GraphicLayer
+       * @memberOf module:extras/controls/ToolBar#
        * @param {object} options
        * @param {number} options.x
        * @param {number} options.y
@@ -451,6 +568,16 @@ define([
        * @param {object} [options.attributes]
        * @param {string|object} [options.layerId]
        * @param {object} [options.extras]
+       *
+       *
+       * @example
+       * <caption>Usage of addImage</caption>
+       * require(["extras/controls/ToolBar"],function(ToolBar){
+       *  new ToolBar(map).addImage({
+       *    x: 113.128,
+       *    y: 23.030
+       *  })
+       *
        * @returns {*}
        */
       addImage: function (options) {
@@ -458,6 +585,7 @@ define([
       },
       /**
        * add a point graphic to GraphicLayer
+       * @memberOf module:extras/controls/ToolBar#
        * @param {object} options
        * @param {number} options.x
        * @param {number} options.y
@@ -465,6 +593,15 @@ define([
        * @param {object} [options.attributes]
        * @param {string|object} [options.layerId]
        * @param {object} [options.extras]
+       *
+       * @example
+       * <caption>Usage of addPoint</caption>
+       * require(["extras/controls/ToolBar"],function(ToolBar){
+       *  new ToolBar(map).addPoint({
+       *    x: 113.128,
+       *    y: 23.030
+       *  })
+       *
        * @returns {*}
        */
       addPoint: function (options) {
@@ -472,6 +609,7 @@ define([
       },
       /**
        * add a circle graphic to GraphicLayer
+       * @memberOf module:extras/controls/ToolBar#
        * @param {object} options
        * @param {array} options.center
        * @param {number} options.radius
@@ -479,6 +617,15 @@ define([
        * @param {object} [options.attributes]
        * @param {string|object} [options.layerId]
        * @param {object} [options.extras]
+       *
+       * @example
+       * <caption>Usage of addCircle</caption>
+       * require(["extras/controls/ToolBar"],function(ToolBar){
+       *  new ToolBar(map).addCircle({
+       *    center: [113.28,23.130],
+       *    radius: 1000
+       *  })
+       *
        * @returns {*}
        */
       addCircle: function (options) {
@@ -498,6 +645,7 @@ define([
       },
       /**
        * add a polygon to GraphicLayer
+       * @memberOf module:extras/controls/ToolBar#
        * @param {object} options
        * @param {object} options.geometry
        * @param {number} [options.wkid]
@@ -505,6 +653,31 @@ define([
        * @param {object} [options.attributes]
        * @param {string|object} [options.layerId]
        * @param {object} [options.extras]
+       *
+       * @example
+       * <caption>Usage of addPolygon</caption>
+       * require(["extras/controls/ToolBar"],function(ToolBar){
+       *  new ToolBar(map).addPolygon({
+       *    "rings": [
+       *    [
+       *     [-4226661, 8496372],
+       *     [-3835304, 8731187],
+       *     [-2269873, 9005137],
+       *     [-1213208, 8613780],
+       *     [-1017529, 8065879],
+       *     [-1213208, 7478843],
+       *     [-2230738, 6891806],
+       *     [-2935181, 6735263],
+       *     [-3522218, 6891806],
+       *     [-3952711, 7165757],
+       *     [-4265797, 7283164],
+       *     [-4304933, 7635386],
+       *     [-4304933, 7674521],
+       *     [-4226661, 8496372]
+       *    ]
+       *  ],
+       *  "wkid": 102100
+       *  })
        * @returns {*}
        */
       addPolygon: function (options) {
@@ -526,6 +699,7 @@ define([
       },
       /**
        * add a polyline to GraphicLayer
+       * @memberOf module:extras/controls/ToolBar#
        * @param {object} options
        * @param {object} options.geometry
        * @param {number} [options.wkid]
@@ -533,6 +707,21 @@ define([
        * @param {object} [options.attributes]
        * @param {string|object} [options.layerId]
        * @param {object} [options.extras]
+       *
+       * @example
+       * <caption>Usage of addPolyline</caption>
+       * require(["extras/controls/ToolBar"],function(ToolBar){
+       *  new ToolBar(map).addPolyline({
+       *    "paths":[
+       *   [
+       *     [-12484306,7244028],
+       *     [-7318386,10061803],
+       *     [-3013453,10727111]
+       *   ]
+       * ],
+       *  "wkid": 102100
+       *  })
+       *
        * @returns {*}
        */
       addPolyline: function (options) {
@@ -554,6 +743,7 @@ define([
       },
       /**
        * add a extent to GraphicLayer
+       * @memberOf module:extras/controls/ToolBar#
        * @param {object} options
        * @param {object} options.xmin
        * @param {array} options.ymin
@@ -565,6 +755,18 @@ define([
        * @param {object} [options.attributes]
        * @param {string|object} [options.layerId]
        * @param {object} [options.extras]
+       *
+       * @example
+       * <caption>Usage of addExtent</caption>
+       * require(["extras/controls/ToolBar"],function(ToolBar){
+       *  new ToolBar(map).addExtent({
+       *    xmin: 113.0112,
+       *    ymin: 23.23,
+       *    xmax: 113.45,
+       *    ymax: 23.76,
+       *   "wkid":102100
+       * })
+       *
        * @returns {*}
        */
       addExtent: function (options) {
@@ -590,6 +792,13 @@ define([
       addTriangle: function (options) {
 
       },
+      /**
+       *
+       * @private
+       * @param options
+       * @param defaultSymbol
+       * @returns {*|{}}
+       */
       dealAddSymbol: function (options,defaultSymbol) {
         options = options || {};
         if(defaultSymbol.type === "picturemarkersymbol") {
@@ -598,6 +807,12 @@ define([
         options.symbol = options.symbol || defaultSymbol;
         return options;
       },
+      /**
+       * @private
+       * @param symbol
+       * @param defaultSymbol
+       * @returns {*}
+       */
       dealDrawSymbol: function (symbol,defaultSymbol) {
         var tempSymbol = lang.clone((defaultSymbol || {}));
         if(symbol.type === "picturemarkersymbol") {
@@ -609,6 +824,7 @@ define([
 
       /**
        * Edit graphic
+       * @memberOf module:extras/controls/ToolBar#
        * @param type
        * @param graphic
        * @param specification
@@ -629,6 +845,9 @@ define([
         tool = types[type.toUpperCase()];
         this.editToolbar.activate(tool,graphic,specification || {});
       },
+      /**
+       * @memberOf module:extras/controls/ToolBar#
+       */
       deactivateEdit: function () {
         this.editToolbar.deactivate();
       },
@@ -636,59 +855,77 @@ define([
       /**
        * @description clearDrawLayer
        * @method
-       * @memberOf module:extras/control/ToolBar#
-       *
+       * @memberOf module:extras/controls/ToolBar#
        *
        * @example
        * <caption>Usage of clearDrawLayer</caption>
-       * require(['extras/control/ToolBar'],function(ToolBar){
-       *   var instance = new ToolBar(gisObject);
+       * require(['extras/controls/ToolBar'],function(ToolBar){
+       *   var instance = new ToolBar(map);
        *   instance.clearDrawLayer();
        * })
-       *
-       *
-       *
        */
       clearDrawLayer: function () {
         this.drawLayer && this.drawLayer.clear();
       },
+      /**
+       * @description clearAddLayer
+       * @method
+       * @memberOf module:extras/controls/ToolBar#
+       *
+       * @example
+       * <caption>Usage of clearAddLayer</caption>
+       * require(['extras/controls/ToolBar'],function(ToolBar){
+       *   var instance = new ToolBar(map);
+       *   instance.clearAddLayer();
+       * })
+       */
       clearAddLayer: function () {
         this.addLayer && this.addLayer.clear();
-      },
-      removeGraphic: function (grahic) {
-
       },
       /**
        * @description removeGraphicOfDrawLayer
        * @method
-       * @memberOf module:extras/control/ToolBar#
-       * @param {string} graphic
+       * @memberOf module:extras/controls/ToolBar#
+       * @param {Graphic} graphic
        *
        * @example
-       * <caption>Usage of removeDrawGraphic</caption>
-       * require(['extras/control/ToolBar'],function(ToolBar){
-       *   var instance = new ToolBar(gisObject);
+       * <caption>Usage of removeGraphicOfDrawLayer</caption>
+       * require(['extras/controls/ToolBar'],function(ToolBar){
+       *   var instance = new ToolBar(map);
        *   instance.removeGraphicOfDrawLayer(graphic);
        * })
        */
       removeGraphicOfDrawLayer: function (graphic) {
         graphic && this.drawLayer.remove(graphic);
       },
+      /**
+       * @description removeGraphicOfAddLayer
+       * @method
+       * @memberOf module:extras/controls/ToolBar#
+       * @param {Graphic} graphic
+       *
+       * @example
+       * <caption>Usage of removeGraphicOfAddLayer</caption>
+       * require(['extras/controls/ToolBar'],function(ToolBar){
+       *   var instance = new ToolBar(map);
+       *   instance.removeGraphicOfAddLayer(graphic);
+       * })
+       */
       removeGraphicOfAddLayer: function (graphic) {
         graphic && this.addLayer.remove(graphic);
       },
 
-
       /**
+       * TODO
        * @description setMouseCursor
        * @method
-       * @memberOf module:extras/control/ToolBar#
+       * @memberOf module:extras/controls/ToolBar#
        * @param {number} type
        *
        * @example
        * <caption>Usage of setMouseCursor</caption>
-       * require(['extras/control/ToolBar'],function(ToolBar){
-       *   var instance = new ToolBar(gisObject);
+       * require(['extras/controls/ToolBar'],function(ToolBar){
+       *   var instance = new ToolBar(map);
        *   instance.setMouseCursor(type);
        * })
        */
@@ -726,175 +963,35 @@ define([
             cur = baseUrl + '/themes/cursor/SunPositionTool.ani';
             break;
         }
-
       },
-
-
-
-
       /**
        * @description deactivateToolbar
        * @method
-       * @memberOf module:extras/control/ToolBar#
-       *
+       * @memberOf module:extras/controls/ToolBar#
        *
        * @example
        * <caption>Usage of deactivateToolbar</caption>
-       * require(['extras/control/ToolBar'],function(ToolBar){
-     *   var instance = new ToolBar(gisObject);
-     *   instance.deactivateToolbar();
-     * })
-       *
-       *
-       *
+       * require(['extras/controls/ToolBar'],function(ToolBar){
+       *   var instance = new ToolBar(map);
+       *   instance.deactivateToolbar();
+       * })
        */
       deactivateToolbar: function () {
         this.navToolbar.deactivate();
         this.drawToolbar.deactivate();
         this.measureToolbar.deactivate();
       },
-
-      /**
-       * @description zoomIn
-       * @method
-       * @memberOf module:extras/control/ToolBar#
-       *
-       *
-       * @example
-       * <caption>Usage of zoomIn</caption>
-       * require(['extras/control/ToolBar'],function(ToolBar){
-     *   var instance = new ToolBar(gisObject);
-     *   instance.zoomIn();
-     * })
-       *
-       *
-       *
-       */
-      zoomIn: function () {
-        this.setMouseCursor(extras.control.ToolBar.ZOOMIN);
-        this.deactivateToolbar();
-        this.navToolbar.activate(esri.toolbars.Navigation.ZOOM_IN);
-      },
-
-      /**
-       * @description zoomOut
-       * @method
-       * @memberOf module:extras/control/ToolBar#
-       *
-       *
-       * @example
-       * <caption>Usage of zoomOut</caption>
-       * require(['extras/control/ToolBar'],function(ToolBar){
-     *   var instance = new ToolBar(gisObject);
-     *   instance.zoomOut();
-     * })
-       *
-       *
-       *
-       */
-      zoomOut: function () {
-        this.setMouseCursor(extras.control.ToolBar.ZOOMOUT);
-        this.deactivateToolbar();
-        this.navToolbar.activate(esri.toolbars.Navigation.ZOOM_OUT);
-      },
-
-      /**
-       * @description pan
-       * @method
-       * @memberOf module:extras/control/ToolBar#
-       *
-       *
-       * @example
-       * <caption>Usage of pan</caption>
-       * require(['extras/control/ToolBar'],function(ToolBar){
-     *   var instance = new ToolBar(gisObject);
-     *   instance.pan();
-     * })
-       *
-       *
-       *
-       */
-      pan: function () {
-        //this.setMouseCursor(extras.control.ToolBar.ZOOMOUT);
-        this.deactivateToolbar();
-        this.navToolbar.activate(esri.toolbars.Navigation.PAN);
-      },
-
-      /**
-       * @description fullExtent
-       * @method
-       * @memberOf module:extras/control/ToolBar#
-       *
-       *
-       * @example
-       * <caption>Usage of fullExtent</caption>
-       * require(['extras/control/ToolBar'],function(ToolBar){
-     *   var instance = new ToolBar(gisObject);
-     *   instance.fullExtent();
-     * })
-       *
-       *
-       *
-       */
-      fullExtent: function () {
-        this.navToolbar.zoomToFullExtent();
-      },
-
-      /**
-       * @description previous
-       * @method
-       * @memberOf module:extras/control/ToolBar#
-       *
-       *
-       * @example
-       * <caption>Usage of previous</caption>
-       * require(['extras/control/ToolBar'],function(ToolBar){
-     *   var instance = new ToolBar(gisObject);
-     *   instance.previous();
-     * })
-       *
-       *
-       *
-       */
-      previous: function () {
-        this.navToolbar.zoomToPrevExtent();
-      },
-
-      /**
-       * @description next
-       * @method
-       * @memberOf module:extras/control/ToolBar#
-       *
-       *
-       * @example
-       * <caption>Usage of next</caption>
-       * require(['extras/control/ToolBar'],function(ToolBar){
-     *   var instance = new ToolBar(gisObject);
-     *   instance.next();
-     * })
-       *
-       *
-       *
-       */
-      next: function () {
-        this.navToolbar.zoomToNextExtent();
-      },
-
       /**
        * @description measureLength
        * @method
-       * @memberOf module:extras/control/ToolBar#
-       *
+       * @memberOf module:extras/controls/ToolBar#
        *
        * @example
        * <caption>Usage of measureLength</caption>
-       * require(['extras/control/ToolBar'],function(ToolBar){
-     *   var instance = new ToolBar(gisObject);
-     *   instance.measureLength();
-     * })
-       *
-       *
-       *
+       * require(['extras/controls/ToolBar'],function(ToolBar){
+       *   var instance = new ToolBar(map);
+       *   instance.measureLength();
+       * })
        */
       measureLength: function () {
         this.deactivateToolbar();
@@ -904,81 +1001,31 @@ define([
       /**
        * @description measureArea
        * @method
-       * @memberOf module:extras/control/ToolBar#
-       *
+       * @memberOf module:extras/controls/ToolBar#
        *
        * @example
        * <caption>Usage of measureArea</caption>
-       * require(['extras/control/ToolBar'],function(ToolBar){
-     *   var instance = new ToolBar(gisObject);
-     *   instance.measureArea();
-     * })
-       *
-       *
-       *
+       * require(['extras/controls/ToolBar'],function(ToolBar){
+       *   var instance = new ToolBar(map);
+       *   instance.measureArea();
+       * })
        */
       measureArea: function () {
         this.deactivateToolbar();
         this.measureToolbar.activate(esri.toolbars.draw.POLYGON);
       },
 
-
-
-      /**
-       * @description clearTrackLayer
-       * @method
-       * @memberOf module:extras/control/ToolBar#
-       *
-       *
-       * @example
-       * <caption>Usage of clearTrackLayer</caption>
-       * require(['extras/control/ToolBar'],function(ToolBar){
-     *   var instance = new ToolBar(gisObject);
-     *   instance.clearTrackLayer();
-     * })
-       *
-       *
-       *
-       */
-      clearTrackLayer: function () {
-        this.trackLayer && this.trackLayer.clear();
-      },
-
-      /**
-       * @description clearTmptrackLayer
-       * @method
-       * @memberOf module:extras/control/ToolBar#
-       *
-       *
-       * @example
-       * <caption>Usage of clearTmptrackLayer</caption>
-       * require(['extras/control/ToolBar'],function(ToolBar){
-     *   var instance = new ToolBar(gisObject);
-     *   instance.clearTmptrackLayer();
-     * })
-       *
-       *
-       *
-       */
-      clearTmptrackLayer: function () {
-        this.tmpTrackLayer && this.tmpTrackLayer.clear();
-      },
-
       /**
        * @description clearMeasureLayer
        * @method
-       * @memberOf module:extras/control/ToolBar#
-       *
+       * @memberOf module:extras/controls/ToolBar#
        *
        * @example
        * <caption>Usage of clearMeasureLayer</caption>
-       * require(['extras/control/ToolBar'],function(ToolBar){
-     *   var instance = new ToolBar(gisObject);
-     *   instance.clearMeasureLayer();
-     * })
-       *
-       *
-       *
+       * require(['extras/controls/ToolBar'],function(ToolBar){
+       *   var instance = new ToolBar(map);
+       *   instance.clearMeasureLayer();
+       * })
        */
       clearMeasureLayer: function () {
         this.measureToolbar.clearAll();
@@ -987,85 +1034,31 @@ define([
       /**
        * @description clear
        * @method
-       * @memberOf module:extras/control/ToolBar#
-       *
+       * @memberOf module:extras/controls/ToolBar#
        *
        * @example
        * <caption>Usage of clear</caption>
-       * require(['extras/control/ToolBar'],function(ToolBar){
-     *   var instance = new ToolBar(gisObject);
-     *   instance.clear();
-     * })
-       *
-       *
-       *
+       * require(['extras/controls/ToolBar'],function(ToolBar){
+       *   var instance = new ToolBar(map);
+       *   instance.clear();
+       * })
        */
       clear: function () {
-        this.setMouseCursor(extras.control.ToolBar.PAN);
-        if (this.measureToolbar) {
-          this.measureToolbar.clearAll();
-        }
-        if (this.map) {
-          this.map.graphics.clear();
-        }
-        this.pan();
-      },
-
-      /**
-       * @description print
-       * @method
-       * @memberOf module:extras/control/ToolBar#
-       *
-       *
-       * @example
-       * <caption>Usage of print</caption>
-       * require(['extras/control/ToolBar'],function(ToolBar){
-     *   var instance = new ToolBar(gisObject);
-     *   instance.print();
-     * })
-       *
-       *
-       *
-       */
-      print: function () {
-
-      },
-
-      /**
-       * @description showMessageWidget
-       * @method
-       * @memberOf module:extras/control/ToolBar#
-       *
-       *
-       * @example
-       * <caption>Usage of showMessageWidget</caption>
-       * require(['extras/control/ToolBar'],function(ToolBar){
-     *   var instance = new ToolBar(gisObject);
-     *   instance.showMessageWidget();
-     * })
-       *
-       *
-       *
-       */
-      showMessageWidget: function () {
-
+          this.measureToolbar && this.measureToolbar.clearAll();
+          this.map && this.map.graphics.clear();
       },
 
       /**
        * @description destroy
        * @method
-       * @memberOf module:extras/control/ToolBar#
-       *
+       * @memberOf module:extras/controls/ToolBar#
        *
        * @example
        * <caption>Usage of destroy</caption>
-       * require(['extras/control/ToolBar'],function(ToolBar){
-     *   var instance = new ToolBar(gisObject);
-     *   instance.destroy();
-     * })
-       *
-       *
-       *
+       * require(['extras/controls/ToolBar'],function(ToolBar){
+       *   var instance = new ToolBar(map);
+       *   instance.destroy();
+       * })
        */
       destroy: function () {
         this.clear();
@@ -1074,190 +1067,6 @@ define([
         this.measureToolbar = null;
         this.map = null;
         this.gisObject = null;
-      },
-
-      /**
-       * @description setCenter
-       * @method
-       * @memberOf module:extras/control/ToolBar#
-       * @param {number} x
-       * @param {number} y
-       * @param {number} zoom
-       *
-       * @example
-       * <caption>Usage of setCenter</caption>
-       * require(['extras/control/ToolBar'],function(ToolBar){
-     *   var instance = new ToolBar(gisObject);
-     *   instance.setCenter(x,y,zoom);
-     * })
-       *
-       *
-       *
-       */
-      setCenter: function (x, y, zoom) {
-        this.map.centerAtZoom();
-      },
-
-      /**
-       * @description getCenter
-       * @method
-       * @memberOf module:extras/control/ToolBar#
-       *
-       *
-       * @example
-       * <caption>Usage of getCenter</caption>
-       * require(['extras/control/ToolBar'],function(ToolBar){
-     *   var instance = new ToolBar(gisObject);
-     *   instance.getCenter();
-     * })
-       *
-       *
-       * @returns {*}
-       */
-      getCenter: function () {
-        return this.map.center;
-      },
-
-      /**
-       * @description getExtent
-       * @method
-       * @memberOf module:extras/control/ToolBar#
-       *
-       *
-       * @example
-       * <caption>Usage of getExtent</caption>
-       * require(['extras/control/ToolBar'],function(ToolBar){
-     *   var instance = new ToolBar(gisObject);
-     *   instance.getExtent();
-     * })
-       *
-       *
-       * @returns {*}
-       */
-      getExtent: function () {
-        return this.map.extent;
-      },
-
-      /**
-       * @description getScale
-       * @method
-       * @memberOf module:extras/control/ToolBar#
-       *
-       *
-       * @example
-       * <caption>Usage of getScale</caption>
-       * require(['extras/control/ToolBar'],function(ToolBar){
-     *   var instance = new ToolBar(gisObject);
-     *   instance.getScale();
-     * })
-       *
-       *
-       * @returns string
-       */
-      getScale: function () {
-        return this.map.getScale();
-      },
-
-      /**
-       * @description zoomToExtent
-       * @method
-       * @memberOf module:extras/control/ToolBar#
-       *
-       *
-       * @example
-       * <caption>Usage of zoomToExtent</caption>
-       * require(['extras/control/ToolBar'],function(ToolBar){
-     *   var instance = new ToolBar(gisObject);
-     *   instance.zoomToExtent();
-     * })
-       *
-       *
-       *
-       */
-      zoomToExtent: function () {
-
-      },
-
-      /**
-       * @description getLayerByName
-       * @method
-       * @memberOf module:extras/control/ToolBar#
-       * @param {number} layerName
-       *
-       * @example
-       * <caption>Usage of getLayerByName</caption>
-       * require(['extras/control/ToolBar'],function(ToolBar){
-     *   var instance = new ToolBar(gisObject);
-     *   instance.getLayerByName(layerName);
-     * })
-       *
-       *
-       *
-       */
-      getLayerByName: function (layerName) {
-
-      },
-
-      /**
-       * @description getLayerById
-       * @method
-       * @memberOf module:extras/control/ToolBar#
-       * @param {number} layerId
-       *
-       * @example
-       * <caption>Usage of getLayerById</caption>
-       * require(['extras/control/ToolBar'],function(ToolBar){
-     *   var instance = new ToolBar(gisObject);
-     *   instance.getLayerById(layerId);
-     * })
-       *
-       *
-       *
-       */
-      getLayerById: function (layerId) {
-        this.map.getLayer(layerId);
-      },
-
-      /**
-       * @description bindMapEvents
-       * @method
-       * @memberOf module:extras/control/ToolBar#
-       * @param {string} evtName
-       * @param {function} bindFunction
-       *
-       * @example
-       * <caption>Usage of bindMapEvents</caption>
-       * require(['extras/control/ToolBar'],function(ToolBar){
-     *   var instance = new ToolBar(gisObject);
-     *   instance.bindMapEvents(evtName,bindFunction);
-     * })
-       *
-       *
-       *
-       */
-      bindMapEvents: function (evtName, bindFunction) {
-
-      },
-
-      /**
-       * @description showInfoWindow
-       * @method
-       * @memberOf module:extras/control/ToolBar#
-       * @param {number} geometry
-       *
-       * @example
-       * <caption>Usage of showInfoWindow</caption>
-       * require(['extras/control/ToolBar'],function(ToolBar){
-     *   var instance = new ToolBar(gisObject);
-     *   instance.showInfoWindow(geometry);
-     * })
-       *
-       *
-       *
-       */
-      showInfoWindow: function (geometry) {
-        this.gisObject.layerLocate.unHightlightOnMap();
-
       }
     });
   });

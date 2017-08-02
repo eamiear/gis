@@ -1,5 +1,5 @@
 /**
- * Created by K on 2017/6/27.
+ * Created by sk_ on 2017/6/27.
  */
 define([
   "dojo/_base/declare",
@@ -27,7 +27,10 @@ define([
     constructor: function () {
 
     },
-    // default symbols
+    /**
+     * default symbols
+     * @member symbols
+     */
     symbols: {
       // abstract symbols
       "SimpleMarkSymbol": new SimpleMarkerSymbol({
@@ -188,7 +191,10 @@ define([
         }
       }),
 
-      // symbol properties
+      /**
+       * symbol properties
+       * @member PointProp
+       */
       PointProp: {
         type: "esriSMS",
         style: "esriSMSCircle",
@@ -205,38 +211,54 @@ define([
         yoffset: 0
       }
     },
+    /**
+     * edit symbol properties
+     * @member editSymbols
+     */
     editSymbols: {
 
     },
-    highlightSymbol: {
-      "Point": {
-        "type": "esriPMS",
-        "angle": 0,
-        "width": 30,
-        "height": 30,
-        "xoffset": 0,
-        "yoffset": 0,
-        "url": ''
-      },
-      "Line": {
-        strokeWeight: 3,
-        strokeOpacity: 1,
-        strokeColor: "#e6111b",
-        strokeDashstyle: "longdashdotdot"
-      },
-      "Polygon": {
-        strokeWeight: 2,
-        strokeOpacity: 1,
-        strokeColor: "#2b07e5",
-        fillColor: "#2b07e5",
-        fillOpacity: 0.6,
-        strokeDashstyle: "longdashdotdot"
+    /**
+     * @member highlight
+     */
+    highlight: {
+      defaultId: 'highlight_graphic',       // the id of the highlighted graphic
+      defaultTimes: 8,                      // times to highlighted graphic
+      threshold: 1000,                      // highlighted threshold
+      symbol: {                             // symbol of the highlighted graphic
+        "Point": {
+          "type": "esriPMS",
+          "angle": 0,
+          "width": 30,
+          "height": 30,
+          "xoffset": 0,
+          "yoffset": 0,
+          "url": ''
+        },
+        "Polyline": {
+          strokeWeight: 3,
+          strokeOpacity: 1,
+          strokeColor: "#e6111b",
+          strokeDashstyle: "longdashdotdot"
+        },
+        "Polygon": {
+          strokeWeight: 2,
+          strokeOpacity: 1,
+          strokeColor: "#2b07e5",
+          fillColor: "#2b07e5",
+          fillOpacity: 0.6,
+          strokeDashstyle: "longdashdotdot"
+        }
       }
     },
+    /**
+     * @method
+     */
     symbolFactory: function (graphicType,symbolAttr) {
       var symbol = null;
       switch (graphicType){
         case 'point':
+        case 'multipoint':
           symbol = new SimpleMarkerSymbol(symbolAttr);
           break;
         case 'image':
@@ -255,7 +277,10 @@ define([
       return symbol;
     },
 
-    // mouse cursor style
+    /**
+     * mouse cursor style
+     * @member mouseCursor
+     */
     mouseCursor: {
       "PAN": "cursor/pan.ani",
       "ZOOMIN": "cursor/zoomin.ani",
@@ -269,7 +294,10 @@ define([
       "POSITION": "cursor/SunPositionTool.ani"
     },
 
-    // default layer's id for graphic layers on the map
+    /**
+     * default layer's id for graphic layers on the map
+     * @member defaultLayerIds
+     */
     defaultLayerIds: {
       //默认图层绘制层ID
       drawLayerId: 'smart_gis_draw_layer',
@@ -284,7 +312,9 @@ define([
       // temporary draw layer id for query
       queryDrawLayerId: 'smart_gis_query_draw_layer'
     },
-
+    /**
+     * @member graphicType
+     */
     graphicType: {
       POINT: 'point',
       POLYGON: 'polygon',
@@ -295,8 +325,17 @@ define([
       ELLIPSE: 'ellipse',
       SECTOR: 'sector'
     },
+    /**
+     * @member mapProperty
+     */
     mapProperty: {
       wkid: 102100
+    },
+    /**
+     * @member Animation
+     */
+    Animation: {
+
     }
   })
 });

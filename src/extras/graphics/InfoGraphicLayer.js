@@ -5,7 +5,7 @@
 /**
  * @fileOverview This is base definition for all composed classes defined by the system
  * Module representing a InfoGraphicLayer.
- * @module extras/graphic/InfoGraphicLayer
+ * @module extras/graphics/InfoGraphicLayer
  *
  * @requires dojo._base.declare
  * @requires esri.layers.GraphicsLayer
@@ -15,63 +15,41 @@ define([
     "dojo/_base/declare",
     "esri/layers/GraphicsLayer"
   ],
-  function (declare,
-            GraphicsLayer) {
-    return declare([GraphicsLayer],
-      /**  @lends module:extras/graphic/InfoGraphicLayer */
-      {
-
+  function (
+    declare,
+    GraphicsLayer
+  ) {
+    return declare([GraphicsLayer], /**  @lends module:extras/graphics/InfoGraphicLayer */ {
         /**
          * @constructs
          *
          */
-        constructor: function () {
-
+        constructor: function (options) {
           this._id = options.id || "";
           this._divId = options.divId;
           this._bindGraphicLayer = options.bindGraphicLayer || null;
           this.visible = true;
-
         },
-
         /**
+         * @private
          * @description _setMap
          * @method
-         * @memberOf module:extras/graphic/InfoGraphicLayer#
+         * @memberOf module:extras/graphics/InfoGraphicLayer#
          * @param {string} map
          * @param {string}  surface
-         *
-         * @example
-         * <caption>Usage of _setMap</caption>
-         * require(['extras/graphic/InfoGraphicLayer'],function(InfoGraphicLayer){
-     *   var instance = new InfoGraphicLayer();
-     *   instance._setMap(map, surface);
-     * })
-         *
          *
          * @returns {*}
          */
         _setMap: function (map, surface) {
-
           var div = this.inherited(arguments);
           return div;
         },
 
         /**
+         * @private
          * @description _unsetMap
          * @method
-         * @memberOf module:extras/graphic/InfoGraphicLayer#
-         *
-         *
-         * @example
-         * <caption>Usage of _unsetMap</caption>
-         * require(['extras/graphic/InfoGraphicLayer'],function(InfoGraphicLayer){
-     *   var instance = new InfoGraphicLayer();
-     *   instance._unsetMap();
-     * })
-         *
-         *
-         *
+         * @memberOf module:extras/graphics/InfoGraphicLayer#
          */
         _unsetMap: function () {
           this.inherited(arguments);
@@ -80,18 +58,14 @@ define([
         /**
          * @description hide
          * @method
-         * @memberOf module:extras/graphic/InfoGraphicLayer#
-         *
+         * @memberOf module:extras/graphics/InfoGraphicLayer#
          *
          * @example
          * <caption>Usage of hide</caption>
-         * require(['extras/graphic/InfoGraphicLayer'],function(InfoGraphicLayer){
-     *   var instance = new InfoGraphicLayer();
-     *   instance.hide();
-     * })
-         *
-         *
-         *
+         * require(['extras/graphics/InfoGraphicLayer'],function(InfoGraphicLayer){
+         *   var instance = new InfoGraphicLayer();
+         *   instance.hide();
+         * })
          */
         hide: function () {
           this.visible = false;
@@ -99,8 +73,7 @@ define([
             $("#div_" + this.clickGraphic.id).hide();
           }
           var _graphics = this.graphics;
-          for (var i = 0,
-                 dl = _graphics.length; i < dl; i++) {
+          for (var i = 0, dl = _graphics.length; i < dl; i++) {
             _graphics[i].hide();
           }
         },
@@ -108,18 +81,14 @@ define([
         /**
          * @description show
          * @method
-         * @memberOf module:extras/graphic/InfoGraphicLayer#
-         *
+         * @memberOf module:extras/graphics/InfoGraphicLayer#
          *
          * @example
          * <caption>Usage of show</caption>
-         * require(['extras/graphic/InfoGraphicLayer'],function(InfoGraphicLayer){
-     *   var instance = new InfoGraphicLayer();
-     *   instance.show();
-     * })
-         *
-         *
-         *
+         * require(['extras/graphics/InfoGraphicLayer'],function(InfoGraphicLayer){
+         *   var instance = new InfoGraphicLayer();
+         *   instance.show();
+         * })
          */
         show: function () {
           this.visible = true;
@@ -136,16 +105,15 @@ define([
         /**
          * @description remove
          * @method
-         * @memberOf module:extras/graphic/InfoGraphicLayer#
+         * @memberOf module:extras/graphics/InfoGraphicLayer#
          * @param {string} graphic
          *
          * @example
          * <caption>Usage of remove</caption>
-         * require(['extras/graphic/InfoGraphicLayer'],function(InfoGraphicLayer){
-     *   var instance = new InfoGraphicLayer();
-     *   instance.remove(graphic);
-     * })
-         *
+         * require(['extras/graphics/InfoGraphicLayer'],function(InfoGraphicLayer){
+         *   var instance = new InfoGraphicLayer();
+         *   instance.remove(graphic);
+         * })
          *
          * @returns {*}
          */
@@ -154,23 +122,15 @@ define([
             return;
           }
           this.inherited(arguments);
-
         },
 
         /**
+         * @private
          * @description _refresh
          * @method
-         * @memberOf module:extras/graphic/InfoGraphicLayer#
+         * @memberOf module:extras/graphics/InfoGraphicLayer#
          * @param {string} redrawFlag
          * @param {number}  zoomFlag
-         *
-         * @example
-         * <caption>Usage of _refresh</caption>
-         * require(['extras/graphic/InfoGraphicLayer'],function(InfoGraphicLayer){
-     *   var instance = new InfoGraphicLayer();
-     *   instance._refresh(redrawFlag, zoomFlag);
-     * })
-         *
          *
          * @returns {*}
          */
@@ -186,20 +146,10 @@ define([
         },
 
         /**
+         * @private
          * @description _onPanStartHandler
          * @method
-         * @memberOf module:extras/graphic/InfoGraphicLayer#
-         *
-         *
-         * @example
-         * <caption>Usage of _onPanStartHandler</caption>
-         * require(['extras/graphic/InfoGraphicLayer'],function(InfoGraphicLayer){
-     *   var instance = new InfoGraphicLayer();
-     *   instance._onPanStartHandler();
-     * })
-         *
-         *
-         *
+         * @memberOf module:extras/graphics/InfoGraphicLayer#
          */
         _onPanStartHandler: function () {
           this.hide();
@@ -207,19 +157,10 @@ define([
         },
 
         /**
+         * @private
          * @description _onZoomStartHandler
          * @method
-         * @memberOf module:extras/graphic/InfoGraphicLayer#
-         *
-         *
-         * @example
-         * <caption>Usage of _onZoomStartHandler</caption>
-         * require(['extras/graphic/InfoGraphicLayer'],function(InfoGraphicLayer){
-     *   var instance = new InfoGraphicLayer();
-     *   instance._onZoomStartHandler();
-     * })
-         *
-         *
+         * @memberOf module:extras/graphics/InfoGraphicLayer#
          *
          */
         _onZoomStartHandler: function () {
@@ -227,22 +168,14 @@ define([
         },
 
         /**
+         * @private
          * @description _onExtentChangeHandler
          * @method
-         * @memberOf module:extras/graphic/InfoGraphicLayer#
+         * @memberOf module:extras/graphics/InfoGraphicLayer#
          * @param {string} delta
          * @param {number}  extent
          * @param {number}  levelChange
          * @param {string}  lod
-         *
-         * @example
-         * <caption>Usage of _onExtentChangeHandler</caption>
-         * require(['extras/graphic/InfoGraphicLayer'],function(InfoGraphicLayer){
-     *   var instance = new InfoGraphicLayer();
-     *   instance._onExtentChangeHandler(delta, extent, levelChange, lod);
-     * })
-         *
-         *
          *
          */
         _onExtentChangeHandler: function (delta, extent, levelChange, lod) {
@@ -251,20 +184,13 @@ define([
         },
 
         /**
+         * @private
          * @description _draw
          * @method
-         * @memberOf module:extras/graphic/InfoGraphicLayer#
+         * @memberOf module:extras/graphics/InfoGraphicLayer#
          * @param {string} graphic
          * @param {string}  redrawFlag
          * @param {number}  zoomFlag
-         *
-         * @example
-         * <caption>Usage of _draw</caption>
-         * require(['extras/graphic/InfoGraphicLayer'],function(InfoGraphicLayer){
-     *   var instance = new InfoGraphicLayer();
-     *   instance._draw(graphic, redrawFlag, zoomFlag);
-     * })
-         *
          *
          * @returns {*}
          */
@@ -285,6 +211,5 @@ define([
             }).addClass('ui-popup-top');
           }
         }
-
       })
   });
