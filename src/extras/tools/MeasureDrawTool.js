@@ -28,7 +28,7 @@ define([
     "dojo/_base/declare",
     "dojo/_base/connect",
     "dojo/_base/event",
-    "dojo/_base/color",
+    //"dojo/_base/color",
     "esri/toolbars/draw",
     "esri/symbols/SimpleMarkerSymbol",
     "esri/symbols/SimpleLineSymbol",
@@ -47,7 +47,7 @@ define([
     declare,
     connect,
     event,
-    dojoColor,
+    //dojoColor,
     draw,
     SimpleMarkerSymbol,
     SimpleLineSymbol,
@@ -453,7 +453,7 @@ define([
           var timerEndHandler = null;
           var point = centerPt;
 
-          var circleSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 9, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255, 0, 0]), 2), new dojoColor([255, 255, 255, 1]));
+          var circleSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 9, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255, 0, 0]), 2), new Color([255, 255, 255, 1]));
 
           circle = new Graphic(point, circleSymbol);
           var attr = {};

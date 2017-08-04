@@ -3,7 +3,7 @@
     "allowUnknownTags": true
   },
   "opts": {
-    "private": true,
+    "private": false,
     "template": "./node_modules/jsdoc-docio/template",
     "destination": "./documents/doc/gois-api"
   },
@@ -25,6 +25,7 @@
     "includeDate"           : true,
     "navType"               : "inline",
     "theme"                 : "docio",
+    "syntaxTheme"           : "dark",
     "inverseNav"            : true,
     "linenums"              : true,
     "dateFormat"            : "YYYY-MM-DD, h:mm:ss a"

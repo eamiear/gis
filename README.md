@@ -16,14 +16,14 @@
 - [jsdoc3Template](https://github.com/danyg/jsdoc3Template/wiki#screenshots)
 
 - [docstrap template](https://github.com/docstrap/docstrap)
-
+[](
 - [docdash template](https://github.com/clenemt/docdash)
 
 - [jsdoc-oblivion](https://github.com/miguelmota/jsdoc-oblivion)
 
 - [minami](https://github.com/nijikokun/minami)
 
-- [jaguarjs-jsdoc](https://github.com/davidshimjs/jaguarjs-jsdoc)
+- [jaguarjs-jsdoc](https://github.com/davids[](himjs/jaguarjs-jsdoc)
 
 ### jsdoc使用示例
 - [docstrap themes cosmo](http://docstrap.github.io/docstrap/themes/cosmo/base_chains.js.html)
@@ -48,3 +48,4 @@ npm install
  gulp build
 ```
 ## 目录结构
+[svnprops](snapshot/svnprops.png)

@@ -480,7 +480,7 @@ define([
        * @memberOf module:extras/controls/ToolBar#
        * @param {object} options
        * @param {object} options.geometry
-       * @param {object} options.symbol
+       * @param {Symbol} options.symbol
        * @param {object} options.attributes
        * @param {object|string} options.layerId
        * @param {object} options.extras
@@ -499,6 +499,7 @@ define([
           this.logger('geometry should not be empty!');
           return false;
         }
+
         graphic = new Graphic(geometry, symbol, attributes);
         extras && lang.isObject(extras) && lang.mixin(graphic,extras);
         this._addToLayer(graphic,layerId);
@@ -510,7 +511,7 @@ define([
        * @param {object} options
        * @param {number} options.x
        * @param {number} options.y
-       * @param {object} options.symbol
+       * @param {object | Symbol} options.symbol
        * @param {object} options.attributes
        * @param {object|string} options.layerId
        * @param {object} options.extras
@@ -591,7 +592,7 @@ define([
        * @param {object} options
        * @param {number} options.x
        * @param {number} options.y
-       * @param {Symbol} [options.symbol]
+       * @param {Symbol|object} [options.symbol]
        * @param {object} [options.attributes]
        * @param {string|object} [options.layerId]
        * @param {object} [options.extras]
@@ -802,9 +803,13 @@ define([
        * @returns {*|{}}
        */
       dealAddSymbol: function (options,defaultSymbol) {
+        var symbolType = defaultSymbol.type;
         options = options || {};
-        if(defaultSymbol.type === "picturemarkersymbol") {
+        if(symbolType === "picturemarkersymbol") {
           defaultSymbol.url = this.getImageAbsPath('marker','default','marker.png');
+        }
+        if(options.symbol && !(options.symbol instanceof Symbol)){
+          options.symbol = this.getSymbolByGraphicType(symbolType,options.symbol);
         }
         options.symbol = options.symbol || defaultSymbol;
         return options;

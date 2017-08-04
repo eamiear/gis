@@ -11,18 +11,143 @@
   <style type="text/css">
     body, html,#mapDiv {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}
   </style>
-  <script type="text/javascript" src="../../static/assets/gis/config/config.js"></script>
+  <script src="../../static/assets/jquery/jquery-1.11.2.min.js"></script>
+  <script src="../../static/assets/gis/config/config.js"></script>
   <script src="http://172.16.16.109:8088/jsapi/3.14/init.js"></script>
   <!--<script src="https://js.arcgis.com/3.17/"></script>-->
+  <style>
+    .box{
+      height: 50px;
+      border: 1px solid #333;
+      padding: 10px;
+    }
+    .box > p{
+      font-weight:bold;
+      margin:0 0 5px;
+    }
+    .box button{
+      font-size: 12px;
+      padding:5px 10px;
+      border:1px solid #333;
+      border-radius: 5px;
+      background: #f7f7f7;
+    }
+    .box button:hover{
+      cursor: pointer;
+      opacity: .7;
+      background: #f2f2f2;
+    }
+  </style>
 </head>
 <body>
+<div class="box" id="box">
+  <p>添加点（Point）：</p>
+  <button data-type="default">默认点</button>
+  <button data-type="symbol">自定义样式</button>
+  <button data-type="attributes">添加属性</button>
+  <button data-type="extra">附加图元属性</button>
+  <button data-type="layer">添加到指定图层</button>
+
+  <!--<button data-type="point">默认点</button>
+  <button data-type="polyline">自定义样式</button>
+  <button data-type="polygon">添加属性</button>
+  <button data-type="image">附加图元属性</button>
+  <button data-type="extent">添加到指定图层</button>
+  <button data-type="circle">circle</button>
+  <button data-type="arrow">arrow</button>-->
+</div>
 <div id="mapDiv"></div>
 </body>
 <script type="text/javascript">
-  require(["dojo/ready", "extras/MapInitObject"], function (ready, MapInitObject) {
+  require(["dojo/ready", "extras/MapInitObject", "extras/controls/ToolBar"], function (ready, MapInitObject,ToolBar) {
     ready(function () {
-      var GisObject = new MapInitObject("mapDiv");
-      GisObject.toolbar.getSymbols();
+      var GisObject = new MapInitObject("mapDiv",{
+        zoom: 3
+      //  minZoom: 4
+      });
+      var toolbar = new ToolBar(GisObject.map);
+
+      $('button').on('click', function () {
+        var type = $(this).attr('data-type');
+        var x = 113.23,//12762362.948431743
+          y = 23.112,//2749918.3868022254
+          squareSymbol = {
+            "type": "esriSMS",
+            "style": "esriSMSSquare",
+            "color": [76,115,0,255],
+            "size": 8,
+            "angle": 0,
+            "xoffset": 0,
+            "yoffset": 0,
+            "outline":
+            {
+              "color": [152,230,0,255],
+              "width": 2
+            }
+          },
+          crossSymbol = {
+            "type": "esriSMS",
+            "style": "esriSMSCross",
+            "color": [76,115,0,255],
+            "size": 8,
+            "angle": 0,
+            "xoffset": 0,
+            "yoffset": 0,
+            "outline":
+            {
+              "color": [152,230,0,255],
+              "width": 2
+            }
+          },
+          diamondSymbol = {
+            "type": "esriSMS",
+            "style": "esriSMSDiamond",
+            "color": [76,115,0,255],
+            "size": 8,
+            "angle": 0,
+            "xoffset": 0,
+            "yoffset": 0,
+            "outline":
+            {
+              "color": [152,230,0,255],
+              "width": 2
+            }
+          },
+          xSymbol = {
+            "type": "esriSMS",
+            "style": "esriSMSX",
+            "color": [76,115,0,255],
+            "size": 8,
+            "angle": 0,
+            "xoffset": 0,
+            "yoffset": 0,
+            "outline":
+            {
+              "color": [152,230,0,255],
+              "width": 2
+            }
+          },
+          layerId = 'smart_gis_point_layer',
+          attributes= {
+            name: 'point_11',
+            level: 12,
+            location: 'china'
+          },
+          extras = {
+            id: 'point_graphic_id_102',
+            number: 0,
+            auth: 1
+          },
+          options;
+        options = {
+          default: {x: x + Math.random()*2, y: y + Math.random()*2},
+          symbol: {x: x + Math.random()*2, y: y + Math.random()*2, symbol: squareSymbol},
+          attributes: {x: x+Math.random()*2, y: y+Math.random()*2, symbol: crossSymbol, attributes: attributes},
+          extra: {x: x+Math.random()*2, y: y+Math.random()*2, symbol: diamondSymbol, extras: extras},
+          layer: {x: x+Math.random()*2, y: y+Math.random()*2, symbol: xSymbol, layerId: layerId}
+        }[type];
+        console.log(toolbar.addPoint(options));
+      });
     })
   });
 </script>

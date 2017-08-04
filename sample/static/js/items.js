@@ -33,6 +33,17 @@ var menuDatas = [{
         href: 'views/basic/a1_4.htm'
       }
     ]
+  },{
+    header: '工具',
+    children: [{
+      title: '添加点',
+      href: 'views/toolbar/t_0.html'
+    },
+      {
+        title: '绘制图元',
+        href: 'views/toolbar/t_1.htm'
+      }
+    ]
   },
   {
     header: '工具条',

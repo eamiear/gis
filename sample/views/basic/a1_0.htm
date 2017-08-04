@@ -26,9 +26,11 @@
       var GisObject = new MapInitObject("mapDiv",{
 //        loadDefaultLayer: false
 //        logo:true//,
-        zoom: 9//,
+        // 默认12级
+           zoom: 9//,
        // center:"8440901.690136591, 4780028.566943722"
       });
+
 //      var layer = GisObject.createLayer({
 //        "id": "100",
 //        "layerId": "GXX_XXXXX",
@@ -55,7 +57,7 @@
 //      d.then(function(graphic){
 //        console.log('graphic-------> ',graphic);
 //      })
-      GisObject.toolbar.addCircle({
+     /* GisObject.toolbar.addCircle({
         center: [113.28,23.130],
         radius: 1000
       });
@@ -111,7 +113,7 @@
         ymax: 23.76,
         "wkid":102100
       });
-     console.log('getGraphic ',GisObject.layerControl.getGraphicById('smart_gis_add_layer','sk_')) ;
+     console.log('getGraphic ',GisObject.layerControl.getGraphicById('smart_gis_add_layer','sk_')) ;*/
 //      console.log('GisObject-------> ',GisObject.map.getLayer('skz'));
 //      console.log('basicpath ---> ',GisObject.toolbar.getSymbols())
 //      console.log('createlayer',GisObject.toolbar.createLayer({

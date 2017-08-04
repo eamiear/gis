@@ -8,16 +8,15 @@
  * @module extras/MapInitObject
  *
  * @requires dojo._base.declare
- * @requires dojo.dom-construct
+ * @requires dojo._base.lang
+ * @requires dojo._base.array
  * @requires esri.map
  * @requires esri.graphic
- * @requires esri.Color
+ * @requires dojo.Color
  * @requires esri.SpatialReference
  * @requires esri.geometry.Point
  * @requires esri.geometry.Polyline
  * @requires esri.geometry.webMercatorUtils
- * @requires esri.symbols.PictureFillSymbol
- * @requires esri.symbols.PictureMarkerSymbol
  * @requires esri.symbols.SimpleLineSymbol
  * @requires extras.controls.ToolBar
  * @requires extras.controls.LayerLocate
@@ -44,66 +43,62 @@ define([
     "dojo/_base/lang",
     "dojo/_base/array",
     "dojo/on",
-    "dojo/dom-construct",
+    //"dojo/_base/color",
     "esri/map",
     "esri/graphic",
-    "esri/Color",
     "esri/SpatialReference",
     "esri/geometry/Point",
     "esri/geometry/Polyline",
     "esri/geometry/Extent",
     "esri/geometry/webMercatorUtils",
-    "esri/symbols/PictureFillSymbol",
-    "esri/symbols/PictureMarkerSymbol",
     "esri/symbols/SimpleLineSymbol",
     "extras/controls/ToolBar",
-    "extras/controls/LocatorControl",
-    "extras/controls/LayerControl",
-    "extras/controls/SearchControl",
+    //"extras/controls/LocatorControl",
+    //"extras/controls/LayerControl",
+    //"extras/controls/SearchControl",
     "extras/widgets/infowindow/InfoWindow",
-    "esri/dijit/OverviewMap",
+    //"esri/dijit/OverviewMap",
     //"extras/utils/GPSConvertor",
     //"extras/layers/BaiduTiledMap",
     //"extras/layers/GoogleTiledMap",
     //"extras/layers/TianDiTuTiledMap",
-    "extras/symbols/ArrowLineSymbol",
-    "extras/layers/FlareClusterLayer",
-    "esri/renderers/ClassBreaksRenderer",
+    //"extras/symbols/ArrowLineSymbol",
+    //"extras/layers/FlareClusterLayer",
+    //"esri/renderers/ClassBreaksRenderer",
     "esri/dijit/PopupTemplate"/*,
     "esri/layers/ArcGISTiledMapServiceLayer",
     "esri/layers/GraphicsLayer"*/],
-  function (declare,
-            lang,
-            array,
-            on,
-            construct,
-            Map,
-            Graphic,
-            Color,
-            SpatialReference,
-            Point,
-            Polyline,
-            Extent,
-            webMercatorUtils,
-            PictureFillSymbol,
-            PictureMarkerSymbol,
-            SimpleLineSymbol,
-            ToolBar,
-            LocatorControl,
-            LayerControl,
-            SearchControl,
-            InfoWindow,
-            OverviewMap,
-            //GPSConvertor,
-            //BaiduTiledMap,
-            //GoogleTiledMap,
-            //TianDiTuTiledMap,
-            ArrowLineSymbol,
-            FlareClusterLayer,
-            ClassBreaksRenderer,
-            PopupTemplate/*,
-            ArcGISTiledMapServiceLayer,
-            GraphicsLayer*/) {
+  function (
+    declare,
+    lang,
+    array,
+    on,
+    //Color,
+    Map,
+    Graphic,
+    SpatialReference,
+    Point,
+    Polyline,
+    Extent,
+    webMercatorUtils,
+    SimpleLineSymbol,
+    ToolBar,
+    //LocatorControl,
+    //LayerControl,
+    //SearchControl,
+    InfoWindow,
+    //OverviewMap,
+    //GPSConvertor,
+    //BaiduTiledMap,
+    //GoogleTiledMap,
+    //TianDiTuTiledMap,
+    //ArrowLineSymbol,
+    //FlareClusterLayer,
+    //ClassBreaksRenderer,
+    PopupTemplate/*,
+    ArcGISTiledMapServiceLayer,
+    GraphicsLayer*/
+  ) {
     return declare(null, /**  @lends module:extras/MapInitObject */ {
 
       /** @member mapId */
@@ -111,9 +106,6 @@ define([
 
       /** @member map */
       map: null,
-
-      /** @member  mapParam */
-     // mapParam: null,
 
       /** @member curLayer */
       curLayer: {},
@@ -124,8 +116,7 @@ define([
       /** @member imageLayer  */
       imageLayer: [],
 
-      /** @member
-        currentOptions  */
+      /** @member currentOptions  */
       currentOptions: null,
 
       /** @member displaySingleFlaresAtCount */
@@ -156,14 +147,14 @@ define([
         funcOptions && this._setFuncOptions(funcOptions);
         this._init();
 
-        //图层控制类
-        this.layerControl = new LayerControl(this.map);
-        //图层查询控制类
-        this.searchControl = new SearchControl(this.map);
-        //地图定位类
-        this.locatorControl = new LocatorControl();
-        //地图工具类
-        this.toolbar = new ToolBar(this.map);
+        ////图层控制类
+        //this.layerControl = new LayerControl(this.map);
+        ////图层查询控制类
+        //this.searchControl = new SearchControl(this.map);
+        ////地图定位类
+        //this.locatorControl = new LocatorControl();
+        ////地图工具类
+        //this.toolbar = new ToolBar(this.map);
 
         dojo.subscribe("mapLoadedEvent", this, "loadMapCompelete");
       },
@@ -208,7 +199,7 @@ define([
             }
           }
         }
-        dojo.mixin(this.currentOptions, mapOptions);
+        lang.mixin(this.currentOptions, mapOptions);
       },
       _setFuncOptions: function (funcOptions) {
         this.currentFuncOptions = {
@@ -216,7 +207,7 @@ define([
           navigation: false,
           basictools: false
         };
-        dojo.mixin(this.currentFuncOptions,funcOptions || {});
+        lang.mixin(this.currentFuncOptions,funcOptions || {});
       },
       _setInitExtent: function () {
         if (this.currentOptions['extent']) {
@@ -382,7 +373,7 @@ define([
       addDefaultLayers: function () {
         this.addLayers([{
           "id": "100",
-          "layerId": "GXX_XXXXX",
+          "layerId": "smart_init_default_layer",
           "online": false,
           "name": "谷歌电子地图",
           "suffix": "png",
@@ -475,11 +466,11 @@ define([
        * })
        */
       switchRoadMap: function () {
-        dojo.forEach(this.imageLayer,function (layer, index) {
+        array.forEach(this.imageLayer,function (layer, index) {
             layer.setVisibility(false);
         });
 
-        dojo.forEach(this.baseLayer,function (layer, index) {
+        array.forEach(this.baseLayer,function (layer, index) {
             layer.setVisibility(true);
         });
       },
@@ -496,56 +487,13 @@ define([
        * })
        */
       switchSatelliteMap: function () {
-        dojo.forEach(this.baseLayer,function (layer, index) {
+        array.forEach(this.baseLayer,function (layer, index) {
             layer.setVisibility(false);
         });
 
-        dojo.forEach(this.imageLayer,function (layer, index) {
+        array.forEach(this.imageLayer,function (layer, index) {
             layer.setVisibility(true);
         });
-      },
-
-
-      /**
-       * @description addZoomBar
-       * @method
-       * @memberOf module:extras/MapInitObject#
-       *
-       * @example
-       * <caption>Usage of addZoomBar</caption>
-       * require(['extras/MapInitObject'],function(MapInitObject){
-       *   var instance = new MapInitObject(divId,options);
-       *   instance.addZoomBar();
-       * })
-       *
-       * @returns {*}
-       */
-      addZoomBar: function () {
-        if (!this.zoomBar) {
-          this.zoomBar = "";
-        }
-        return this.zoomBar;
-      },
-
-      /**
-       * @description addCoordinate
-       * @method
-       * @memberOf module:extras/MapInitObject#
-       *
-       * @example
-       * <caption>Usage of addCoordinate</caption>
-       * require(['extras/MapInitObject'],function(MapInitObject){
-       *   var instance = new MapInitObject(divId,options);
-       *   instance.addCoordinate();
-       * })
-       *
-       * @returns {*}
-       */
-      addCoordinate: function () {
-        if (!this.mousePosition) {
-
-        }
-        return addCoordinate;
       },
 
       /**
@@ -564,96 +512,6 @@ define([
 
       },
 
-      /**
-       * @description addToolPanel
-       * @method
-       * @memberOf module:extras/MapInitObject#
-       *
-       *
-       * @example
-       * <caption>Usage of addToolPanel</caption>
-       * require(['extras/MapInitObject'],function(MapInitObject){
-       *   var instance = new MapInitObject(divId,options);
-       *   instance.addToolPanel();
-       * })
-       * @returns {*}
-       */
-      addToolPanel: function () {
-        if (!this.toolPanel) {
-          // dojo.require("extras.widget.ToolPanelWidget");
-
-        }
-        return this.toolPanel;
-      },
-
-      /**
-       * @description addScalebar
-       * @method
-       * @memberOf module:extras/MapInitObject#
-       *
-       *
-       * @example
-       * <caption>Usage of addScalebar</caption>
-       * require(['extras/MapInitObject'],function(MapInitObject){
-       *   var instance = new MapInitObject(divId,options);
-       *   instance.addScalebar();
-       * })
-       *
-       *
-       * @returns {*}
-       */
-      addScalebar: function () {
-        if (!this.scalebar) {
-
-        }
-        return this.scalebar;
-      },
-
-      /**
-       * @description addRightMenu
-       * @method
-       * @memberOf module:extras/MapInitObject#
-       *
-       *
-       * @example
-       * <caption>Usage of addRightMenu</caption>
-       * require(['extras/MapInitObject'],function(MapInitObject){
-       *   var instance = new MapInitObject(divId,options);
-       *   instance.addRightMenu();
-       * })
-       *
-       * @returns {*}
-       */
-      addRightMenu: function () {
-        if (!this.rightMenu) {
-
-        } else {
-
-        }
-        return this.rightMenu;
-      },
-
-      /**
-       * @description addLayerLabel
-       * @method
-       * @memberOf module:extras/MapInitObject#
-       *
-       *
-       * @example
-       * <caption>Usage of addLayerLabel</caption>
-       * require(['extras/MapInitObject'],function(MapInitObject){
-       *   var instance = new MapInitObject(divId,options);
-       *   instance.addLayerLabel();
-       * })
-       *
-       * @returns {*}
-       */
-      addLayerLabel: function () {
-        if (!this.label) {
-
-        }
-        return this.label;
-      },
 
       /**
        * @description createTiledLayer
@@ -1008,10 +866,10 @@ define([
 
         var defaultSym = new SimpleMarkerSymbol().setSize(6).setColor("#FF0000").setOutline(null);
         var renderer = new ClassBreaksRenderer(defaultSym, "clusterCount");
-        var xlSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 32, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new dojo.Color([200, 52, 59, 0.8]), 1), new dojo.Color([250, 65, 74, 0.8]));
-        var lgSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 28, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new dojo.Color([41, 163, 41, 0.8]), 1), new dojo.Color([51, 204, 51, 0.8]));
-        var mdSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 24, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new dojo.Color([82, 163, 204, 0.8]), 1), new dojo.Color([102, 204, 255, 0.8]));
-        var smSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 22, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new dojo.Color([230, 184, 92, 0.8]), 1), new dojo.Color([255, 204, 102, 0.8]));
+        var xlSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 32, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([200, 52, 59, 0.8]), 1), new Color([250, 65, 74, 0.8]));
+        var lgSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 28, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([41, 163, 41, 0.8]), 1), new Color([51, 204, 51, 0.8]));
+        var mdSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 24, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([82, 163, 204, 0.8]), 1), new Color([102, 204, 255, 0.8]));
+        var smSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 22, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([230, 184, 92, 0.8]), 1), new Color([255, 204, 102, 0.8]));
         renderer.addBreak(0, 19, smSymbol);
         renderer.addBreak(20, 150, mdSymbol);
         renderer.addBreak(151, 1000, lgSymbol);
@@ -1019,12 +877,12 @@ define([
 
         if (this.areaDisplayMode) {
 
-          var defaultAreaSym = new SimpleFillSymbol().setStyle(SimpleFillSymbol.STYLE_SOLID).setColor(new dojo.Color([0, 0, 0, 0.2])).setOutline(new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new dojo.Color([0, 0, 0, 0.3]), 1));
-          var areaRenderer = new esri.renderers.ClassBreaksRenderer(defaultAreaSym, "clusterCount");
-          var xlAreaSymbol = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new dojo.Color([200, 52, 59, 0.8]), 1), new dojo.Color([250, 65, 74, 0.8]));
-          var lgAreaSymbol = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new dojo.Color([41, 163, 41, 0.8]), 1), new dojo.Color([51, 204, 51, 0.8]));
-          var mdAreaSymbol = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new dojo.Color([82, 163, 204, 0.8]), 1), new dojo.Color([102, 204, 255, 0.8]));
-          var smAreaSymbol = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new dojo.Color([230, 184, 92, 0.8]), 1), new dojo.Color([255, 204, 102, 0.8]));
+          var defaultAreaSym = new SimpleFillSymbol().setStyle(SimpleFillSymbol.STYLE_SOLID).setColor(new Color([0, 0, 0, 0.2])).setOutline(new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([0, 0, 0, 0.3]), 1));
+          var areaRenderer = new ClassBreaksRenderer(defaultAreaSym, "clusterCount");
+          var xlAreaSymbol = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([200, 52, 59, 0.8]), 1), new Color([250, 65, 74, 0.8]));
+          var lgAreaSymbol = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([41, 163, 41, 0.8]), 1), new Color([51, 204, 51, 0.8]));
+          var mdAreaSymbol = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([82, 163, 204, 0.8]), 1), new Color([102, 204, 255, 0.8]));
+          var smAreaSymbol = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([230, 184, 92, 0.8]), 1), new Color([255, 204, 102, 0.8]));
 
           areaRenderer.addBreak(0, 19, smAreaSymbol);
           areaRenderer.addBreak(20, 150, mdAreaSymbol);

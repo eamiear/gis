@@ -116,26 +116,36 @@ function refresh(){
 /**将用户修改过的代码加载到iframe中**/
 function run(){
   M.log('running...');
-    var iframeContent=$("#myresource").val();
-    if(editor){
-        iframeContent=editor.getValue();
-    }
-    var nr=iframeContent.indexOf("<body>");
-    var iframeHead=iframeContent.slice(0,nr);
-    var iframeFooter=iframeContent.slice(nr,iframeContent.length);
-    var iFrame=document.getElementById("container").contentWindow;
+  var iframeContent=$("#myresource").val();
+  if(editor){
+      iframeContent=editor.getValue();
+  }
+  var nr=iframeContent.indexOf("<body>");
+  var iframeHead=iframeContent.slice(0,nr);
+  var iframeFooter=iframeContent.slice(nr,iframeContent.length);
+  var refreshScripts = '<script>' + refetchScripts.toString() +  '</script>';
+  var iFrame=document.getElementById("container").contentWindow;
+  iFrame.document.write('');
 
-    var isIE = /msie/.test(navigator.userAgent.toLowerCase());
-    if(!isIE){
-        iFrame.document.designMode = 'On';
-        iFrame.document.contentEditable = true;
-        iFrame.document.open();
-        iFrame.document.write(iframeHead);
-        iFrame.document.write(iframeFooter);
-        iFrame.document.close();
-        iFrame.document.designMode = 'Off';
-    }
+  var isIE = /msie/.test(navigator.userAgent.toLowerCase());
+  if(!isIE){
+    iFrame.document.designMode = 'On';
+    iFrame.document.contentEditable = true;
+    iFrame.document.open();
+    iFrame.document.write(iframeHead);
+    iFrame.document.write(iframeFooter);
+    iFrame.document.write(refreshScripts);
+    iFrame.document.close();
+    iFrame.document.designMode = 'Off';
+
+  }
+  refetchScripts();
   M.log('done...');
+}
+function refetchScripts(){
+  $('script').each(function (index,script) {
+      $(script).attr('src',$(script).attr('src') + '?l='+Math.random());
+  })
 }
 
 /** 复制功能 **/

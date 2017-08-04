@@ -30,8 +30,7 @@ define([
   "esri/geometry/Point",
   "esri/geometry/Polyline",
   "esri/geometry/Polygon",
-  "extras/basic/Radical",
-  "extras/controls/ToolBar"
+  "extras/basic/Radical"
 ], function (
   declare,
   lang,
@@ -42,10 +41,9 @@ define([
   Point,
   Polyline,
   Polygon,
-  Radical,
-  ToolBar
+  Radical
 ) {
-  return declare(Radical, {
+  return declare(Radical,/**  @lends module:extras/controls/LayerControl */ {
     className: 'LayerControl',
     /**
      * @constructs

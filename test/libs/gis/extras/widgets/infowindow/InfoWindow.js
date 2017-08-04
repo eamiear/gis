@@ -1,3 +1,4 @@
+/*
 define([
     "dojo/_base/declare",
     "dojo/Evented",
@@ -14,26 +15,27 @@ define([
     "esri/domUtils",
     "esri/InfoWindowBase"
   ],
-  function (declare,
-            Evented,
-            parser,
-            on,
-            declare,
-            domConstruct,
-            array,
-            domStyle,
-            lang,
-            domClass,
-            coreFx,
-            Deferred,
-            domUtils,
-            InfoWindowBase) {
+  function (
+    declare,
+    Evented,
+    parser,
+    on,
+    declare,
+    domConstruct,
+    array,
+    domStyle,
+    lang,
+    domClass,
+    coreFx,
+    Deferred,
+    domUtils,
+    InfoWindowBase
+  ) {
     var infoWidth, infoHeight;
     var initMapCenter, initScreenCenter;
     var showMapPoint, showScreenPoint = null;
 
-    return declare([InfoWindowBase, Evented],
-      {
+    return declare([InfoWindowBase, Evented], {
         constructor: function (parameters) {
           lang.mixin(this, parameters);
           domClass.add(this.domNode, "myInfoWindow");
@@ -142,3 +144,4 @@ define([
       });
     return InfoWindow;
   });
+*/

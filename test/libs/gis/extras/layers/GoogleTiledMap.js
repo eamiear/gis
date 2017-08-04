@@ -56,6 +56,8 @@ define([
             "spatialReference": {
               "wkid": 102113
             },
+            // 每组的 scale 相差 两倍
+            // resolution 相差1.9999999999
             "lods": [{
               "level": 3,
               "scale": 73957190.948944,

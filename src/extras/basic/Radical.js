@@ -19,15 +19,14 @@ define([
     "dojo/_base/declare",
     "dojo/_base/lang",
     "dojo/_base/array",
-    "extras/utils/SymbolUtils",
     "extras/utils/MapConstant",
     "esri/layers/GraphicsLayer",
     "esri/geometry/Geometry",
     "esri/symbols/Symbol",
     "extras/graphics/InfoGraphicLayer"
   ],
-  function (declare,lang,array,SymbolUtils,MapConstant,GraphicsLayer,Geometry,Symbol,InfoGraphicLayer) {
-    return declare([SymbolUtils,MapConstant], /**  @lends module:extras/basic/Radical */  {
+  function (declare,lang,array,MapConstant,GraphicsLayer,Geometry,Symbol,InfoGraphicLayer) {
+    return declare([MapConstant], /**  @lends module:extras/basic/Radical */  {
       className: 'Radical',
       /**
        * @constructs
@@ -293,15 +292,14 @@ define([
         var longitude,latitude,regexp;
 
         if (arguments.length === 1 && arguments[0] instanceof Geometry){
-          longitude = arguments[0].x;
-          latitude = arguments[0].y;
-        }else {
-          regexp = new RegExp('(\\d+).\\d+');
-          regexp.exec(Number(x).toString());
-          longitude = RegExp.$1;
-          regexp.exec(Number(y).toString());
-          latitude = RegExp.$1;
+          x = arguments[0].x;
+          y = arguments[0].y;
         }
+        regexp = new RegExp('(\\d+).\\d+');
+        regexp.exec(Number(x).toString());
+        longitude = RegExp.$1;
+        regexp.exec(Number(y).toString());
+        latitude = RegExp.$1;
         return longitude && latitude && (longitude.length <= 3 || latitude.length <= 2);
       },
       /**
@@ -406,6 +404,8 @@ define([
        * @memberOf module:extras/basic/Radical#
        * @param {string} graphicType
        * @param {string|Symbol} symbolAttr
+       *
+       * @example
        * <caption>Usage of getSymbolByGraphicType</caption>
        * var random = new Radical().getSymbolByGraphicType('point',{
        *     type: "esriSMS",

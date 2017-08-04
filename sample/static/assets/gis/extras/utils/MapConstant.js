@@ -1,6 +1,20 @@
 /**
  * Created by sk_ on 2017/6/27.
  */
+
+/**
+ * @fileOverview This is base definition for all composed classes defined by the system
+ * Module representing a MapConstant.
+ * @module extras/utils/MapConstant
+ *
+ * @requires dojo._base.declare
+ * @requires esri/symbols/SimpleFillSymbol
+ * @requires esri/symbols/SimpleLineSymbol
+ * @requires esri/symbols/SimpleMarkerSymbol
+ * @requires esri/symbols/PictureMarkerSymbol
+ * @requires esri/symbols/Font
+ * @requires esri/symbols/TextSymbol
+ */
 define([
   "dojo/_base/declare",
   "esri/symbols/SimpleFillSymbol",
@@ -18,7 +32,7 @@ define([
   Font,
   TextSymbol
 ) {
-  return declare(null, {
+  return declare(null,  /**  @lends module:extras/control/ToolBar */ {
     className: 'MapConstant',
     /**
      * @constructs
@@ -32,7 +46,6 @@ define([
      * @member symbols
      */
     symbols: {
-      // abstract symbols
       "SimpleMarkSymbol": new SimpleMarkerSymbol({
         type: "esriSMS",
         style: "esriSMSCircle",
@@ -259,15 +272,19 @@ define([
       switch (graphicType){
         case 'point':
         case 'multipoint':
+        case 'simplemarkersymbol':
           symbol = new SimpleMarkerSymbol(symbolAttr);
           break;
         case 'image':
+        case 'picturemarkersymbol':
           symbol = new PictureMarkerSymbol(symbolAttr);
           break;
         case 'polyline':
+        case 'simplelinesymbol':
           symbol = new SimpleLineSymbol(symbolAttr);
           break;
         case 'text':
+        case 'textsymbol':
           symbol = new TextSymbol(symbolAttr);
           break;
         default:
