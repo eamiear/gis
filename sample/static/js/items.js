@@ -37,13 +37,17 @@ var menuDatas = [{
     header: '工具',
     children: [{
       title: '添加点',
-      href: 'views/toolbar/t_0.html'
-    },
-      {
-        title: '绘制图元',
-        href: 'views/toolbar/t_1.htm'
-      }
-    ]
+      href: 'views/toolbar/addpint.html'
+    },{
+      title: '添加图片',
+      href: 'views/toolbar/t_1.html'
+    },{
+      title: '绘制图元',
+      href: 'views/toolbar/t_1.htm'
+    },{
+      title: '绘制图元',
+      href: 'views/toolbar/t_1.htm'
+    }]
   },
   {
     header: '工具条',
